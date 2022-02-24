@@ -21,7 +21,6 @@
 
 .modal__block {
   flex: 0 1 500px;
-  height: min-content;
   background-color: white;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
@@ -57,19 +56,23 @@
 
 .button {
   padding: 0.5rem 1rem;
-  margin-right: 1rem;
   border: none;
   border-radius: 5px;
   color: white;
   cursor: pointer;
 }
+
+.block__button {
+  margin-right: 1rem;
+}
+
+.block__button:last-child {
+  margin-right: 0;
+}
+
 .button_secondary {
   background-color: var(--color_secondary);
 }
 .button_primary {
   background-color: var(--color_primary);
-}
-
-.button:last-child {
-  margin-right: 0;
 }
