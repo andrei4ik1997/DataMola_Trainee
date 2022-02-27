@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/d054066f81.js" crossorigin="anonymous"></script>
+    <title>Aviasales</title>
+  </head>
+  <body>
+    <main class="flights">
+      <section class="flight">
+        <div class="flight__left">
+          <span class="flight__type flight__type_cheap">Самый дешевый</span>
+          <span class="flight__price">1846 Br</span>
+          <button class="button flight__button">Выбрать билет</button>
+          <span class="flight__message"></span>
+        </div>
+        <div class="flight__right">
+          <div class="icons flight__icons">
+            <ul class="icons__list">
+              <li class="item icons__item" alt="Аэрофлот">
+                <img class="item__image" src="./assets/aeroflot.png" alt="aeroflot" />
+              </li>
+              <li class="item icons__item" alt="Белавия">
+                <img class="item__image" src="./assets/belavia.png" alt="belavia" />
+              </li>
+            </ul>
+            <div class="flight__icons flight__icons_right">
+              <ul class="icons__list">
+                <li class="item icons__item icons__item_icon icons__item_shadow" alt="Долгая пересадка">
+                  <i class="item__icon item__icon_tomato fas fa-hourglass-start"></i>
+                </li>
+                <li class="item icons__item icons__item_icon icons__item_shadow" alt="Ночная пересадка">
+                  <i class="item__icon item__icon_tomato fas fa-moon"></i>
+                </li>
+                <li
+                  class="item icons__item icons__item_icon icons__item_shadow"
+                  alt="Пересадка с самостоятельным получением и сдачей багажа на слеующий рейс"
+                >
+                  <i class="item__icon item__icon_tomato fas fa-suitcase-rolling"></i>
+                </li>
+              </ul>
+              <ul class="icons__list">
+                <li class="item icons__item icons__item_icon" alt="Подписаться на уведомления">
+                  <i class="item__icon item__icon_hover item__icon_grey far fa-bell fa-2x"></i>
+                </li>
+                <li class="item icons__item icons__item_icon" alt="Поделиться">
+                  <i class="item__icon item__icon_hover item__icon_grey far fa-share-square fa-2x"></i>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="info flight__info">
+            <div class="info__wrapper info__wrapper_width15">
+              <span class="info__time">18:20</span>
+              <div class="info__wrapper">
+                <span class="info__city">Минск</span>
+                <span class="info__date">7 мар 2022, пн</span>
+              </div>
+            </div>
+            <div class="info__wrapper info__wrapper_width70 info__wrapper_padding10">
+              <div class="info__animation">
+                <i class="info__icon fas fa-plane-departure"></i>
+                <span class="info__on-way">В пути: 1д 7ч 10м</span>
+                <i class="info__icon fas fa-plane-arrival"></i>
+              </div>
+              <div class="cities info__cities">
+                <span class="cities__city" style="--progressbar: 10">MSQ</span>
+                <span class="cities__city" style="--progressbar: 60">SVO</span>
+                <span class="cities__city" style="--progressbar: 30">JFK</span>
+              </div>
+            </div>
+            <div class="info__wrapper info__wrapper_reverse info__wrapper_width15">
+              <span class="info__time">17:20</span>
+              <div class="info__wrapper info__wrapper_reverse">
+                <span class="info__city">Нью-Йорк</span>
+                <span class="info__date">8 мар 2022, вт</span>
+              </div>
+            </div>
+          </div>
+          <div class="info flight__info">
+            <div class="info__wrapper info__wrapper_width15">
+              <span class="info__time">20:25</span>
+              <div class="info__wrapper">
+                <span class="info__city">Нью-Йорк</span>
+                <span class="info__date">20 мар 2022, вс</span>
+              </div>
+            </div>
+            <div class="info__wrapper info__wrapper_width70 info__wrapper_padding10">
+              <div class="info__animation">
+                <i class="info__icon fas fa-plane-departure"></i>
+                <span class="info__on-way">В пути: 18ч 10м</span>
+                <i class="info__icon fas fa-plane-arrival"></i>
+              </div>
+              <div class="cities info__cities">
+                <span class="cities__city" style="--progressbar: 50">JFK</span>
+                <span class="cities__city" style="--progressbar: 30">SVO</span>
+                <span class="cities__city" style="--progressbar: 20">MSQ</span>
+              </div>
+            </div>
+            <div class="info__wrapper info__wrapper_reverse info__wrapper_width15">
+              <span class="info__time">21:35</span>
+              <div class="info__wrapper info__wrapper_reverse">
+                <span class="info__city">Минск</span>
+                <span class="info__date">21 мар 2022, пн</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="flight">
+        <div class="flight__left">
+          <span class="flight__type flight__type_faster">Самый быстрый</span>
+          <span class="flight__price">3934 Br</span>
+          <button class="button flight__button">Выбрать билет</button>
+          <span class="flight__message">Остался 1 билет по этой цене</span>
+        </div>
+        <div class="flight__right">
+          <div class="icons flight__icons">
+            <ul class="icons__list">
+              <li class="item icons__item" alt="Аэрофлот">
+                <img class="item__image" src="./assets/aeroflot.png" alt="aeroflot" />
+              </li>
+              <li class="item icons__item" alt="Белавия">
+                <img class="item__image" src="./assets/belavia.png" alt="belavia" />
+              </li>
+            </ul>
+            <div class="flight__icons flight__icons_right">
+              <ul class="icons__list">
+                <li
+                  class="item icons__item icons__item_icon icons__item_shadow"
+                  alt="Пересадка с самостоятельным получением и сдачей багажа на слеующий рейс"
+                >
+                  <i class="item__icon item__icon_tomato fas fa-suitcase-rolling"></i>
+                </li>
+              </ul>
+              <ul class="icons__list">
+                <li class="item icons__item icons__item_icon" alt="Подписаться на уведомления">
+                  <i class="item__icon item__icon_hover item__icon_grey far fa-bell fa-2x"></i>
+                </li>
+                <li class="item icons__item icons__item_icon" alt="Поделиться">
+                  <i class="item__icon item__icon_hover item__icon_grey far fa-share-square fa-2x"></i>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="info flight__info">
+            <div class="info__wrapper info__wrapper_width15">
+              <span class="info__time">08:20</span>
+              <div class="info__wrapper">
+                <span class="info__city">Минск</span>
+                <span class="info__date">7 мар 2022, пн</span>
+              </div>
+            </div>
+            <div class="info__wrapper info__wrapper_width70 info__wrapper_padding10">
+              <div class="info__animation">
+                <i class="info__icon fas fa-plane-departure"></i>
+                <span class="info__on-way">В пути: 18ч 05м</span>
+                <i class="info__icon fas fa-plane-arrival"></i>
+              </div>
+              <div class="cities info__cities">
+                <span class="cities__city" style="--progressbar: 15">MSQ</span>
+                <span class="cities__city" style="--progressbar: 10">IST</span>
+                <span class="cities__city" style="--progressbar: 75">JFK</span>
+              </div>
+            </div>
+            <div class="info__wrapper info__wrapper_reverse info__wrapper_width15">
+              <span class="info__time">18:25</span>
+              <div class="info__wrapper info__wrapper_reverse">
+                <span class="info__city">Нью-Йорк</span>
+                <span class="info__date">7 мар 2022, пн</span>
+              </div>
+            </div>
+          </div>
+          <div class="info flight__info">
+            <div class="info__wrapper info__wrapper_width15">
+              <span class="info__time">20:25</span>
+              <div class="info__wrapper">
+                <span class="info__city">Нью-Йорк</span>
+                <span class="info__date">20 мар 2022, вс</span>
+              </div>
+            </div>
+            <div class="info__wrapper info__wrapper_width70 info__wrapper_padding10">
+              <div class="info__animation">
+                <i class="info__icon fas fa-plane-departure"></i>
+                <span class="info__on-way">В пути: 13ч 10м</span>
+                <i class="info__icon fas fa-plane-arrival"></i>
+              </div>
+              <div class="cities info__cities">
+                <span class="cities__city" style="--progressbar: 60">JFK</span>
+                <span class="cities__city" style="--progressbar: 15">SVO</span>
+                <span class="cities__city" style="--progressbar: 25">MSQ</span>
+              </div>
+            </div>
+            <div class="info__wrapper info__wrapper_reverse info__wrapper_width15">
+              <span class="info__time">16:35</span>
+              <div class="info__wrapper info__wrapper_reverse">
+                <span class="info__city">Минск</span>
+                <span class="info__date">21 мар 2022, пн</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
