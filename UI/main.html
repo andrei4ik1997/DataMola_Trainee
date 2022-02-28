@@ -1,13 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="./styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/a4c13e1a93.js" crossorigin="anonymous"></script>
     <title>Main</title>
-</head>
-<body>
-    
-</body>
+  </head>
+  <body>
+    <header class="header">
+      <object class="header__logo" type="image/svg+xml" data="../Extra tasks/1.1/Logo.svg"></object>
+      <div class="header__wrapper">
+        <span class="header__username">User Name</span>
+        <button class="button button_primary header__button">Exit</button>
+      </div>
+    </header>
+    <main class="main">
+      <form class="filter main__filter">
+        <h2 class="filter__title">Filter by:</h2>
+        <div class="filter__input-container">
+          <label class="filter__input-label" for="name">Name</label>
+          <input class="filter__input" id="name" type="text" list="names" placeholder="Name" />
+          <datalist class="filter__input-datalist" id="names">
+            <option class="filter__input-option" value="User1">User1</option>
+            <option class="filter__input-option" value="User2">User2</option>
+            <option class="filter__input-option" value="User3">User3</option>
+          </datalist>
+        </div>
+        <div class="filter__input-container">
+          <label class="filter__input-label" for="text">Text</label>
+          <input class="filter__input" id="text" type="text" placeholder="Text" />
+        </div>
+        <div class="filter__input-container">
+          <label class="filter__input-label" for="date_from">Date</label>
+          <div class="filter__input-container filter__input-container_row">
+            <input class="filter__input" id="date_from" type="date" placeholder="from" />
+            <input class="filter__input" id="date_to" type="date" placeholder="to" />
+          </div>
+        </div>
+        <div class="filter__input-container">
+          <label class="filter__input-label" for="hashtag">Hashtag</label>
+          <div class="filter__input-container filter__input-container_row">
+            <input class="filter__input" id="hashtag" type="text" placeholder="tag" />
+            <i class="icon filter__icon fa-solid fa-plus"></i>
+          </div>
+          <div class="hashtag filter__hashtag">
+            <span class="hashtag__title">You add:</span>
+            <div class="hashtag__container">
+              <span class="hashtag__name">#tag1</span>
+              <i class="icon filter__icon fa-solid fa-xmark"></i>
+              <span class="hashtag__separate">;</span>
+            </div>
+            <div class="hashtag__container">
+              <span class="hashtag__name">#tag2</span>
+              <i class="icon filter__icon fa-solid fa-xmark"></i>
+              <span class="hashtag__separate">;</span>
+            </div>
+            <div class="hashtag__container">
+              <span class="hashtag__name">#tag3</span>
+              <i class="icon filter__icon fa-solid fa-xmark"></i>
+              <span class="hashtag__separate">;</span>
+            </div>
+          </div>
+        </div>
+        <div class="filter__buttons">
+          <button class="button button_secondary filter__button" type="reset">Clear</button>
+          <button class="button button_primary filter__button" type="submit">Apply</button>
+        </div>
+      </form>
+      <div class="twitter main__twitter"></div>
+    </main>
+    <footer class="footer"></footer>
+  </body>
 </html>
