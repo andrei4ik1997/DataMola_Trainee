@@ -31,11 +31,11 @@ body {
   color: #ffffff;
 }
 .button_primary {
-  background: var(--color__primary);;
+  background: var(--color__primary);
 }
 
 .button_secondary {
-  background: var(--color__secondary);;
+  background: var(--color__secondary);
 }
 .icon {
   cursor: pointer;
@@ -69,6 +69,7 @@ body {
 .main {
   display: flex;
   align-items: flex-start;
+  gap: 30px;
   padding: 0px 50px;
   width: 100%;
 }
@@ -77,6 +78,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  flex: 1 1 30%;
   gap: 10px;
   padding: 20px;
   background: var(--color__background_header);
@@ -97,7 +99,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  width: 200px;
+  width: 100%;
 }
 
 .filter__input-container_row {
@@ -131,4 +133,29 @@ body {
   gap: 20px;
   width: 100%;
   margin-top: 20px;
+}
+
+.main__twitter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 20px;
+  margin: 30px 0px;
+  align-self: stretch;
+  flex: 1 1 70%;
+  background: var(--color__background_header);
+  box-shadow: var(--shadow);
+  border-radius: var(--border_radius);
+}
+
+input[type="date"]::before {
+  opacity: 0.5;
+  content: attr(placeholder) ":  ";
+}
+input[type="date"]:focus::before {
+  content: "";
+}
+input::-webkit-calendar-picker-indicator {
+  padding: 0;
+  margin: 0;
 }
