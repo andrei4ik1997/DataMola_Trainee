@@ -201,7 +201,7 @@ input::-webkit-calendar-picker-indicator {
 .header__logo {
   width: 228px;
   height: 60px;
-  background-image: url("../Extra tasks/1.1/Logo.svg");
+  background-image: url("./assets/logo/Logo.svg");
   background-size: contain;
   background-repeat: no-repeat;
 }
@@ -381,7 +381,7 @@ input::-webkit-calendar-picker-indicator {
   border-bottom: solid #edf2f7 1px;
   scroll-snap-align: start;
 }
-.comment{
+.comment {
   gap: 10px;
 }
 
@@ -391,7 +391,6 @@ input::-webkit-calendar-picker-indicator {
   align-items: flex-start;
   gap: 10px;
   width: 100%;
-
 }
 
 .tweet:nth-child(n + 11) {
@@ -672,7 +671,7 @@ input::-webkit-calendar-picker-indicator {
   }
   .header__logo {
     width: 66px;
-    background-image: url("../Extra tasks/1.1/Logo mobile.svg");
+    background-image: url("./assets/logo/Logo_mobile.svg");
   }
   .form-add__header-logo {
     display: none;
