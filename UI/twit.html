@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="./styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/a4c13e1a93.js" crossorigin="anonymous"></script>
+    <title>Twit</title>
+  </head>
+  <body>
+    <header class="header">
+      <a class="link" href="./main.html">
+        <div class="header__logo"></div>
+      </a>
+      <div class="header__authorized">
+        <span class="header__username">User Name</span>
+        <button class="button button_primary header__button">Exit</button>
+      </div>
+      <div class="header__unauthorized">
+        <a class="link" href="./authorization.html">
+          <button class="button button_primary header__button">Sign In</button>
+        </a>
+      </div>
+    </header>
+    <main class="main main_colomn">
+      <section class="section main__container">
+        <a class="link link_icon" href="./main.html">
+          <i class="icon icon_back fa-solid fa-circle-arrow-left fa-2x"></i>
+        </a>
+        <div class="tweet">
+          <div class="tweet__header">
+            <div class="tweet__container">
+              <span class="tweet__username">User Name</span>
+              <div class="tweet__date-container">
+                <time class="tweet__date" datetime="2022-03-01">01.03.2022</time>
+                <time class="tweet__time" datetime="2022-03-01T00:00:00">00:00:00</time>
+              </div>
+              <div class="tweet__comment">
+                <i class="icon icon__comment fa-regular fa-comment-dots"></i>
+                <span class="tweet__comment-amount">4</span>
+              </div>
+            </div>
+            <div class="tweet__icons-container">
+              <i class="icon icon__edit fa-regular fa-pen-to-square"></i>
+              <i class="icon icon__trash fa-solid fa-trash-can"></i>
+            </div>
+          </div>
+          <p class="tweet__text">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi rem
+            <span class="tweet__text_hashag">#inventore</span>, fugit fuga ullam, repudiandae accusantium quos ipsum
+            sapiente eveniet sed modi velit doloribus? Ipsam fuga laboriosam ad aspernatur pariatur?
+          </p>
+        </div>
+        <h3 class="main__container-title">Comments</h3>
+        <p class="no-comments">No comments yet</p>
+        <div class="comments">
+          <ul class="comments__list">
+            <li class="comment">
+              <div class="comment__header">
+                <div class="comment__container">
+                  <span class="comment__username">Another User</span>
+                  <div class="comment__date-container">
+                    <time class="tweet__date" datetime="2022-03-01">01.03.2022</time>
+                    <time class="tweet__time" datetime="2022-03-01T00:00:00">00:00:00</time>
+                  </div>
+                </div>
+              </div>
+              <p class="comment__text">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi rem
+                <span class="comment__text_hashag">#inventore</span>, fugit fuga ullam, repudiandae accusantium quos
+                ipsum sapiente eveniet sed modi velit doloribus? Ipsam fuga laboriosam ad aspernatur pariatur?
+              </p>
+            </li>
+            <li class="comment">
+              <div class="comment__header">
+                <div class="comment__container">
+                  <span class="comment__username">User Name</span>
+                  <div class="comment__date-container">
+                    <time class="tweet__date" datetime="2022-03-01">01.03.2022</time>
+                    <time class="tweet__time" datetime="2022-03-01T00:00:00">00:00:00</time>
+                  </div>
+                </div>
+              </div>
+              <p class="comment__text">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi rem
+                <span class="comment__text_hashag">#inventore</span>, fugit fuga ullam, repudiandae accusantium quos
+                ipsum sapiente eveniet sed modi velit doloribus? Ipsam fuga laboriosam ad aspernatur pariatur?
+              </p>
+            </li>
+            <li class="comment">
+              <div class="comment__header">
+                <div class="comment__container">
+                  <span class="comment__username">User2</span>
+                  <div class="comment__date-container">
+                    <time class="tweet__date" datetime="2022-03-01">01.03.2022</time>
+                    <time class="tweet__time" datetime="2022-03-01T00:00:00">00:00:00</time>
+                  </div>
+                </div>
+              </div>
+              <p class="comment__text">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi rem
+                <span class="comment__text_hashag">#inventore</span>, fugit fuga ullam, repudiandae accusantium quos
+                ipsum sapiente eveniet sed modi velit doloribus? Ipsam fuga laboriosam ad aspernatur pariatur?
+              </p>
+            </li>
+            <li class="comment">
+              <div class="comment__header">
+                <div class="comment__container">
+                  <span class="comment__username">Another User</span>
+                  <div class="comment__date-container">
+                    <time class="tweet__date" datetime="2022-03-01">01.03.2022</time>
+                    <time class="tweet__time" datetime="2022-03-01T00:00:00">00:00:00</time>
+                  </div>
+                </div>
+              </div>
+              <p class="comment__text">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi rem
+                <span class="comment__text_hashag">#inventore</span>, fugit fuga ullam, repudiandae accusantium quos
+                ipsum sapiente eveniet sed modi velit doloribus? Ipsam fuga laboriosam ad aspernatur pariatur?
+              </p>
+            </li>
+          </ul>
+        </div>
+
+        <form class="form-add comment__form-add">
+          <div class="form-add__header">
+            <div class="form-add__header-logo">un</div>
+            <textarea
+              class="form-add__placeholder"
+              name="tweet_text"
+              maxlength="280"
+              placeholder="Some text..."
+            ></textarea>
+          </div>
+          <div class="form-add__footer">
+            <p class="form-add__text">
+              <span class="form-add__сharacters-left">280</span>
+              сharacters left
+            </p>
+            <button class="button button_primary form-add__button" type="submit" disabled>Comment</button>
+          </div>
+        </form>
+      </section>
+    </main>
+    <footer class="footer">
+      <p class="footer__text">
+        Twitter by
+        <a
+          id="author-name"
+          class="footer__text_decoration"
+          href="https://www.linkedin.com/in/andrei-shynkarou-874425223"
+          target="_blank"
+          >Andrei Shynkarou</a
+        >. Email:&nbsp;
+        <a id="author-email" class="footer__text_decoration" href="mailto:andrey03071997@yandex.ru">
+          andrey03071997@yandex.ru
+        </a>
+      </p>
+      <p class="footer__text">
+        Last update:&nbsp;
+        <time id="update-date" class="footer__text_decoration" datetime="2022-03-01">01.03.2022</time>
+      </p>
+    </footer>
+  </body>
+</html>

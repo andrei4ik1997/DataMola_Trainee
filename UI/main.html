@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="./styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/a4c13e1a93.js" crossorigin="anonymous"></script>
+    <title>Main</title>
+  </head>
+  <body>
+    <input class="burger__input" id="burger" type="checkbox" aria-hidden="true" />
+    <header class="header">
+      <div class="header__container">
+        <label class="icon burger" for="burger">
+          <div class="burger__line"></div>
+          <div class="burger__line"></div>
+          <div class="burger__line"></div>
+          <div class="burger__line"></div>
+        </label>
+        <a class="link" href="./main.html">
+          <div class="header__logo"></div>
+        </a>
+      </div>
+      <div class="header__authorized">
+        <span class="header__username">User Name</span>
+        <button class="button button_primary header__button">Exit</button>
+      </div>
+      <div class="header__unauthorized">
+        <a class="link" href="./authorization.html">
+          <button class="button button_primary header__button">Sign In</button>
+        </a>
+      </div>
+    </header>
+    <main class="main">
+      <aside class="section filter">
+        <form class="form filter__form">
+          <h3 class="form__title">Filter by:</h3>
+          <div class="form__input-container">
+            <label class="form__input-label" for="name">Name</label>
+            <input class="form__input" id="name" name="name" type="text" list="names" placeholder="Name" />
+            <datalist class="form__input-datalist" id="names">
+              <option class="form__input-option" value="User1">User1</option>
+              <option class="form__input-option" value="User2">User2</option>
+              <option class="form__input-option" value="User3">User3</option>
+            </datalist>
+          </div>
+          <div class="form__input-container">
+            <label class="form__input-label" for="text">Text</label>
+            <input class="form__input" id="text" type="text" name="text" placeholder="Text" />
+          </div>
+          <div class="form__input-container">
+            <label class="form__input-label" for="date_from">Date</label>
+            <input class="form__input" id="date_from" type="date" name="date_from" placeholder="from" />
+            <input class="form__input" id="date_to" type="date" name="date_to" placeholder="to" />
+          </div>
+          <div class="form__input-container">
+            <label class="form__input-label" for="hashtag">Hashtag</label>
+            <div class="form__input-container form__input-container_row">
+              <input class="form__input" id="hashtag" type="text" name="hashtag" placeholder="tag" />
+              <i class="icon fa-solid fa-plus"></i>
+            </div>
+            <div class="hashtag form__hashtag">
+              <span class="hashtag__title">You add:</span>
+              <div class="hashtag__container">
+                <span class="hashtag__name">#tag1</span>
+                <i class="icon icon_gray fa-solid fa-trash-can"></i>
+                <span class="hashtag__separate">;</span>
+              </div>
+              <div class="hashtag__container">
+                <span class="hashtag__name">#tag2</span>
+                <i class="icon icon_gray fa-solid fa-trash-can"></i>
+                <span class="hashtag__separate">;</span>
+              </div>
+              <div class="hashtag__container">
+                <span class="hashtag__name">#tag3</span>
+                <i class="icon icon_gray fa-solid fa-trash-can"></i>
+                <span class="hashtag__separate">;</span>
+              </div>
+            </div>
+          </div>
+          <div class="form__buttons">
+            <button class="button button_secondary form__button" type="reset">Clear</button>
+            <button class="button button_primary form__button" type="submit" disabled>Apply</button>
+          </div>
+        </form>
+      </aside>
+      <section class="section twitter main__twitter">
+        <div class="not-found">
+          <i class="icon icon_error fa-solid fa-triangle-exclamation fa-4x"></i>
+          <span class="not-found__text">Not found</span>
+        </div>
+        <form class="form-add twitter__form-add">
+          <div class="form-add__header">
+            <div class="form-add__header-logo">un</div>
+            <textarea
+              class="form-add__placeholder"
+              name="tweet_text"
+              maxlength="280"
+              placeholder="Some text..."
+            ></textarea>
+          </div>
+          <div class="form-add__footer">
+            <p class="form-add__text">
+              <span class="form-add__сharacters-left">280</span>
+              сharacters left
+            </p>
+            <button class="button button_primary form-add__button" type="submit" disabled>Tweet</button>
+          </div>
+        </form>
+        <div class="tweets">
+          <ul class="tweets__list">
+            <li class="tweet">
+              <a class="link link__tweet" href="./twit.html">
+                <div class="tweet__header">
+                  <div class="tweet__container">
+                    <span class="tweet__username">User Name</span>
+                    <div class="tweet__date-container">
+                      <time class="tweet__date" datetime="2022-03-01">01.03.2022</time>
+                      <time class="tweet__time" datetime="2022-03-01T00:00:00">00:00:00</time>
+                    </div>
+                    <div class="tweet__comment">
+                      <i class="icon icon__comment fa-regular fa-comment-dots"></i>
+                      <span class="tweet__comment-amount">4</span>
+                    </div>
+                  </div>
+                  <div class="tweet__icons-container">
+                    <i class="icon icon__edit fa-regular fa-pen-to-square"></i>
+                    <i class="icon icon__trash fa-solid fa-trash-can"></i>
+                  </div>
+                </div>
+                <p class="tweet__text">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi rem
+                  <span class="tweet__text_hashag">#inventore</span>, fugit fuga ullam, repudiandae accusantium quos
+                  ipsum sapiente eveniet sed modi velit doloribus? Ipsam fuga laboriosam ad aspernatur pariatur?
+                </p>
+              </a>
+            </li>
+            <li class="tweet">
+              <a class="link link__tweet" href="./twit.html">
+                <div class="tweet__header">
+                  <div class="tweet__container">
+                    <span class="tweet__username">User Name2</span>
+                    <div class="tweet__date-container">
+                      <time class="tweet__date" datetime="2022-03-01">01.03.2022</time>
+                      <time class="tweet__time" datetime="2022-03-01T00:00:00">00:00:00</time>
+                    </div>
+                    <div class="tweet__comment">
+                      <i class="icon icon__comment fa-regular fa-comment-dots"></i>
+                      <span class="tweet__comment-amount">4</span>
+                    </div>
+                  </div>
+                  <div class="tweet__icons-container tweet__icons-container_hide">
+                    <i class="icon icon__edit fa-regular fa-pen-to-square"></i>
+                    <i class="icon icon__trash fa-solid fa-trash-can"></i>
+                  </div>
+                </div>
+                <p class="tweet__text">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi rem
+                  <span class="tweet__text_hashag">#inventore</span>, fugit fuga ullam, repudiandae accusantium quos
+                  ipsum sapiente eveniet sed modi velit doloribus? Ipsam fuga laboriosam ad aspernatur pariatur?
+                </p>
+              </a>
+            </li>
+            <li class="tweet">
+              <a class="link link__tweet" href="./twit.html">
+                <div class="tweet__header">
+                  <div class="tweet__container">
+                    <span class="tweet__username">User Name</span>
+                    <div class="tweet__date-container">
+                      <time class="tweet__date" datetime="2022-03-01">01.03.2022</time>
+                      <time class="tweet__time" datetime="2022-03-01T00:00:00">00:00:00</time>
+                    </div>
+                    <div class="tweet__comment">
+                      <i class="icon icon__comment fa-regular fa-comment-dots"></i>
+                      <span class="tweet__comment-amount">4</span>
+                    </div>
+                  </div>
+                  <div class="tweet__icons-container">
+                    <i class="icon icon__edit fa-regular fa-pen-to-square"></i>
+                    <i class="icon icon__trash fa-solid fa-trash-can"></i>
+                  </div>
+                </div>
+                <p class="tweet__text">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi rem
+                  <span class="tweet__text_hashag">#inventore</span>, fugit fuga ullam, repudiandae accusantium quos
+                  ipsum sapiente eveniet sed modi velit doloribus? Ipsam fuga laboriosam ad aspernatur pariatur?
+                </p>
+              </a>
+            </li>
+            <li class="tweet">
+              <a class="link link__tweet" href="./twit.html">
+                <div class="tweet__header">
+                  <div class="tweet__container">
+                    <span class="tweet__username">User Name2</span>
+                    <div class="tweet__date-container">
+                      <time class="tweet__date" datetime="2022-03-01">01.03.2022</time>
+                      <time class="tweet__time" datetime="2022-03-01T00:00:00">00:00:00</time>
+                    </div>
+                    <div class="tweet__comment">
+                      <i class="icon icon__comment fa-regular fa-comment-dots"></i>
+                      <span class="tweet__comment-amount">4</span>
+                    </div>
+                  </div>
+                  <div class="tweet__icons-container tweet__icons-container_hide">
+                    <i class="icon icon__edit fa-regular fa-pen-to-square"></i>
+                    <i class="icon icon__trash fa-solid fa-trash-can"></i>
+                  </div>
+                </div>
+                <p class="tweet__text">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi rem
+                  <span class="tweet__text_hashag">#inventore</span>, fugit fuga ullam, repudiandae accusantium quos
+                  ipsum sapiente eveniet sed modi velit doloribus? Ipsam fuga laboriosam ad aspernatur pariatur?
+                </p>
+              </a>
+            </li>
+            <li class="tweet">
+              <a class="link link__tweet" href="./twit.html">
+                <div class="tweet__header">
+                  <div class="tweet__container">
+                    <span class="tweet__username">User Name</span>
+                    <div class="tweet__date-container">
+                      <time class="tweet__date" datetime="2022-03-01">01.03.2022</time>
+                      <time class="tweet__time" datetime="2022-03-01T00:00:00">00:00:00</time>
+                    </div>
+                    <div class="tweet__comment">
+                      <i class="icon icon__comment fa-regular fa-comment-dots"></i>
+                      <span class="tweet__comment-amount">4</span>
+                    </div>
+                  </div>
+                  <div class="tweet__icons-container">
+                    <i class="icon icon__edit fa-regular fa-pen-to-square"></i>
+                    <i class="icon icon__trash fa-solid fa-trash-can"></i>
+                  </div>
+                </div>
+                <p class="tweet__text">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi rem
+                  <span class="tweet__text_hashag">#inventore</span>, fugit fuga ullam, repudiandae accusantium quos
+                  ipsum sapiente eveniet sed modi velit doloribus? Ipsam fuga laboriosam ad aspernatur pariatur?
+                </p>
+              </a>
+            </li>
+            <li class="tweet">
+              <a class="link link__tweet" href="./twit.html">
+                <div class="tweet__header">
+                  <div class="tweet__container">
+                    <span class="tweet__username">User Name2</span>
+                    <div class="tweet__date-container">
+                      <time class="tweet__date" datetime="2022-03-01">01.03.2022</time>
+                      <time class="tweet__time" datetime="2022-03-01T00:00:00">00:00:00</time>
+                    </div>
+                    <div class="tweet__comment">
+                      <i class="icon icon__comment fa-regular fa-comment-dots"></i>
+                      <span class="tweet__comment-amount">4</span>
+                    </div>
+                  </div>
+                  <div class="tweet__icons-container tweet__icons-container_hide">
+                    <i class="icon icon__edit fa-regular fa-pen-to-square"></i>
+                    <i class="icon icon__trash fa-solid fa-trash-can"></i>
+                  </div>
+                </div>
+                <p class="tweet__text">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi rem
+                  <span class="tweet__text_hashag">#inventore</span>, fugit fuga ullam, repudiandae accusantium quos
+                  ipsum sapiente eveniet sed modi velit doloribus? Ipsam fuga laboriosam ad aspernatur pariatur?
+                </p>
+              </a>
+            </li>
+            <li class="tweet">
+              <a class="link link__tweet" href="./twit.html">
+                <div class="tweet__header">
+                  <div class="tweet__container">
+                    <span class="tweet__username">User Name</span>
+                    <div class="tweet__date-container">
+                      <time class="tweet__date" datetime="2022-03-01">01.03.2022</time>
+                      <time class="tweet__time" datetime="2022-03-01T00:00:00">00:00:00</time>
+                    </div>
+                    <div class="tweet__comment">
+                      <i class="icon icon__comment fa-regular fa-comment-dots"></i>
+                      <span class="tweet__comment-amount">4</span>
+                    </div>
+                  </div>
+                  <div class="tweet__icons-container">
+                    <i class="icon icon__edit fa-regular fa-pen-to-square"></i>
+                    <i class="icon icon__trash fa-solid fa-trash-can"></i>
+                  </div>
+                </div>
+                <p class="tweet__text">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi rem
+                  <span class="tweet__text_hashag">#inventore</span>, fugit fuga ullam, repudiandae accusantium quos
+                  ipsum sapiente eveniet sed modi velit doloribus? Ipsam fuga laboriosam ad aspernatur pariatur?
+                </p>
+              </a>
+            </li>
+            <li class="tweet">
+              <a class="link link__tweet" href="./twit.html">
+                <div class="tweet__header">
+                  <div class="tweet__container">
+                    <span class="tweet__username">User Name2</span>
+                    <div class="tweet__date-container">
+                      <time class="tweet__date" datetime="2022-03-01">01.03.2022</time>
+                      <time class="tweet__time" datetime="2022-03-01T00:00:00">00:00:00</time>
+                    </div>
+                    <div class="tweet__comment">
+                      <i class="icon icon__comment fa-regular fa-comment-dots"></i>
+                      <span class="tweet__comment-amount">4</span>
+                    </div>
+                  </div>
+                  <div class="tweet__icons-container tweet__icons-container_hide">
+                    <i class="icon icon__edit fa-regular fa-pen-to-square"></i>
+                    <i class="icon icon__trash fa-solid fa-trash-can"></i>
+                  </div>
+                </div>
+                <p class="tweet__text">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi rem
+                  <span class="tweet__text_hashag">#inventore</span>, fugit fuga ullam, repudiandae accusantium quos
+                  ipsum sapiente eveniet sed modi velit doloribus? Ipsam fuga laboriosam ad aspernatur pariatur?
+                </p>
+              </a>
+            </li>
+            <li class="tweet">
+              <a class="link link__tweet" href="./twit.html">
+                <div class="tweet__header">
+                  <div class="tweet__container">
+                    <span class="tweet__username">User Name2</span>
+                    <div class="tweet__date-container">
+                      <time class="tweet__date" datetime="2022-03-01">01.03.2022</time>
+                      <time class="tweet__time" datetime="2022-03-01T00:00:00">00:00:00</time>
+                    </div>
+                    <div class="tweet__comment">
+                      <i class="icon icon__comment fa-regular fa-comment-dots"></i>
+                      <span class="tweet__comment-amount">4</span>
+                    </div>
+                  </div>
+                  <div class="tweet__icons-container tweet__icons-container_hide">
+                    <i class="icon icon__edit fa-regular fa-pen-to-square"></i>
+                    <i class="icon icon__trash fa-solid fa-trash-can"></i>
+                  </div>
+                </div>
+                <p class="tweet__text">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi rem
+                  <span class="tweet__text_hashag">#inventore</span>, fugit fuga ullam, repudiandae accusantium quos
+                  ipsum sapiente eveniet sed modi velit doloribus? Ipsam fuga laboriosam ad aspernatur pariatur?
+                </p>
+              </a>
+            </li>
+            <li class="tweet">
+              <a class="link link__tweet" href="./twit.html">
+                <div class="tweet__header">
+                  <div class="tweet__container">
+                    <span class="tweet__username">User Name</span>
+                    <div class="tweet__date-container">
+                      <time class="tweet__date" datetime="2022-03-01">01.03.2022</time>
+                      <time class="tweet__time" datetime="2022-03-01T00:00:00">00:00:00</time>
+                    </div>
+                    <div class="tweet__comment">
+                      <i class="icon icon__comment fa-regular fa-comment-dots"></i>
+                      <span class="tweet__comment-amount">4</span>
+                    </div>
+                  </div>
+                  <div class="tweet__icons-container">
+                    <i class="icon icon__edit fa-regular fa-pen-to-square"></i>
+                    <i class="icon icon__trash fa-solid fa-trash-can"></i>
+                  </div>
+                </div>
+                <p class="tweet__text">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi rem
+                  <span class="tweet__text_hashag">#inventore</span>, fugit fuga ullam, repudiandae accusantium quos
+                  ipsum sapiente eveniet sed modi velit doloribus? Ipsam fuga laboriosam ad aspernatur pariatur?
+                </p>
+              </a>
+            </li>
+            <li class="tweet">
+              <a class="link link__tweet" href="./twit.html">
+                <div class="tweet__header">
+                  <div class="tweet__container">
+                    <span class="tweet__username">User Name2</span>
+                    <div class="tweet__date-container">
+                      <time class="tweet__date" datetime="2022-03-01">01.03.2022</time>
+                      <time class="tweet__time" datetime="2022-03-01T00:00:00">00:00:00</time>
+                    </div>
+                    <div class="tweet__comment">
+                      <i class="icon icon__comment fa-regular fa-comment-dots"></i>
+                      <span class="tweet__comment-amount">4</span>
+                    </div>
+                  </div>
+                  <div class="tweet__icons-container tweet__icons-container_hide">
+                    <i class="icon icon__edit fa-regular fa-pen-to-square"></i>
+                    <i class="icon icon__trash fa-solid fa-trash-can"></i>
+                  </div>
+                </div>
+                <p class="tweet__text">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi rem
+                  <span class="tweet__text_hashag">#inventore</span>, fugit fuga ullam, repudiandae accusantium quos
+                  ipsum sapiente eveniet sed modi velit doloribus? Ipsam fuga laboriosam ad aspernatur pariatur?
+                </p>
+              </a>
+            </li>
+            <li class="tweet">
+              <a class="link link__tweet" href="./twit.html">
+                <div class="tweet__header">
+                  <div class="tweet__container">
+                    <span class="tweet__username">User Name</span>
+                    <div class="tweet__date-container">
+                      <time class="tweet__date" datetime="2022-03-01">01.03.2022</time>
+                      <time class="tweet__time" datetime="2022-03-01T00:00:00">00:00:00</time>
+                    </div>
+                    <div class="tweet__comment">
+                      <i class="icon icon__comment fa-regular fa-comment-dots"></i>
+                      <span class="tweet__comment-amount">4</span>
+                    </div>
+                  </div>
+                  <div class="tweet__icons-container">
+                    <i class="icon icon__edit fa-regular fa-pen-to-square"></i>
+                    <i class="icon icon__trash fa-solid fa-trash-can"></i>
+                  </div>
+                </div>
+                <p class="tweet__text">
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi rem
+                  <span class="tweet__text_hashag">#inventore</span>, fugit fuga ullam, repudiandae accusantium quos
+                  ipsum sapiente eveniet sed modi velit doloribus? Ipsam fuga laboriosam ad aspernatur pariatur?
+                </p>
+              </a>
+            </li>
+          </ul>
+          <button class="button button_primary twitter__button">Load more</button>
+        </div>
+      </section>
+    </main>
+    <footer class="footer">
+      <p class="footer__text">
+        Twitter by
+        <a
+          id="author-name"
+          class="footer__text_decoration"
+          href="https://www.linkedin.com/in/andrei-shynkarou-874425223"
+          target="_blank"
+          >Andrei Shynkarou</a
+        >. Email:&nbsp;;
+        <a id="author-email" class="footer__text_decoration" href="mailto:andrey03071997@yandex.ru">
+          andrey03071997@yandex.ru
+        </a>
+      </p>
+      <p class="footer__text">
+        Last update:&nbsp;;
+        <time id="update-date" class="footer__text_decoration" datetime="2022-03-01">01.03.2022</time>
+      </p>
+    </footer>
+
+    <div class="modal">
+      <div class="modal__container">
+        <h3 class="modal__title">Are you sure?</h3>
+        <div class="modal__buttons">
+          <button class="button button_secondary modal__button" type="button">No</button>
+          <button class="button button_primary modal__button" type="button">Yes</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
