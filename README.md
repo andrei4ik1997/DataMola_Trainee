@@ -2,7 +2,7 @@
 
 ## Live Demo
 
-[Vercel](https://data-mola-trainee-nb6ish3b2-andrei4ik1997.vercel.app/)
+[Vercel](https://data-mola-trainee.vercel.app/)
 
 ## Figma
 
