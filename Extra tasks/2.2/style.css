@@ -15,6 +15,8 @@
   --color_icon: rgb(244, 77, 94);
   --color_grey: rgb(178, 187, 197);
   --color_blue: rgb(93, 159, 254);
+  --border-radius: 0.7143rem;
+  --box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
 .flights {
@@ -28,29 +30,29 @@
 
 .flight {
   display: flex;
-  margin: 30px auto;
+  margin: 2.1429rem auto;
   width: 80%;
   background-color: white;
-  border-radius: 10px;
+  border-radius: var(--border-radius);
 }
 .flight:first-child {
-  margin-top: 100px;
+  margin-top: 7.1429rem;
 }
 
 .flight__left {
   display: flex;
   flex-direction: column;
-  padding: 0 10px;
+  padding: 0 0.7143rem;
   width: 20%;
-  border-right: rgb(239, 241, 244) solid 2px;
+  border-right: var(--color_background) solid 2px;
 }
 
 .flight__type {
   width: max-content;
   max-width: 100%;
-  padding: 5px 10px;
+  padding: 0.3571rem 0.7143rem;
   transform: translateY(-50%);
-  border-radius: 10px;
+  border-radius: calc(2 * var(--border-radius));
   text-align: center;
   color: white;
 }
@@ -72,9 +74,9 @@
 
 .button {
   position: relative;
-  padding: 10px 20px;
+  padding: 0.7143rem 1.4286rem;
   border: none;
-  border-radius: 5px;
+  border-radius: var(--border-radius);
   font-size: 1.2rem;
   font-weight: 600;
   color: white;
@@ -88,13 +90,13 @@
   right: 0;
   bottom: 0;
   display: block;
-  border-radius: 5px;
+  border-radius: var(--border-radius);
   background-color: rgba(0, 0, 0, 0.1);
   content: "";
 }
 
 .flight__button {
-  margin: 20px 0;
+  margin: 1.4286rem 0;
   background-color: var(--color_button);
 }
 
@@ -109,7 +111,7 @@
   display: flex;
   flex-direction: column;
   width: 80%;
-  padding: 20px;
+  padding: 1.4286rem;
 }
 
 .flight__icons {
@@ -120,7 +122,7 @@
 .icons__list {
   display: flex;
   align-items: center;
-  margin-right: 20px;
+  margin-right: 1.4286rem;
 }
 
 .icons__list:last-child {
@@ -132,7 +134,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 10px;
+  margin-right: 0.7143rem;
   width: 40px;
   height: 40px;
   border: solid transparent 1px;
@@ -154,8 +156,8 @@
   content: attr(alt);
   width: 140px;
   height: min-content;
-  padding: 10px 0;
-  border-radius: 5px;
+  padding: 0.7143rem 0;
+  border-radius: var(--border-radius);
   text-align: center;
   background: black;
   color: white;
@@ -165,7 +167,7 @@
   content: "";
   width: 0;
   height: 0;
-  border: 10px solid transparent;
+  border: 0.7143rem solid transparent;
   border-top-color: black;
 }
 
@@ -198,7 +200,7 @@
 }
 
 .icons__item_shadow {
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--box-shadow);
 }
 
 .icons__item_icon {
@@ -216,7 +218,7 @@
 
 .flight__info {
   display: flex;
-  padding: 20px 0;
+  padding: 1.4286rem 0;
   border-bottom: rgb(239, 241, 244) solid 2px;
 }
 
@@ -245,7 +247,8 @@
 }
 
 .info__wrapper_padding10 {
-  padding: 10px 10px 0px 10px;
+  padding: 0.7143rem;
+  padding-bottom: 0;
 }
 
 .info__time {
@@ -268,7 +271,7 @@
   display: flex;
   justify-content: space-between;
   height: 100%;
-  margin-top: 20px;
+  margin-top: 1.4286rem;
 }
 
 .info__icon {
@@ -300,9 +303,9 @@
   align-items: center;
   transform: translateY(-50%);
   height: 2px;
-  margin-bottom: 15px;
+  margin-bottom: 1rem;
   border: solid transparent 1px;
-  border-radius: 10px;
+  border-radius: calc(2 * var(--border-radius));
   background-color: var(--color_grey);
   content: "";
 }
