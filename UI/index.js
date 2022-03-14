@@ -54,7 +54,7 @@ let tweets = [
   },
   {
     id: "3",
-    text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. Saepe, veritatis obcaecati. #datamola #js",
+    text: "Lorem ipsum dolor sit #js amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. Saepe, veritatis obcaecati. #datamola #js",
     createdAt: new Date("2022-03-03T23:00:00"),
     author: "Username2",
     comments: [
@@ -75,14 +75,14 @@ let tweets = [
   },
   {
     id: "5",
-    text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. Saepe, veritatis obcaecati. #js",
+    text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. #js Adipisci, hic. Iure #datamola tempora, veniam dolor suscipit non molestiae. Saepe, veritatis obcaecati. #js",
     createdAt: new Date("2022-03-09T23:00:00"),
     author: "Username2",
     comments: [],
   },
   {
     id: "6",
-    text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. Saepe, veritatis obcaecati.",
+    text: "Lorem ipsum dolor sit amet consectetur #datamola adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. Saepe, veritatis obcaecati.",
     createdAt: new Date("2022-03-07T23:00:00"),
     author: "Username2",
     comments: [],
@@ -129,7 +129,7 @@ let tweets = [
   },
   {
     id: "9",
-    text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. Saepe, veritatis obcaecati.",
+    text: "Lorem ipsum dolor sit #datamola amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. Saepe, veritatis obcaecati.",
     createdAt: new Date("2022-03-14T23:00:00"),
     author: "Username2",
     comments: [],
@@ -137,13 +137,13 @@ let tweets = [
   {
     id: "10",
     text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. Saepe, veritatis obcaecati.",
-    createdAt: new Date("2022-03-09T23:00:00"),
+    createdAt: new Date("2022-03-4T23:00:00"),
     author: "Username2",
     comments: [
       {
         id: "1",
         text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae.",
-        createdAt: new Date("2022-03-09T23:00:00"),
+        createdAt: new Date("2022-02-09T23:00:00"),
         author: "Username78",
         comments: [],
       },
@@ -152,8 +152,8 @@ let tweets = [
   {
     id: "11",
     text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. Saepe, veritatis obcaecati.",
-    createdAt: new Date("2022-03-09T23:00:00"),
-    author: "Username2",
+    createdAt: new Date("2022-01-11T23:00:00"),
+    author: "Username4",
     comments: [],
   },
   {
@@ -173,8 +173,8 @@ let tweets = [
   {
     id: "13",
     text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. Saepe, veritatis obcaecati.",
-    createdAt: new Date("2022-03-09T23:00:00"),
-    author: "Username69",
+    createdAt: new Date("2022-01-24T23:00:00"),
+    author: "Username4",
     comments: [
       {
         id: "1",
@@ -186,9 +186,9 @@ let tweets = [
   },
   {
     id: "14",
-    text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. Saepe, veritatis obcaecati.",
-    createdAt: new Date("2022-03-09T23:00:00"),
-    author: "Username13",
+    text: "Lorem ipsum dolor sit amet #datamola #js consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. Saepe, veritatis obcaecati.",
+    createdAt: new Date("2022-02-19T23:00:00"),
+    author: "Username5",
     comments: [
       {
         id: "1",
@@ -201,28 +201,28 @@ let tweets = [
   {
     id: "15",
     text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. Saepe, veritatis obcaecati.",
-    createdAt: new Date("2022-03-09T23:00:00"),
-    author: "Username43",
+    createdAt: new Date("2022-02-24T23:00:00"),
+    author: "Username3",
     comments: [],
   },
   {
     id: "16",
     text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae.",
-    createdAt: new Date("2022-03-09T23:00:00"),
-    author: "Username22",
+    createdAt: new Date("2022-03-01T23:00:00"),
+    author: "Username2",
     comments: [],
   },
   {
     id: "17",
     text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. Saepe, veritatis obcaecati.",
-    createdAt: new Date("2022-03-09T23:00:00"),
-    author: "Username43",
+    createdAt: new Date("2022-01-17T23:00:00"),
+    author: "Username5",
     comments: [
       {
         id: "1",
         text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae.",
         createdAt: new Date("2022-03-09T23:00:00"),
-        author: "Username13",
+        author: "Username5",
       },
       {
         id: "2",
@@ -235,8 +235,8 @@ let tweets = [
   {
     id: "18",
     text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. Saepe, veritatis obcaecati.",
-    createdAt: new Date("2022-03-09T23:00:00"),
-    author: "Username47",
+    createdAt: new Date("2021-09-19T23:00:00"),
+    author: "Username5",
     comments: [
       {
         id: "1",
@@ -248,9 +248,9 @@ let tweets = [
   },
   {
     id: "19",
-    text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. Saepe, veritatis obcaecati.",
-    createdAt: new Date("2022-03-09T23:00:00"),
-    author: "Username44",
+    text: "Lorem ipsum dolor sit #js amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. Saepe, veritatis obcaecati.",
+    createdAt: new Date("2021-02-25T23:00:00"),
+    author: "Username2",
     comments: [
       {
         id: "1",
@@ -263,22 +263,22 @@ let tweets = [
   {
     id: "20",
     text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. Saepe, veritatis obcaecati.",
-    createdAt: new Date("2022-03-09T23:00:00"),
-    author: "Username24",
+    createdAt: new Date("2022-02-01T23:00:00"),
+    author: "Username4",
     comments: [],
   },
   {
     id: "21",
     text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. Saepe, veritatis obcaecati.",
-    createdAt: new Date("2022-03-09T23:00:00"),
-    author: "Username55",
+    createdAt: new Date("2022-02-24T23:00:00"),
+    author: "Username3",
     comments: [],
   },
   {
     id: "22",
     text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. Saepe, veritatis obcaecati.",
-    createdAt: new Date("2022-03-09T23:00:00"),
-    author: "Username27",
+    createdAt: new Date("2021-10-27T23:00:00"),
+    author: "Username4",
     comments: [
       {
         id: "1",
@@ -290,9 +290,9 @@ let tweets = [
   },
   {
     id: "23",
-    text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. Saepe, veritatis obcaecati.",
-    createdAt: new Date("2022-03-09T23:00:00"),
-    author: "Username13",
+    text: "Lorem ipsum dolor sit #js amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. Saepe, veritatis obcaecati.",
+    createdAt: new Date("2022-02-17T23:00:00"),
+    author: "Username5",
     comments: [
       {
         id: "1",
@@ -305,8 +305,8 @@ let tweets = [
   {
     id: "24",
     text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. Saepe, veritatis obcaecati.",
-    createdAt: new Date("2022-03-09T23:00:00"),
-    author: "Username54",
+    createdAt: new Date("2021-07-09T23:00:00"),
+    author: "Username3",
     comments: [
       {
         id: "1",
@@ -319,8 +319,8 @@ let tweets = [
   {
     id: "25",
     text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. Saepe, veritatis obcaecati.",
-    createdAt: new Date("2022-03-09T23:00:00"),
-    author: "Username25",
+    createdAt: new Date("2019-03-09T23:00:00"),
+    author: "Username2",
     comments: [
       {
         id: "1",
@@ -333,7 +333,7 @@ let tweets = [
 ];
 
 const myTweeter = (function () {
-  let user = "Admin";
+  let user = "Username2";
 
   function getTweets(
     skip = 0,
@@ -357,7 +357,7 @@ const myTweeter = (function () {
         })
         .filter((tweet) => {
           const createdAt = new Date(tweet.createdAt).getTime();
-          return createdAt > dateFrom.getTime() && createdAt < dateTo.getTime();
+          return createdAt > new Date(dateFrom).getTime() && createdAt < new Date(dateTo).getTime();
         })
         .filter((tweet) => {
           if (hashtags.length) {
@@ -372,9 +372,7 @@ const myTweeter = (function () {
     };
 
     return filteredTweets()
-      .sort((a, b) => {
-        return b.createdAt - a.createdAt;
-      })
+      .sort((a, b) => b.createdAt - a.createdAt)
       .splice(skip, top);
   }
 
