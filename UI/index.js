@@ -340,13 +340,20 @@ const myTweeter = (function () {
     top = 10,
     filterConfig = {
       author: "",
+      text: "",
       dateFrom: new Date(0),
       dateTo: new Date(),
       hashtags: [],
     }
   ) {
     const filteredTweets = function () {
-      const { author = "", dateFrom = new Date(0), dateTo = new Date(), hashtags = [] } = filterConfig;
+      const {
+        author = "",
+        text = "",
+        dateFrom = new Date(0),
+        dateTo = new Date(),
+        hashtags = [],
+      } = filterConfig;
       return [...tweets]
         .filter((tweet) => {
           if (author.trim().length) {
@@ -356,8 +363,18 @@ const myTweeter = (function () {
           }
         })
         .filter((tweet) => {
+          if (text.trim().length) {
+            return tweet.text.toLowerCase().includes(text.toLowerCase());
+          } else {
+            return tweet;
+          }
+        })
+        .filter((tweet) => {
           const createdAt = new Date(tweet.createdAt).getTime();
-          return createdAt > new Date(dateFrom).getTime() && createdAt < new Date(dateTo).getTime();
+          return (
+            createdAt > new Date(dateFrom).getTime() &&
+            createdAt < new Date(dateTo).getTime()
+          );
         })
         .filter((tweet) => {
           if (hashtags.length) {
@@ -382,7 +399,9 @@ const myTweeter = (function () {
     } else if (arguments.length > 1) {
       throw new Error("Only 1 parametr");
     } else if (typeof id !== "string") {
-      throw new Error(`Invalid type, you insert ${typeof id}, but I wait string`);
+      throw new Error(
+        `Invalid type, you insert ${typeof id}, but I wait string`
+      );
     }
 
     const searchedTweet = tweets.filter((tweet) => tweet.id === id);
@@ -406,9 +425,16 @@ const myTweeter = (function () {
 
     for (let key in etalonTweet) {
       if (tweet.hasOwnProperty(key)) {
-        if (Object.prototype.toString.call(etalonTweet[key]) !== Object.prototype.toString.call(tweet[key])) {
+        if (
+          Object.prototype.toString.call(etalonTweet[key]) !==
+          Object.prototype.toString.call(tweet[key])
+        ) {
           isValid = false;
-          throw new Error(`You need change ${key} type to ${Object.prototype.toString.call(etalonTweet[key])}`);
+          throw new Error(
+            `You need change ${key} type to ${Object.prototype.toString.call(
+              etalonTweet[key]
+            )}`
+          );
         }
       } else {
         isValid = false;
@@ -426,7 +452,9 @@ const myTweeter = (function () {
       }
       if (key === "text" && tweet[key].length >= 280) {
         isValid = false;
-        throw new Error(`Max value for ${key} is 280 characters, but at now ${tweet[key].length} characters`);
+        throw new Error(
+          `Max value for ${key} is 280 characters, but at now ${tweet[key].length} characters`
+        );
       }
       if (key === "id") {
         const tweetsIds = tweets.map((tweet) => tweet.id);
@@ -446,7 +474,9 @@ const myTweeter = (function () {
     } else if (arguments.length > 1) {
       throw new Error("Only 1 parametr");
     } else if (typeof text !== "string") {
-      throw new Error(`Invalid type, you insert ${typeof text}, but I wait string`);
+      throw new Error(
+        `Invalid type, you insert ${typeof text}, but I wait string`
+      );
     }
 
     const generateId = String(new Date().getTime());
@@ -475,7 +505,11 @@ const myTweeter = (function () {
       };
       if (validateTweet(newTweet)) {
         const index = tweets.findIndex((tweet) => tweet.id === id);
-        tweets = [...tweets.slice(0, index), newTweet, ...tweets.slice(index + 1)];
+        tweets = [
+          ...tweets.slice(0, index),
+          newTweet,
+          ...tweets.slice(index + 1),
+        ];
         return true;
       } else {
         return false;
@@ -491,7 +525,9 @@ const myTweeter = (function () {
     } else if (arguments.length > 1) {
       throw new Error("Only 1 parametr");
     } else if (typeof id !== "string") {
-      throw new Error(`Invalid type, you insert ${typeof id}, but I wait string`);
+      throw new Error(
+        `Invalid type, you insert ${typeof id}, but I wait string`
+      );
     }
 
     if (getTweet(id).author === user) {
@@ -514,9 +550,16 @@ const myTweeter = (function () {
 
     for (let key in etalonComment) {
       if (comment.hasOwnProperty(key)) {
-        if (Object.prototype.toString.call(etalonComment[key]) !== Object.prototype.toString.call(comment[key])) {
+        if (
+          Object.prototype.toString.call(etalonComment[key]) !==
+          Object.prototype.toString.call(comment[key])
+        ) {
           isValid = false;
-          throw new Error(`You need change ${key} type to ${Object.prototype.toString.call(etalonComment[key])}`);
+          throw new Error(
+            `You need change ${key} type to ${Object.prototype.toString.call(
+              etalonComment[key]
+            )}`
+          );
         }
       } else {
         isValid = false;
@@ -534,7 +577,9 @@ const myTweeter = (function () {
       }
       if (key === "text" && comment[key].length >= 280) {
         isValid = false;
-        throw new Error(`Max value for ${key} is 280 characters, but at now ${comment[key].length} characters`);
+        throw new Error(
+          `Max value for ${key} is 280 characters, but at now ${comment[key].length} characters`
+        );
       }
       if (key === "id") {
         const commentsArray = tweets.map((tweet) => tweet.comments).flat();
@@ -565,7 +610,11 @@ const myTweeter = (function () {
         ...tweet,
         comments: [comment, ...tweet.comments],
       };
-      tweets = [...tweets.slice(0, index), newTweet, ...tweets.slice(index + 1)];
+      tweets = [
+        ...tweets.slice(0, index),
+        newTweet,
+        ...tweets.slice(index + 1),
+      ];
       return true;
     } else {
       return false;
@@ -582,7 +631,9 @@ const myTweeter = (function () {
     } else if (arguments.length > 1) {
       throw new Error("Only 1 parametr");
     } else if (typeof newName !== "string") {
-      throw new Error(`Invalid type, you insert ${typeof newName}, but I wait string`);
+      throw new Error(
+        `Invalid type, you insert ${typeof newName}, but I wait string`
+      );
     }
 
     user = newName;
