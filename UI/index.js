@@ -1,4 +1,3 @@
-"use strict";
 let tweets = [
   {
     id: "1",
@@ -404,9 +403,10 @@ const myTweeter = (function () {
       );
     }
 
-    const searchedTweet = tweets.filter((tweet) => tweet.id === id);
-    if (searchedTweet.length) {
-      return searchedTweet[0];
+    const searchedTweet = tweets.find((tweet) => tweet.id === id);
+
+    if (searchedTweet) {
+      return searchedTweet;
     } else {
       throw new Error(`Tweet with id ${id} not found`);
     }
@@ -456,7 +456,7 @@ const myTweeter = (function () {
           `Max value for ${key} is 280 characters, but at now ${tweet[key].length} characters`
         );
       }
-      if (key === "id") {
+      if (key === "id" && validateTweet.caller.name !== "editTweet") {
         const tweetsIds = tweets.map((tweet) => tweet.id);
         if (tweetsIds.includes(tweet[key])) {
           isValid = false;
@@ -505,11 +505,7 @@ const myTweeter = (function () {
       };
       if (validateTweet(newTweet)) {
         const index = tweets.findIndex((tweet) => tweet.id === id);
-        tweets = [
-          ...tweets.slice(0, index),
-          newTweet,
-          ...tweets.slice(index + 1),
-        ];
+        tweets[index] = newTweet;
         return true;
       } else {
         return false;
@@ -590,7 +586,6 @@ const myTweeter = (function () {
         }
       }
     }
-
     return isValid;
   }
 
@@ -610,11 +605,7 @@ const myTweeter = (function () {
         ...tweet,
         comments: [comment, ...tweet.comments],
       };
-      tweets = [
-        ...tweets.slice(0, index),
-        newTweet,
-        ...tweets.slice(index + 1),
-      ];
+      tweets[index] = newTweet;
       return true;
     } else {
       return false;
