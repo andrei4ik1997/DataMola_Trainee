@@ -14,12 +14,13 @@ class List {
   get length() {
     return this._length;
   }
+
   set length(value) {
     this._length = value;
   }
 
   addNode(value, i = -1) {
-    if (typeof value !== "number" || typeof i !== "number") {
+    if (typeof value !== 'number' || typeof i !== 'number') {
       return false;
     }
 
@@ -27,9 +28,8 @@ class List {
 
     if (i === -1) {
       return this.#append(node);
-    } else {
-      return this.#insertAfter(i, value);
     }
+    return this.#insertAfter(i, value);
   }
 
   #append(node) {
@@ -37,7 +37,7 @@ class List {
 
     if (!currentNode) {
       this.root = node;
-      this.length++;
+      this.length += 1;
       return true;
     }
 
@@ -47,21 +47,19 @@ class List {
 
     currentNode.next = node;
 
-    this.length++;
+    this.length += 1;
 
     return true;
   }
 
   #insertAfter(index, value) {
     const found = this.#find(index);
-    console.log(found);
     if (!found) {
       return false;
-    } else {
-      found.next = new Node(value, found.next);
-      this.length++;
-      return true;
     }
+    found.next = new Node(value, found.next);
+    this.length += 1;
+    return true;
   }
 
   #find(index) {
@@ -74,7 +72,7 @@ class List {
 
     while (count < index) {
       currentNode = currentNode.next;
-      count++;
+      count += 1;
     }
 
     return currentNode;
@@ -82,7 +80,7 @@ class List {
 
   removeNode(i = -1) {
     if (!this.root) {
-      return "List empty";
+      return 'List empty';
     }
 
     if (!this.root.next) {
@@ -97,10 +95,10 @@ class List {
       while (index < this.length - 1) {
         previous = temp;
         temp = temp.next;
-        index++;
+        index += 1;
       }
       previous.next = temp.next;
-      this.length--;
+      this.length -= 1;
 
       return true;
     }
@@ -111,31 +109,29 @@ class List {
       if (i === 0) {
         this.root = this.root.next;
         return true;
-      } else {
-        while (index < i) {
-          previous = temp;
-          temp = temp.next;
-          index++;
-        }
-        previous.next = temp.next;
-        this.length--;
-        return true;
       }
-    } else {
-      return false;
+      while (index < i) {
+        previous = temp;
+        temp = temp.next;
+        index += 1;
+      }
+      previous.next = temp.next;
+      this.length -= 1;
+      return true;
     }
+    return false;
   }
 
   print() {
     let temp = this.root;
 
     if (!temp) {
-      return "List empty";
+      return 'List empty';
     }
 
-    let result = "";
+    let result = '';
     while (temp) {
-      result += temp.value + ", ";
+      result += `${temp.value}, `;
       temp = temp.next;
     }
 
@@ -143,4 +139,5 @@ class List {
   }
 }
 
+// eslint-disable-next-line no-unused-vars
 const list = new List();

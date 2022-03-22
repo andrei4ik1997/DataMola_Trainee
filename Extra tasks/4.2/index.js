@@ -23,7 +23,6 @@ function sub(...params) {
       result = params[0] - params[1];
       break;
     }
-
     case 1: {
       const subBy = (x) => (y) => y - x;
       result = subBy(params[0]);
