@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const tweets = [
   {
     id: '1',
@@ -393,7 +394,6 @@ class Tweet {
 
   static validate(tweet) {
     const etalonTweet = new Tweet();
-    let isValid = true;
     try {
       Object.keys(etalonTweet).forEach((key) => {
         if (Object.prototype.hasOwnProperty.call(tweet, key)) {
@@ -401,7 +401,6 @@ class Tweet {
             Object.prototype.toString.call(etalonTweet[key]) !==
             Object.prototype.toString.call(tweet[key])
           ) {
-            isValid = false;
             throw new Error(
               `You need change ${key} type in tweet with id ${
                 tweet._id
@@ -409,7 +408,6 @@ class Tweet {
             );
           }
         } else {
-          isValid = false;
           throw new Error(`Don't have ${key} property in you object`);
         }
       });
@@ -423,20 +421,18 @@ class Tweet {
             typeof tweet[key] === 'boolean'
           )
         ) {
-          isValid = false;
           throw new Error(`You need fill ${key}`);
         }
         if (key === 'text' && tweet[key].length >= 280) {
-          isValid = false;
           throw new Error(
             `Max value for ${key} is 280 characters, but at now ${tweet[key].length} characters`,
           );
         }
       });
-      return isValid;
+      return true;
     } catch (error) {
       console.log(error.message);
-      return isValid;
+      return false;
     }
   }
 }
@@ -496,7 +492,6 @@ class Comment {
 
   static validate(comment) {
     const etalonComment = new Comment();
-    let isValid = true;
     try {
       Object.keys(etalonComment).forEach((key) => {
         if (Object.prototype.hasOwnProperty.call(comment, key)) {
@@ -504,7 +499,6 @@ class Comment {
             Object.prototype.toString.call(etalonComment[key]) !==
             Object.prototype.toString.call(comment[key])
           ) {
-            isValid = false;
             throw new Error(
               `You need change ${key} type to ${Object.prototype.toString.call(
                 etalonComment[key],
@@ -512,7 +506,6 @@ class Comment {
             );
           }
         } else {
-          isValid = false;
           throw new Error(`Don't have ${key} property in you object`);
         }
       });
@@ -522,21 +515,19 @@ class Comment {
           !comment[key].length &&
           !(comment[key] instanceof Date || typeof comment[key] === 'boolean')
         ) {
-          isValid = false;
           throw new Error(`You need fill ${key}`);
         }
         if (key === 'text' && comment[key].length >= 280) {
-          isValid = false;
           throw new Error(
             `Max value for ${key} is 280 characters, but at now ${comment[key].length} characters`,
           );
         }
       });
 
-      return isValid;
+      return true;
     } catch (error) {
       console.log(error.message);
-      return isValid;
+      return false;
     }
   }
 }
@@ -633,14 +624,18 @@ class TweetCollection {
         })
         .sort((a, b) => b.createdAt - a.createdAt);
     };
-    if (skip >= filteredTweets().length) {
-      throw new Error(
-        `You want skip ${skip} but array has ${
-          filteredTweets().length
-        } length. Please, insert skip value less ${filteredTweets().length} `,
-      );
-    } else {
+    try {
+      if (skip >= filteredTweets().length) {
+        throw new Error(
+          `You want skip ${skip} but array has ${
+            filteredTweets().length
+          } length. Please, insert skip value less ${filteredTweets().length} `,
+        );
+      }
       return filteredTweets().splice(skip, top);
+    } catch (error) {
+      console.log(error.message);
+      return false;
     }
   }
 
