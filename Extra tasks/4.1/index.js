@@ -27,12 +27,12 @@ class List {
     const node = new Node(value);
 
     if (i === -1) {
-      return this.#append(node);
+      return this.#appendNode(node);
     }
-    return this.#insertAfter(i, value);
+    return this.#insertNodeAfter(i, value);
   }
 
-  #append(node) {
+  #appendNode(node) {
     let currentNode = this.root;
 
     if (!currentNode) {
@@ -52,8 +52,8 @@ class List {
     return true;
   }
 
-  #insertAfter(index, value) {
-    const found = this.#find(index);
+  #insertNodeAfter(index, value) {
+    const found = this.#findNode(index);
     if (!found) {
       return false;
     }
@@ -62,7 +62,7 @@ class List {
     return true;
   }
 
-  #find(index) {
+  #findNode(index) {
     let currentNode = this.root;
     let count = 0;
 

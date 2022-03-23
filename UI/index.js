@@ -1,6 +1,6 @@
 const tweets = [
   {
-    id: 1,
+    id: '1',
     text: 'Hi! #datamola #js',
     createdAt: new Date('2022-03-07T23:00:00'),
     author: 'Admin',
@@ -36,7 +36,6 @@ const tweets = [
         author: 'Username5',
       },
     ],
-    isEdited: false,
   },
   {
     id: '2',
@@ -51,7 +50,6 @@ const tweets = [
         author: 'Username23',
       },
     ],
-    isEdited: false,
   },
   {
     id: '3',
@@ -66,7 +64,6 @@ const tweets = [
         author: 'User23',
       },
     ],
-    isEdited: false,
   },
   {
     id: '4',
@@ -74,7 +71,6 @@ const tweets = [
     createdAt: new Date('2022-03-01T23:00:00'),
     author: 'Username2',
     comments: [],
-    isEdited: false,
   },
   {
     id: '5',
@@ -82,7 +78,6 @@ const tweets = [
     createdAt: new Date('2022-03-09T23:00:00'),
     author: 'Username2',
     comments: [],
-    isEdited: false,
   },
   {
     id: '6',
@@ -90,7 +85,6 @@ const tweets = [
     createdAt: new Date('2022-03-07T23:00:00'),
     author: 'Username2',
     comments: [],
-    isEdited: false,
   },
   {
     id: '7',
@@ -105,7 +99,6 @@ const tweets = [
         author: 'Username12',
       },
     ],
-    isEdited: false,
   },
   {
     id: '8',
@@ -132,7 +125,6 @@ const tweets = [
         author: 'Username21',
       },
     ],
-    isEdited: false,
   },
   {
     id: '9',
@@ -140,7 +132,6 @@ const tweets = [
     createdAt: new Date('2022-03-14T23:00:00'),
     author: 'Username2',
     comments: [],
-    isEdited: false,
   },
   {
     id: '10',
@@ -156,7 +147,6 @@ const tweets = [
         comments: [],
       },
     ],
-    isEdited: false,
   },
   {
     id: '11',
@@ -164,7 +154,6 @@ const tweets = [
     createdAt: new Date('2022-01-11T23:00:00'),
     author: 'Username4',
     comments: [],
-    isEdited: false,
   },
   {
     id: '12',
@@ -179,7 +168,6 @@ const tweets = [
         author: 'Username2',
       },
     ],
-    isEdited: false,
   },
   {
     id: '13',
@@ -194,7 +182,6 @@ const tweets = [
         author: 'Username65',
       },
     ],
-    isEdited: false,
   },
   {
     id: '14',
@@ -209,7 +196,6 @@ const tweets = [
         author: 'Username32',
       },
     ],
-    isEdited: false,
   },
   {
     id: '15',
@@ -217,7 +203,6 @@ const tweets = [
     createdAt: new Date('2022-02-24T23:00:00'),
     author: 'Username3',
     comments: [],
-    isEdited: false,
   },
   {
     id: '16',
@@ -225,7 +210,6 @@ const tweets = [
     createdAt: new Date('2022-03-01T23:00:00'),
     author: 'Username2',
     comments: [],
-    isEdited: false,
   },
   {
     id: '17',
@@ -246,7 +230,6 @@ const tweets = [
         author: 'Username69',
       },
     ],
-    isEdited: false,
   },
   {
     id: '18',
@@ -261,7 +244,6 @@ const tweets = [
         author: 'Username89',
       },
     ],
-    isEdited: false,
   },
   {
     id: '19',
@@ -276,7 +258,6 @@ const tweets = [
         author: 'Username5',
       },
     ],
-    isEdited: false,
   },
   {
     id: '20',
@@ -284,7 +265,6 @@ const tweets = [
     createdAt: new Date('2022-02-01T23:00:00'),
     author: 'Username4',
     comments: [],
-    isEdited: false,
   },
   {
     id: '21',
@@ -292,7 +272,6 @@ const tweets = [
     createdAt: new Date('2022-02-24T23:00:00'),
     author: 'Username3',
     comments: [],
-    isEdited: false,
   },
   {
     id: '22',
@@ -307,7 +286,6 @@ const tweets = [
         author: 'Username89',
       },
     ],
-    isEdited: false,
   },
   {
     id: '23',
@@ -322,7 +300,6 @@ const tweets = [
         author: 'Username53',
       },
     ],
-    isEdited: false,
   },
   {
     id: '24',
@@ -337,7 +314,6 @@ const tweets = [
         author: 'Username65',
       },
     ],
-    isEdited: false,
   },
   {
     id: '25',
@@ -352,24 +328,15 @@ const tweets = [
         author: 'Username12',
       },
     ],
-    isEdited: false,
   },
 ];
 
 class Tweet {
-  constructor(
-    id = '',
-    text = '',
-    createdAt = new Date(),
-    author = '',
-    comments = new Map(),
-    isEdited = false,
-  ) {
+  constructor(id = '', text = '', createdAt = new Date(), author = '', comments = new Map()) {
     this._id = id;
     this.text = text;
     this._createdAt = createdAt;
     this._author = author;
-    this.isEdited = isEdited;
     this.comments = new Map();
     comments.forEach((comment) => {
       this.comments.set(
@@ -384,11 +351,14 @@ class Tweet {
   }
 
   set id(value) {
-    if (typeof value !== 'string') {
-      throw new Error(`Invalid type, you insert ${typeof value}, but I wait string`);
+    try {
+      if (typeof value !== 'string') {
+        throw new Error(`Invalid type, you insert ${typeof value}, but I wait string`);
+      }
+      this._id = value;
+    } catch (error) {
+      console.log(error.message);
     }
-
-    this._id = value;
   }
 
   get createdAt() {
@@ -396,11 +366,14 @@ class Tweet {
   }
 
   set createdAt(value) {
-    if (typeof value !== 'string') {
-      throw new Error(`Invalid type, you insert ${typeof value}, but I wait string`);
+    try {
+      if (typeof value !== 'string') {
+        throw new Error(`Invalid type, you insert ${typeof value}, but I wait string`);
+      }
+      this._createdAt = value;
+    } catch (error) {
+      console.log(error.message);
     }
-
-    this._createdAt = value;
   }
 
   get author() {
@@ -408,27 +381,14 @@ class Tweet {
   }
 
   set author(value) {
-    if (typeof value !== 'string') {
-      throw new Error(`Invalid type, you insert ${typeof value}, but I wait string`);
+    try {
+      if (typeof value !== 'string') {
+        throw new Error(`Invalid type, you insert ${typeof value}, but I wait string`);
+      }
+      this._author = value;
+    } catch (error) {
+      console.log(error.message);
     }
-
-    this._author = value;
-  }
-
-  addComment(id, text) {
-    const generateId = String(new Date().getTime());
-    const comment = new Comment(
-      generateId,
-      text,
-      new Date(new Date().getTime()),
-      TweetCollection.user,
-    );
-
-    if (Comment.validate(comment)) {
-      this.comments.set(generateId, comment);
-      return true;
-    }
-    return false;
   }
 
   static validate(tweet) {
@@ -472,13 +432,6 @@ class Tweet {
             `Max value for ${key} is 280 characters, but at now ${tweet[key].length} characters`,
           );
         }
-        if (key === 'id' && !tweet.isEdited) {
-          const tweetsIds = tweets.map((elem) => elem.id);
-          if (tweetsIds.includes(tweet[key])) {
-            isValid = false;
-            throw new Error(`${key} ${tweet[key]} is occupate`);
-          }
-        }
       });
       return isValid;
     } catch (error) {
@@ -501,11 +454,14 @@ class Comment {
   }
 
   set id(value) {
-    if (typeof value !== 'string') {
-      throw new Error(`Invalid type, you insert ${typeof value}, but I wait string`);
+    try {
+      if (typeof value !== 'string') {
+        throw new Error(`Invalid type, you insert ${typeof value}, but I wait string`);
+      }
+      this._id = value;
+    } catch (error) {
+      console.log(error.message);
     }
-
-    this._id = value;
   }
 
   get createdAt() {
@@ -513,11 +469,14 @@ class Comment {
   }
 
   set createdAt(value) {
-    if (typeof value !== 'string') {
-      throw new Error(`Invalid type, you insert ${typeof value}, but I wait string`);
+    try {
+      if (typeof value !== 'string') {
+        throw new Error(`Invalid type, you insert ${typeof value}, but I wait string`);
+      }
+      this._createdAt = value;
+    } catch (error) {
+      console.log(error.message);
     }
-
-    this._createdAt = value;
   }
 
   get author() {
@@ -525,16 +484,18 @@ class Comment {
   }
 
   set author(value) {
-    if (typeof value !== 'string') {
-      throw new Error(`Invalid type, you insert ${typeof value}, but I wait string`);
+    try {
+      if (typeof value !== 'string') {
+        throw new Error(`Invalid type, you insert ${typeof value}, but I wait string`);
+      }
+      this._author = value;
+    } catch (error) {
+      console.log(error.message);
     }
-
-    this._author = value;
   }
 
   static validate(comment) {
     const etalonComment = new Comment();
-
     let isValid = true;
     try {
       Object.keys(etalonComment).forEach((key) => {
@@ -570,14 +531,6 @@ class Comment {
             `Max value for ${key} is 280 characters, but at now ${comment[key].length} characters`,
           );
         }
-        if (key === 'id') {
-          const commentsArray = tweets.map((tweet) => tweet.comments).flat();
-          const commentsIds = commentsArray.map((item) => item.id);
-          if (commentsIds.includes(comment[key])) {
-            isValid = false;
-            throw new Error(`${key} ${comment[key]} is occupate`);
-          }
-        }
       });
 
       return isValid;
@@ -593,22 +546,39 @@ class TweetCollection {
 
   constructor(arrTweet) {
     this.tweets = new Map();
-    arrTweet.forEach((tweet) => {
-      const { id, text, createdAt, author, comments } = tweet;
-      this.tweets.set(id, new Tweet(id, text, createdAt, author, comments));
+    arrTweet.forEach((item) => {
+      const { id, text, createdAt, author, comments } = item;
+      const tweet = new Tweet(id, text, createdAt, author, comments);
+      try {
+        if (Tweet.validate(tweet)) {
+          if (this.tweets.has(id)) {
+            throw new Error(`Id ${id} occupate, tweet not added`);
+          }
+          this.tweets.set(id, tweet);
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
     });
   }
 
   addAll(arrTweet) {
-    this.clear();
     const notValidatedTweets = [];
     arrTweet.forEach((elem) => {
       const { id, text, createdAt, author, comments } = elem;
       const tweet = new Tweet(id, text, createdAt, author, comments);
-      if (!Tweet.validate(tweet)) {
-        notValidatedTweets.push(elem);
-      } else {
-        this.tweets.set(id, tweet);
+      try {
+        if (!Tweet.validate(tweet)) {
+          notValidatedTweets.push(elem);
+        } else {
+          if (this.tweets.has(id)) {
+            notValidatedTweets.push(elem);
+            throw new Error(`Id ${id} occupate`);
+          }
+          this.tweets.set(id, tweet);
+        }
+      } catch (error) {
+        console.log(error.message);
       }
     });
     return notValidatedTweets;
@@ -675,82 +645,127 @@ class TweetCollection {
   }
 
   get(id) {
-    if (arguments.length < 1) {
-      throw new Error('You not insert 1 required parameter');
-    } else if (arguments.length > 1) {
-      throw new Error('Only 1 parametr');
-    } else if (typeof id !== 'string') {
-      throw new Error(`Invalid type, you insert ${typeof id}, but I wait string`);
-    }
+    try {
+      if (arguments.length < 1) {
+        throw new Error('You not insert 1 required parameter');
+      } else if (arguments.length > 1) {
+        throw new Error('Only 1 parametr');
+      } else if (typeof id !== 'string') {
+        throw new Error(`Invalid type, you insert ${typeof id}, but I wait string`);
+      }
+      const searchedTweet = this.tweets.get(id);
 
-    const searchedTweet = this.tweets.get(id);
-
-    if (searchedTweet) {
-      return searchedTweet;
+      if (searchedTweet) {
+        return searchedTweet;
+      }
+      throw new Error(`Tweet with id ${id} not found`);
+    } catch (error) {
+      console.log(error.message);
+      return false;
     }
-    throw new Error(`Tweet with id ${id} not found`);
   }
 
   add(text) {
-    if (arguments.length < 1) {
-      throw new Error('You not insert 1 required parameter');
-    } else if (arguments.length > 1) {
-      throw new Error('Only 1 parametr');
-    } else if (typeof text !== 'string') {
-      throw new Error(`Invalid type, you insert ${typeof text}, but I wait string`);
-    }
+    try {
+      if (arguments.length < 1) {
+        throw new Error('You not insert 1 required parameter');
+      } else if (arguments.length > 1) {
+        throw new Error('Only 1 parametr');
+      } else if (typeof text !== 'string') {
+        throw new Error(`Invalid type, you insert ${typeof text}, but I wait string`);
+      }
 
-    const generateId = String(new Date().getTime());
-    const tweet = new Tweet(
-      generateId,
-      text,
-      new Date(new Date().getTime()),
-      TweetCollection.user,
-      [],
-    );
-
-    if (Tweet.validate(tweet)) {
-      this.tweets.set(tweet.id, tweet);
-      return true;
-    }
-
-    return false;
-  }
-
-  edit(id, text) {
-    const tweet = this.get(id);
-    if (tweet.author === TweetCollection.user) {
-      const newTweet = new Tweet(
-        tweet.id,
+      const generateId = String(new Date().getTime());
+      const tweet = new Tweet(
+        generateId,
         text,
-        tweet.createdAt,
-        tweet.author,
-        tweet.comments,
-        true,
+        new Date(new Date().getTime()),
+        TweetCollection.user,
       );
-      if (Tweet.validate(newTweet)) {
-        this.tweets.set(id, newTweet);
+
+      if (Tweet.validate(tweet)) {
+        if (this.tweets.has(generateId)) {
+          throw new Error(`Id ${generateId} occupate, tweet not added`);
+        }
+        this.tweets.set(tweet.id, tweet);
         return true;
       }
       return false;
+    } catch (error) {
+      console.log(error.message);
+      return false;
     }
-    throw new Error('You is not author this tweet');
+  }
+
+  edit(id, text) {
+    try {
+      const tweet = this.get(id);
+      if (tweet.author === TweetCollection.user) {
+        const { createdAt, author, comments } = tweet;
+        const editTweet = new Tweet(id, text, createdAt, author, comments);
+        if (Tweet.validate(editTweet)) {
+          this.tweets.set(id, editTweet);
+          return true;
+        }
+        return false;
+      }
+      throw new Error('You is not author this tweet');
+    } catch (error) {
+      console.log(error.message);
+      return false;
+    }
   }
 
   remove(id) {
-    if (arguments.length < 1) {
-      throw new Error('You not insert 1 required parameter');
-    } else if (arguments.length > 1) {
-      throw new Error('Only 1 parametr');
-    } else if (typeof id !== 'string') {
-      throw new Error(`Invalid type, you insert ${typeof id}, but I wait string`);
-    }
+    try {
+      if (arguments.length < 1) {
+        throw new Error('You not insert 1 required parameter');
+      } else if (arguments.length > 1) {
+        throw new Error('Only 1 parametr');
+      } else if (typeof id !== 'string') {
+        throw new Error(`Invalid type, you insert ${typeof id}, but I wait string`);
+      }
 
-    if (this.get(id).author === TweetCollection.user) {
-      this.tweets.delete(id);
-      return true;
+      const searchedTweet = this.get(id);
+      if (searchedTweet) {
+        if (searchedTweet.author === TweetCollection.user) {
+          this.tweets.delete(id);
+          return true;
+        }
+        throw new Error('You is not author this tweet');
+      }
+      return false;
+    } catch (error) {
+      console.log(error.message);
+      return false;
     }
-    throw new Error('You is not author this tweet');
+  }
+
+  addComment(id, text) {
+    try {
+      const generateId = String(new Date().getTime());
+      const comment = new Comment(
+        generateId,
+        text,
+        new Date(new Date().getTime()),
+        TweetCollection.user,
+      );
+      const searchedTweet = this.get(id);
+      if (searchedTweet) {
+        if (Comment.validate(comment)) {
+          searchedTweet.comments.set(generateId, comment);
+          return true;
+        }
+      }
+      return false;
+    } catch (error) {
+      console.log(error.message);
+      return false;
+    }
+  }
+
+  static get tweets() {
+    return this.tweets;
   }
 
   static get user() {
@@ -758,15 +773,18 @@ class TweetCollection {
   }
 
   static set user(name) {
-    if (arguments.length < 1) {
-      throw new Error('You not insert 1 required parameter');
-    } else if (arguments.length > 1) {
-      throw new Error('Only 1 parametr');
-    } else if (typeof name !== 'string') {
-      throw new Error(`Invalid type, you insert ${typeof name}, but I wait string`);
+    try {
+      if (arguments.length < 1) {
+        throw new Error('You not insert 1 required parameter');
+      } else if (arguments.length > 1) {
+        throw new Error('Only 1 parametr');
+      } else if (typeof name !== 'string') {
+        throw new Error(`Invalid type, you insert ${typeof name}, but I wait string`);
+      }
+      this._user = name;
+    } catch (error) {
+      console.log(error.message);
     }
-
-    this._user = name;
   }
 }
 
