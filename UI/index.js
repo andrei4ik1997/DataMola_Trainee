@@ -352,14 +352,7 @@ class Tweet {
   }
 
   set id(value) {
-    try {
-      if (typeof value !== 'string') {
-        throw new Error(`Invalid type, you insert ${typeof value}, but I wait string`);
-      }
-      this._id = value;
-    } catch (error) {
-      console.log(error.message);
-    }
+    throw new Error(`You can't change this parametr, you value is ${this._id}`);
   }
 
   get createdAt() {
@@ -367,14 +360,7 @@ class Tweet {
   }
 
   set createdAt(value) {
-    try {
-      if (typeof value !== 'string') {
-        throw new Error(`Invalid type, you insert ${typeof value}, but I wait string`);
-      }
-      this._createdAt = value;
-    } catch (error) {
-      console.log(error.message);
-    }
+    throw new Error(`You can't change this parametr, you value is ${this._createdAt}`);
   }
 
   get author() {
@@ -382,14 +368,7 @@ class Tweet {
   }
 
   set author(value) {
-    try {
-      if (typeof value !== 'string') {
-        throw new Error(`Invalid type, you insert ${typeof value}, but I wait string`);
-      }
-      this._author = value;
-    } catch (error) {
-      console.log(error.message);
-    }
+    throw new Error(`You can't change this parametr, you value is ${this._author}`);
   }
 
   static validate(tweet) {
@@ -450,14 +429,7 @@ class Comment {
   }
 
   set id(value) {
-    try {
-      if (typeof value !== 'string') {
-        throw new Error(`Invalid type, you insert ${typeof value}, but I wait string`);
-      }
-      this._id = value;
-    } catch (error) {
-      console.log(error.message);
-    }
+    throw new Error(`You can't change this parametr, you value is ${this._id}`);
   }
 
   get createdAt() {
@@ -465,14 +437,7 @@ class Comment {
   }
 
   set createdAt(value) {
-    try {
-      if (typeof value !== 'string') {
-        throw new Error(`Invalid type, you insert ${typeof value}, but I wait string`);
-      }
-      this._createdAt = value;
-    } catch (error) {
-      console.log(error.message);
-    }
+    throw new Error(`You can't change this parametr, you value is ${this._createdAt}`);
   }
 
   get author() {
@@ -480,14 +445,7 @@ class Comment {
   }
 
   set author(value) {
-    try {
-      if (typeof value !== 'string') {
-        throw new Error(`Invalid type, you insert ${typeof value}, but I wait string`);
-      }
-      this._author = value;
-    } catch (error) {
-      console.log(error.message);
-    }
+    throw new Error(`You can't change this parametr, you value is ${this._author}`);
   }
 
   static validate(comment) {
@@ -537,8 +495,7 @@ class TweetCollection {
 
   constructor(arrTweet) {
     this.tweets = new Map();
-    arrTweet.forEach((item) => {
-      const { id, text, createdAt, author, comments } = item;
+    arrTweet.forEach(({ id, text, createdAt, author, comments }) => {
       const tweet = new Tweet(id, text, createdAt, author, comments);
       try {
         if (Tweet.validate(tweet)) {
