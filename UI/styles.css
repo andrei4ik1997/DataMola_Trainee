@@ -110,6 +110,7 @@ input::-webkit-calendar-picker-indicator {
   display: flex;
   justify-content: center;
   align-items: center;
+  max-width: max-content;
   padding: var(--padding__button);
   border: none;
   border-radius: var(--border_radius);
@@ -214,7 +215,7 @@ input::-webkit-calendar-picker-indicator {
   background-repeat: no-repeat;
 }
 
-.header__authorized {
+.header__authorization {
   display: flex;
   align-items: center;
   gap: var(--gap__container);
@@ -226,9 +227,6 @@ input::-webkit-calendar-picker-indicator {
   text-align: center;
 }
 
-.header__unauthorized {
-  display: none;
-}
 
 .main {
   position: relative;

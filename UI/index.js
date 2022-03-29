@@ -491,7 +491,7 @@ class Comment {
 }
 
 class TweetCollection {
-  static _user = 'Username2';
+  static _user = '';
 
   constructor(arrTweet) {
     this.tweets = new Map();
@@ -570,7 +570,9 @@ class TweetCollection {
         })
         .filter((tweet) => {
           const createdAt = new Date(tweet.createdAt).getTime();
-          return createdAt > new Date(dateFrom).getTime() && createdAt < new Date(dateTo).getTime();
+          return (
+            createdAt >= new Date(dateFrom).getTime() && createdAt <= new Date(dateTo).getTime()
+          );
         })
         .filter((tweet) => {
           if (hashtags.length) {
@@ -738,8 +740,135 @@ class TweetCollection {
       console.log(error.message);
     }
   }
+
+  static setUser(name) {
+    try {
+      if (arguments.length < 1) {
+        throw new Error('You not insert 1 required parameter');
+      } else if (arguments.length > 1) {
+        throw new Error('Only 1 parametr');
+      } else if (typeof name !== 'string') {
+        throw new Error(`Invalid type, you insert ${typeof name}, but I wait string`);
+      }
+      this._user = name;
+      return true;
+    } catch (error) {
+      console.log(error.message);
+      return false;
+    }
+  }
+}
+
+class HeaderView {
+  constructor(containerId) {
+    this.containerId = containerId;
+  }
+
+  display(params = null) {
+    const element = document.querySelector(`#${this.containerId}`);
+    const headerAuthorization = element.querySelector('.header__authorization');
+    headerAuthorization.innerHTML = ` <span class="header__username">${params}</span>
+                                      <button class="button button_primary header__button">Exit</button>`;
+  }
+}
+
+class TweetFeedView {
+  constructor(containerId) {
+    this.containerId = containerId;
+  }
+
+  display(params = null) {
+    const element = document.querySelector(`#${this.containerId}`);
+    let result = "<ul class='tweets__list'>";
+    for (let i = 0; i < 10; i += 1) {
+      result += `<li class="tweet">
+      <a class="link link__tweet" href="./twit/${params[i].id}.html">
+        <div class="tweet__header">
+          <div class="tweet__container">
+            <span class="tweet__username">${params[i].author}</span>
+            <div class="tweet__date-container">
+              <time class="tweet__date" datetime="2022-03-01">${params[i].createdAt}</time>
+              <time class="tweet__time" datetime="2022-03-01T00:00:00">${params[i].createdAt}</time>
+            </div>
+            <div class="tweet__comment">
+              <i class="icon icon__comment fa-regular fa-comment-dots"></i>
+              <span class="tweet__comment-amount">${params[i].comments.size}</span>
+            </div>
+          </div>
+          <div class="tweet__icons-container">
+            <i class="icon icon__edit fa-regular fa-pen-to-square"></i>
+            <i class="icon icon__trash fa-solid fa-trash-can"></i>
+          </div>
+        </div>
+        <p class="tweet__text">${params[i].text}</p>
+      </a>
+    </li>`;
+    }
+    if (params.length > 10) {
+      result += '<button class="button button_primary twitter__button">Load more</button>';
+    }
+    result += '</ul>';
+    element.innerHTML = result;
+  }
 }
 
 const myTweet = new TweetCollection(tweets);
+const headerView = new HeaderView('header');
+const tweetFeedView = new TweetFeedView('tweets');
+
+function setCurrentUser(user) {
+  if (TweetCollection.setUser(user)) {
+    TweetCollection.user = user;
+    headerView.display(user);
+    return true;
+  }
+  return false;
+}
+
+function addTweet(text) {
+  const isValid = myTweet.add(text);
+  if (isValid) {
+    tweetFeedView.display(myTweet.getPage());
+    return true;
+  }
+  return false;
+}
+
+function editTweet(id, text) {
+  const isValid = myTweet.edit(id, text);
+  if (isValid) {
+    tweetFeedView.display(myTweet.getPage());
+    return true;
+  }
+  return false;
+}
+
+function removeTweet(id) {
+  const isValid = myTweet.remove(id);
+  if (isValid) {
+    tweetFeedView.display(myTweet.getPage());
+    return true;
+  }
+  return false;
+}
+
+function getFeed(
+  skip = 0,
+  top = 10,
+  filterConfig = {
+    author: '',
+    text: '',
+    dateFrom: new Date(0),
+    dateTo: new Date(),
+    hashtags: [],
+  },
+) {
+  return myTweet.getPage(skip, top, filterConfig);
+}
+
+function showTweet(id) {
+  return myTweet.get(id);
+}
 
 console.log(myTweet);
+
