@@ -782,7 +782,7 @@ class TweetFeedView {
     let result = "<ul class='tweets__list'>";
     for (let i = 0; i < 10; i += 1) {
       result += `<li class="tweet">
-      <a class="link link__tweet" href="./twit/${params[i].id}.html">
+      <a class="link link__tweet" href="./twit/.html">
         <div class="tweet__header">
           <div class="tweet__container">
             <span class="tweet__username">${params[i].author}</span>
@@ -812,9 +812,148 @@ class TweetFeedView {
   }
 }
 
+class FilterView {
+  constructor(containerId) {
+    this.containerId = containerId;
+  }
+
+  display(params = null) {
+    const element = document.querySelector(`#${this.containerId}`);
+
+    Array.from(element.elements).forEach((el) => {
+      switch (el.id) {
+        case 'author':
+          el.value = params.author;
+          break;
+        case 'text':
+          el.value = params.text;
+          break;
+        case 'date_from':
+          el.value = `${new Date(params.dateFrom).getFullYear()}-0${
+            new Date(params.dateFrom).getMonth() + 1
+          }-0${new Date(params.dateFrom).getDate()}`;
+          break;
+        case 'date_to':
+          el.value = `${new Date(params.dateTo).getFullYear()}-0${
+            new Date(params.dateTo).getMonth() + 1
+          }-${new Date(params.dateTo).getDate()}`;
+          break;
+        case 'hashtag':
+          const hashtagsContainer = document.querySelector('.form__hashtag');
+          hashtagsContainer.innerHTML = '<span class="hashtag__title">You add:</span>';
+          params.hashtags.forEach((hashtag) => {
+            const hashtagElem = document.createElement('div');
+            hashtagElem.classList.add('hashtag__container');
+            hashtagElem.innerHTML = `
+            <span class="hashtag__name">${hashtag}</span>
+            <i class="icon icon_gray fa-solid fa-trash-can"></i>
+            <span class="hashtag__separate">;</span>`;
+            hashtagsContainer.append(hashtagElem);
+          });
+          break;
+        default:
+          break;
+      }
+    });
+  }
+}
+
+class TweetView {
+  constructor(containerId) {
+    this.containerId = containerId;
+  }
+
+  display(params = null) {
+    const { text, createdAt, author, comments } = params;
+    const commentsArray = Array.from(comments.values());
+    const element = document.querySelector(`#${this.containerId}`);
+    let result = `<section class="section main__container">
+                    <a class="link link_icon" href="./index.html">
+                        <i class="icon icon_back fa-solid fa-circle-arrow-left fa-2x"></i>
+                    </a>`;
+
+    const tweetElem = `
+    <div class="tweet">
+      <div class="tweet__header">
+        <div class="tweet__container">
+          <span class="tweet__username">${author}</span>
+          <div class="tweet__date-container">
+            <time class="tweet__date" datetime="2022-03-01">${createdAt}</time>
+            <time class="tweet__time" datetime="2022-03-01T00:00:00">${createdAt}</time>
+          </div>
+          <div class="tweet__comment">
+            <i class="icon icon__comment fa-regular fa-comment-dots"></i>
+            <span class="tweet__comment-amount">4</span>
+          </div>
+        </div>
+        <div class="tweet__icons-container">
+          <i class="icon icon__edit fa-regular fa-pen-to-square"></i>
+          <i class="icon icon__trash fa-solid fa-trash-can"></i>
+        </div>
+      </div>
+      <p class="tweet__text">${text}</p>
+    </div>`;
+
+    result += tweetElem;
+
+    let commentsElem = `
+    <h3 class="main__container-title">Comments</h3>
+    ${
+      commentsArray.length
+        ? '<div class="comments"><ul class="comments__list">'
+        : '<p class="no-comments">No comments yet</p>'
+    }`;
+
+    commentsArray.forEach((comment) => {
+      commentsElem += `<li class="comment">
+        <div class="comment__header">
+          <div class="comment__container">
+            <span class="comment__username">${comment.author}</span>
+            <div class="comment__date-container">
+              <time class="tweet__date" datetime="2022-03-01">${comment.createdAt}</time>
+              <time class="tweet__time" datetime="2022-03-01T00:00:00">${comment.createdAt}</time>
+            </div>
+          </div>
+        </div>
+        <p class="comment__text">${comment.text}</p>
+      </li>`;
+    });
+
+    commentsElem += '</ul></div>';
+
+    result += commentsElem;
+
+    result += `<form class="form-add comment__form-add">
+    <div class="form-add__header">
+      <div class="form-add__header-logo">un</div>
+      <textarea
+        class="form-add__placeholder"
+        name="tweet_text"
+        maxlength="280"
+        placeholder="Some text..."
+      ></textarea>
+    </div>
+    <div class="form-add__footer">
+      <p class="form-add__text">
+        <span class="form-add__сharacters-left">280</span>
+        сharacters left
+      </p>
+      <button class="button button_primary form-add__button" type="submit" disabled>
+        Comment
+      </button>
+    </div>
+  </form>
+</section>`;
+
+    element.innerHTML = result;
+  }
+}
+
 const myTweet = new TweetCollection(tweets);
 const headerView = new HeaderView('header');
 const tweetFeedView = new TweetFeedView('tweets');
+const filterView = new FilterView('filterForm');
+const tweetView = new TweetView('main');
 
 function setCurrentUser(user) {
   if (TweetCollection.setUser(user)) {
@@ -863,11 +1002,16 @@ function getFeed(
     hashtags: [],
   },
 ) {
-  return myTweet.getPage(skip, top, filterConfig);
+  filterView.display(filterConfig);
 }
 
 function showTweet(id) {
-  return myTweet.get(id);
+  const isSearched = myTweet.get(id);
+  if (isSearched) {
+    tweetView.display(isSearched);
+    return true;
+  }
+  return false;
 }
 
 console.log(myTweet);

@@ -266,7 +266,7 @@ input::-webkit-calendar-picker-indicator {
 .form {
   display: flex;
   flex-direction: column;
-  flex: 0 1 4200rem;
+  width: 20rem;
   gap: calc(var(--gap__container) / 2);
 }
 
@@ -507,7 +507,7 @@ input::-webkit-calendar-picker-indicator {
 }
 
 .no-comments {
-  display: none;
+  display: block;
   align-self: center;
   margin-bottom: var(--primary__value);
   font-weight: bold;

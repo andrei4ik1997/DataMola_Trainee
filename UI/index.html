@@ -32,16 +32,16 @@
         </a>
       </div>
     </header>
-    <main class="main">
+    <main id="main" class="main">
       <aside class="section filter">
-        <form class="form filter__form">
+        <form id="filterForm" class="form filter__form">
           <h3 class="form__title">Filter by:</h3>
           <div class="form__input-container">
             <label class="form__input-label" for="name">Name</label>
             <input
               class="form__input"
-              id="name"
-              name="name"
+              id="author"
+              name="author"
               type="text"
               list="names"
               placeholder="Name"
@@ -80,17 +80,6 @@
               <i class="icon fa-solid fa-plus"></i>
             </div>
             <div class="hashtag form__hashtag">
-              <span class="hashtag__title">You add:</span>
-              <div class="hashtag__container">
-                <span class="hashtag__name">#tag1</span>
-                <i class="icon icon_gray fa-solid fa-trash-can"></i>
-                <span class="hashtag__separate">;</span>
-              </div>
-              <div class="hashtag__container">
-                <span class="hashtag__name">#tag2</span>
-                <i class="icon icon_gray fa-solid fa-trash-can"></i>
-                <span class="hashtag__separate">;</span>
-              </div>
             </div>
           </div>
           <div class="form__buttons">
