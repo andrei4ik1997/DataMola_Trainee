@@ -1014,5 +1014,17 @@ function showTweet(id) {
   return false;
 }
 
+function addAuthors() {
+  const arrTweet = Array.from(myTweet.tweets.values());
+  const arrAuthors = new Set(arrTweet.map((tweet) => tweet.author));
+  const formInputDatalist = document.querySelector('.form__input-datalist');
+  let res = '';
+  arrAuthors.forEach((author) => {
+    res += `<option class="form__input-option" value="${author}">${author}</option>`;
+  });
+  formInputDatalist.innerHTML = res;
+}
+addAuthors();
+
 console.log(myTweet);
 
