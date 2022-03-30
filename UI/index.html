@@ -38,14 +38,7 @@
           <h3 class="form__title">Filter by:</h3>
           <div class="form__input-container">
             <label class="form__input-label" for="name">Name</label>
-            <input
-              class="form__input"
-              id="author"
-              name="author"
-              type="text"
-              list="names"
-              placeholder="Name"
-            />
+            <input class="form__input" id="author" name="author" type="text" list="names" placeholder="Name" />
             <datalist class="form__input-datalist" id="names"> </datalist>
           </div>
           <div class="form__input-container">
@@ -54,25 +47,13 @@
           </div>
           <div class="form__input-container">
             <label class="form__input-label" for="date_from">Date</label>
-            <input
-              class="form__input"
-              id="date_from"
-              type="date"
-              name="date_from"
-              placeholder="from"
-            />
+            <input class="form__input" id="date_from" type="date" name="date_from" placeholder="from" />
             <input class="form__input" id="date_to" type="date" name="date_to" placeholder="to" />
           </div>
           <div class="form__input-container">
             <label class="form__input-label" for="hashtag">Hashtag</label>
             <div class="form__input-container form__input-container_row">
-              <input
-                class="form__input"
-                id="hashtag"
-                type="text"
-                name="hashtag"
-                placeholder="tag"
-              />
+              <input class="form__input" id="hashtag" type="text" name="hashtag" placeholder="tag" />
               <i class="icon fa-solid fa-plus"></i>
             </div>
             <div class="hashtag form__hashtag"></div>
@@ -84,28 +65,17 @@
         </form>
       </aside>
       <section class="section twitter main__twitter">
-        <div class="not-found">
-          <i class="icon icon_error fa-solid fa-triangle-exclamation fa-4x"></i>
-          <span class="not-found__text">Not found</span>
-        </div>
         <form class="form-add twitter__form-add">
           <div class="form-add__header">
             <div class="form-add__header-logo">un</div>
-            <textarea
-              class="form-add__placeholder"
-              name="tweet_text"
-              maxlength="280"
-              placeholder="Some text..."
-            ></textarea>
+            <textarea class="form-add__placeholder" name="tweet_text" maxlength="280" placeholder="Some text..."></textarea>
           </div>
           <div class="form-add__footer">
             <p class="form-add__text">
               <span class="form-add__сharacters-left">280</span>
               сharacters left
             </p>
-            <button class="button button_primary form-add__button" type="submit" disabled>
-              Tweet
-            </button>
+            <button class="button button_primary form-add__button" type="submit" disabled>Tweet</button>
           </div>
         </form>
         <div id="tweets" class="tweets"></div>
@@ -114,33 +84,15 @@
     <footer class="footer">
       <p class="footer__text">
         Twitter by
-        <a
-          id="author-name"
-          class="footer__text_decoration"
-          href="https://www.linkedin.com/in/andrei-shynkarou-874425223"
-          target="_blank"
+        <a id="author-name" class="footer__text_decoration" href="https://www.linkedin.com/in/andrei-shynkarou-874425223" target="_blank"
           >Andrei Shynkarou</a
         >. Email:&nbsp;
-        <a id="author-email" class="footer__text_decoration" href="mailto:andrey03071997@yandex.ru">
-          andrey03071997@yandex.ru
-        </a>
+        <a id="author-email" class="footer__text_decoration" href="mailto:andrey03071997@yandex.ru"> andrey03071997@yandex.ru </a>
       </p>
       <p class="footer__text">
         Last update:&nbsp;
-        <time id="update-date" class="footer__text_decoration" datetime="2022-03-01"
-          >01.03.2022</time
-        >
+        <time id="update-date" class="footer__text_decoration" datetime="2022-03-01">01.03.2022</time>
       </p>
     </footer>
-
-    <div class="modal">
-      <div class="modal__container">
-        <h3 class="modal__title">Are you sure?</h3>
-        <div class="modal__buttons">
-          <button class="button button_secondary modal__button" type="button">No</button>
-          <button class="button button_primary modal__button" type="button">Yes</button>
-        </div>
-      </div>
-    </div>
   </body>
 </html>
