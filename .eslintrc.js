@@ -13,6 +13,6 @@ module.exports = {
     'no-underscore-dangle': 'off',
     'object-curly-newline': 'off',
     'operator-linebreak': ['error', 'after'],
-    'max-len': ['error', { code: 150 }],
+    'max-len': ['error', { code: 200 }],
   },
 };
