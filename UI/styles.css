@@ -4,7 +4,7 @@
   box-sizing: border-box;
   list-style-type: none;
   font-size: 14px;
-  font-family: "Noto Sans", sans-serif;
+  font-family: 'Noto Sans', sans-serif;
   color: var(--color__text);
 }
 
@@ -91,13 +91,13 @@ body {
   background-color: var(--color__background_body);
 }
 
-input[type="date"]::before {
+input[type='date']::before {
   opacity: 0.5;
-  content: attr(placeholder) ":";
+  content: attr(placeholder) ':';
 }
 
-input[type="date"]:focus::before {
-  content: "";
+input[type='date']:focus::before {
+  content: '';
 }
 
 input::-webkit-calendar-picker-indicator {
@@ -110,6 +110,7 @@ input::-webkit-calendar-picker-indicator {
   display: flex;
   justify-content: center;
   align-items: center;
+  max-width: max-content;
   padding: var(--padding__button);
   border: none;
   border-radius: var(--border_radius);
@@ -209,12 +210,12 @@ input::-webkit-calendar-picker-indicator {
 .header__logo {
   width: 16.2857rem;
   height: 4.2857rem;
-  background-image: url("./assets/logo/Logo.svg");
+  background-image: url('./assets/logo/Logo.svg');
   background-size: contain;
   background-repeat: no-repeat;
 }
 
-.header__authorized {
+.header__authorization {
   display: flex;
   align-items: center;
   gap: var(--gap__container);
@@ -224,10 +225,6 @@ input::-webkit-calendar-picker-indicator {
   font-size: 1.3rem;
   font-weight: bold;
   text-align: center;
-}
-
-.header__unauthorized {
-  display: none;
 }
 
 .main {
@@ -268,7 +265,7 @@ input::-webkit-calendar-picker-indicator {
 .form {
   display: flex;
   flex-direction: column;
-  flex: 0 1 4200rem;
+  width: 20rem;
   gap: calc(var(--gap__container) / 2);
 }
 
@@ -398,9 +395,9 @@ input::-webkit-calendar-picker-indicator {
   width: 100%;
 }
 
-.tweet:nth-child(n + 11) {
+/* .tweet:nth-child(n + 11) {
   display: none;
-}
+} */
 
 .tweet__header,
 .comment__header {
@@ -480,6 +477,7 @@ input::-webkit-calendar-picker-indicator {
 .comments__list {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: var(--gap__container);
   width: 100%;
 }
@@ -509,7 +507,7 @@ input::-webkit-calendar-picker-indicator {
 }
 
 .no-comments {
-  display: none;
+  display: block;
   align-self: center;
   margin-bottom: var(--primary__value);
   font-weight: bold;
@@ -518,7 +516,7 @@ input::-webkit-calendar-picker-indicator {
 }
 
 .not-found {
-  display: none;
+  display: flex;
   align-items: center;
   justify-content: center;
   gap: var(--gap__container);
@@ -534,7 +532,6 @@ input::-webkit-calendar-picker-indicator {
 
 .modal {
   position: absolute;
-  display: none;
 }
 
 .modal:before {
@@ -545,7 +542,7 @@ input::-webkit-calendar-picker-indicator {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  content: "";
+  content: '';
 }
 
 .modal__container {
@@ -606,6 +603,9 @@ input::-webkit-calendar-picker-indicator {
 }
 
 .error {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap__container);
   width: 100%;
   padding: var(--padding__section);
   border-radius: var(--border_radius);
@@ -706,7 +706,7 @@ input::-webkit-calendar-picker-indicator {
 
   .header__logo {
     width: 4.7rem;
-    background-image: url("./assets/logo/Logo_mobile.svg");
+    background-image: url('./assets/logo/Logo_mobile.svg');
   }
 
   .form-add__header-logo {

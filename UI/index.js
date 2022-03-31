@@ -1,4 +1,7 @@
+/* eslint-disable no-use-before-define */
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
+
 const tweets = [
   {
     id: '1',
@@ -89,13 +92,13 @@ const tweets = [
   },
   {
     id: '7',
-    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae.',
+    text: 'Lorem ipsum dolor sit amet #jsLorem consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae.',
     createdAt: new Date('2022-03-09T23:00:00'),
     author: 'Username2',
     comments: [
       {
         id: '1',
-        text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae.',
+        text: 'Lorem ipsum dolor sit #amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae.',
         createdAt: new Date('2022-03-09T23:00:00'),
         author: 'Username12',
       },
@@ -340,10 +343,7 @@ class Tweet {
     this._author = author;
     this.comments = new Map();
     comments.forEach((comment) => {
-      this.comments.set(
-        comment.id,
-        new Comment(comment.id, comment.text, comment.createdAt, comment.author),
-      );
+      this.comments.set(comment.id, new Comment(comment.id, comment.text, comment.createdAt, comment.author));
     });
   }
 
@@ -376,15 +376,8 @@ class Tweet {
     try {
       Object.keys(etalonTweet).forEach((key) => {
         if (Object.prototype.hasOwnProperty.call(tweet, key)) {
-          if (
-            Object.prototype.toString.call(etalonTweet[key]) !==
-            Object.prototype.toString.call(tweet[key])
-          ) {
-            throw new Error(
-              `You need change ${key} type in tweet with id ${
-                tweet._id
-              } to ${Object.prototype.toString.call(etalonTweet[key])}`,
-            );
+          if (Object.prototype.toString.call(etalonTweet[key]) !== Object.prototype.toString.call(tweet[key])) {
+            throw new Error(`You need change ${key} type in tweet with id ${tweet._id} to ${Object.prototype.toString.call(etalonTweet[key])}`);
           }
         } else {
           throw new Error(`Don't have ${key} property in you object`);
@@ -392,20 +385,11 @@ class Tweet {
       });
 
       Object.keys(tweet).forEach((key) => {
-        if (
-          !tweet[key].length &&
-          !(
-            tweet[key] instanceof Date ||
-            tweet[key] instanceof Map ||
-            typeof tweet[key] === 'boolean'
-          )
-        ) {
+        if (!tweet[key].length && !(tweet[key] instanceof Date || tweet[key] instanceof Map || typeof tweet[key] === 'boolean')) {
           throw new Error(`You need fill ${key}`);
         }
         if (key === 'text' && tweet[key].length >= 280) {
-          throw new Error(
-            `Max value for ${key} is 280 characters, but at now ${tweet[key].length} characters`,
-          );
+          throw new Error(`Max value for ${key} is 280 characters, but at now ${tweet[key].length} characters`);
         }
       });
       return true;
@@ -453,15 +437,8 @@ class Comment {
     try {
       Object.keys(etalonComment).forEach((key) => {
         if (Object.prototype.hasOwnProperty.call(comment, key)) {
-          if (
-            Object.prototype.toString.call(etalonComment[key]) !==
-            Object.prototype.toString.call(comment[key])
-          ) {
-            throw new Error(
-              `You need change ${key} type to ${Object.prototype.toString.call(
-                etalonComment[key],
-              )}`,
-            );
+          if (Object.prototype.toString.call(etalonComment[key]) !== Object.prototype.toString.call(comment[key])) {
+            throw new Error(`You need change ${key} type to ${Object.prototype.toString.call(etalonComment[key])}`);
           }
         } else {
           throw new Error(`Don't have ${key} property in you object`);
@@ -469,16 +446,11 @@ class Comment {
       });
 
       Object.keys(comment).forEach((key) => {
-        if (
-          !comment[key].length &&
-          !(comment[key] instanceof Date || typeof comment[key] === 'boolean')
-        ) {
+        if (!comment[key].length && !(comment[key] instanceof Date || typeof comment[key] === 'boolean')) {
           throw new Error(`You need fill ${key}`);
         }
         if (key === 'text' && comment[key].length >= 280) {
-          throw new Error(
-            `Max value for ${key} is 280 characters, but at now ${comment[key].length} characters`,
-          );
+          throw new Error(`Max value for ${key} is 280 characters, but at now ${comment[key].length} characters`);
         }
       });
 
@@ -491,7 +463,7 @@ class Comment {
 }
 
 class TweetCollection {
-  static _user = 'Username2';
+  static _user = '';
 
   constructor(arrTweet) {
     this.tweets = new Map();
@@ -548,13 +520,7 @@ class TweetCollection {
     },
   ) {
     const filteredTweets = () => {
-      const {
-        author = '',
-        text = '',
-        dateFrom = new Date(0),
-        dateTo = new Date(),
-        hashtags = [],
-      } = filterConfig;
+      const { author = '', text = '', dateFrom = new Date(0), dateTo = new Date(), hashtags = [] } = filterConfig;
       return Array.from(this.tweets.values())
         .filter((tweet) => {
           if (author.trim().length) {
@@ -570,24 +536,26 @@ class TweetCollection {
         })
         .filter((tweet) => {
           const createdAt = new Date(tweet.createdAt).getTime();
-          return createdAt > new Date(dateFrom).getTime() && createdAt < new Date(dateTo).getTime();
+          return createdAt >= new Date(dateFrom).getTime() && createdAt <= new Date(dateTo).getTime();
         })
         .filter((tweet) => {
-          if (hashtags.length) {
-            const hasHashtag = hashtags.every((hashtag) => tweet.text.split(' ').includes(hashtag));
-            if (hasHashtag) return tweet;
+          if (!hashtags.length) {
+            return tweet;
+          }
+          const hasHashtag = hashtags.every((hashtag) => tweet.text.split(' ').includes(`#${hashtag}`));
+          if (!hasHashtag) {
+            return false;
           }
           return tweet;
         })
         .sort((a, b) => b.createdAt - a.createdAt);
     };
     try {
+      if (!filteredTweets().length) {
+        throw new Error('Not found');
+      }
       if (skip >= filteredTweets().length) {
-        throw new Error(
-          `You want skip ${skip} but array has ${
-            filteredTweets().length
-          } length. Please, insert skip value less ${filteredTweets().length} `,
-        );
+        throw new Error(`You want skip ${skip} but array has ${filteredTweets().length} length. Please, insert skip value less ${filteredTweets().length} `);
       }
       return filteredTweets().splice(skip, top);
     } catch (error) {
@@ -628,12 +596,7 @@ class TweetCollection {
       }
 
       const generateId = String(new Date().getTime());
-      const tweet = new Tweet(
-        generateId,
-        text,
-        new Date(new Date().getTime()),
-        TweetCollection.user,
-      );
+      const tweet = new Tweet(generateId, text, new Date(new Date().getTime()), TweetCollection.user);
 
       if (Tweet.validate(tweet)) {
         if (this.tweets.has(generateId)) {
@@ -654,9 +617,9 @@ class TweetCollection {
       const tweet = this.get(id);
       if (tweet.author === TweetCollection.user) {
         const { createdAt, author, comments } = tweet;
-        const editTweet = new Tweet(id, text, createdAt, author, comments);
-        if (Tweet.validate(editTweet)) {
-          this.tweets.set(id, editTweet);
+        const editedTweet = new Tweet(id, text, createdAt, author, comments);
+        if (Tweet.validate(editedTweet)) {
+          this.tweets.set(id, editedTweet);
           return true;
         }
         return false;
@@ -696,12 +659,7 @@ class TweetCollection {
   addComment(id, text) {
     try {
       const generateId = String(new Date().getTime());
-      const comment = new Comment(
-        generateId,
-        text,
-        new Date(new Date().getTime()),
-        TweetCollection.user,
-      );
+      const comment = new Comment(generateId, text, new Date(new Date().getTime()), TweetCollection.user);
       const searchedTweet = this.get(id);
       if (searchedTweet) {
         if (Comment.validate(comment)) {
@@ -740,6 +698,370 @@ class TweetCollection {
   }
 }
 
-const myTweet = new TweetCollection(tweets);
+class HeaderView {
+  constructor(containerId) {
+    this.containerId = containerId;
+  }
 
-console.log(myTweet);
+  display(user) {
+    const authorization = document.querySelector(`#${this.containerId}`);
+    authorization.innerHTML = ` <span class="header__username">${user}</span>
+                                      <button class="button button_primary header__button">Exit</button>`;
+  }
+}
+
+class AuthorsView {
+  constructor(containerId) {
+    this.containerId = containerId;
+  }
+
+  display(authors) {
+    const formInputDatalist = document.querySelector(`#${this.containerId}`);
+    let res = '';
+    authors.forEach((author) => {
+      res += `<option class="form__input-option" value="${author}">${author}</option>`;
+    });
+    formInputDatalist.innerHTML = res;
+  }
+}
+
+class TweetFeedView {
+  constructor(containerId) {
+    this.containerId = containerId;
+  }
+
+  display(tweetsArr) {
+    const element = document.querySelector(`#${this.containerId}`);
+    let result;
+    if (tweets) {
+      result = "<ul class='tweets__list'>";
+      tweetsArr.forEach((tweet) => {
+        result += `<li class="tweet">
+        <div class="tweet__header">
+          <div class="tweet__container">
+            <span class="tweet__username">${tweet.author}</span>
+            <div class="tweet__date-container">
+              <time class="tweet__date" datetime=${Utils.getDate(tweet.createdAt)}>${Utils.getDate(tweet.createdAt)}</time>
+              <time class="tweet__time" datetime=${Utils.getDate(tweet.createdAt)}T${Utils.getTime(tweet.createdAt)}">${Utils.getTime(tweet.createdAt)}</time>
+            </div>
+            <div class="tweet__comment">
+              <i class="icon icon__comment fa-regular fa-comment-dots"></i>
+              <span class="tweet__comment-amount">${tweet.comments.size}</span>
+            </div>
+          </div>
+          ${
+            tweet.author === TweetCollection.user
+              ? `<div class="tweet__icons-container">
+          <i class="icon icon__edit fa-regular fa-pen-to-square"></i>
+          <i class="icon icon__trash fa-solid fa-trash-can"></i>
+        </div>`
+              : ''
+          }
+        </div>
+        <p class="tweet__text">${Utils.seachHashtag(tweet.text)}</p>
+    </li>`;
+      });
+
+      if (tweetsArr.length % 10 === 0) {
+        result += '<button class="button button_primary twitter__button">Load more</button>';
+      }
+
+      result += '</ul>';
+      element.innerHTML = result;
+    } else {
+      element.innerHTML = `<div class="not-found">
+                              <i class="icon icon_error fa-solid fa-triangle-exclamation fa-4x"></i>
+                              <span class="not-found__text">Not found</span>
+                           </div>`;
+    }
+  }
+}
+
+class FilterView {
+  constructor(containerId) {
+    this.containerId = containerId;
+  }
+
+  display(filter) {
+    const element = document.querySelector(`#${this.containerId}`);
+    const { author, text, dateFrom, dateTo, hashtags } = filter;
+    Array.from(element.elements).forEach((item) => {
+      const formElem = item;
+      switch (formElem.id) {
+        case 'author':
+          formElem.value = author;
+          break;
+        case 'text':
+          formElem.value = text;
+          break;
+        case 'date_from':
+          formElem.value = Utils.getDate(dateFrom);
+          break;
+        case 'date_to':
+          formElem.value = Utils.getDate(dateTo);
+          break;
+        case 'hashtag':
+          if (hashtags.length) {
+            const hashtagsContainer = document.querySelector('.form__hashtag');
+            hashtagsContainer.innerHTML = '<span class="hashtag__title">You add:</span>';
+            hashtags.forEach((hashtag) => {
+              const hashtagElem = document.createElement('div');
+              hashtagElem.classList.add('hashtag__container');
+              hashtagElem.innerHTML = `<span class="hashtag__name">${hashtag}</span>
+                                      <i class="icon icon_gray fa-solid fa-trash-can"></i>
+                                      <span class="hashtag__separate">;</span>`;
+              hashtagsContainer.append(hashtagElem);
+            });
+          }
+          break;
+        default:
+          break;
+      }
+    });
+  }
+}
+
+class TweetView {
+  constructor(containerId) {
+    this.containerId = containerId;
+  }
+
+  display(tweet) {
+    const element = document.querySelector(`#${this.containerId}`);
+
+    if (!tweet) {
+      const result = `<section class="section error">
+      <div class="error-container">
+        <i class="icon icon_error fa-solid fa-triangle-exclamation fa-4x"></i>
+        <span class="error__text">Page not found</span>
+      </div>
+      <a class="link" href="./index.html">
+      <button class="button button_primary" type="button">Back to main</button>
+    </a>
+    </section>
+    `;
+      element.innerHTML = result;
+    } else {
+      const { text, createdAt, author, comments } = tweet;
+      const commentsArray = Array.from(comments.values());
+      let result = `<section class="section main__container">
+                    <a class="link link_icon" href="./index.html">
+                        <i class="icon icon_back fa-solid fa-circle-arrow-left fa-2x"></i>
+                    </a>`;
+
+      const tweetElem = `<div class="tweet">
+                           <div class="tweet__header">
+                             <div class="tweet__container">
+                               <span class="tweet__username">${author}</span>
+                               <div class="tweet__date-container">
+                                 <time class="tweet__date" datetime=${Utils.getDate(createdAt)}>${Utils.getDate(createdAt)}</time>
+                                 <time class="tweet__time" datetime=${Utils.getDate(createdAt)}T${Utils.getTime(createdAt)}>${Utils.getTime(createdAt)}</time>
+                               </div>
+                               <div class="tweet__comment">
+                                 <i class="icon icon__comment fa-regular fa-comment-dots"></i>
+                                 <span class="tweet__comment-amount">4</span>
+                               </div>
+                             </div>
+                             <div class="tweet__icons-container">
+                               <i class="icon icon__edit fa-regular fa-pen-to-square"></i>
+                               <i class="icon icon__trash fa-solid fa-trash-can"></i>
+                             </div>
+                           </div>
+                           <p class="tweet__text">${Utils.seachHashtag(text)}</p>
+                         </div>`;
+
+      result += tweetElem;
+
+      let commentsElem = `<h3 class="main__container-title">Comments</h3>
+                          ${commentsArray.length ? '<div class="comments"><ul class="comments__list">' : '<p class="no-comments">No comments yet</p>'}`;
+
+      commentsArray.forEach((comment) => {
+        commentsElem += `<li class="comment">
+                          <div class="comment__header">
+                            <div class="comment__container">
+                              <span class="comment__username">${comment.author}</span>
+                              <div class="comment__date-container">
+                                <time class="tweet__date" datetime=${Utils.getDate(comment.createdAt)}>${Utils.getDate(comment.createdAt)}</time>
+                                <time class="tweet__time" datetime=${Utils.getDate(comment.createdAt)}T${Utils.getTime(comment.createdAt)}>${Utils.getTime(comment.createdAt)}</time>
+                              </div>
+                            </div>
+                          </div>
+                          <p class="comment__text">${Utils.seachHashtag(comment.text)}</p>
+                        </li>`;
+      });
+
+      commentsElem += '</ul></div>';
+
+      result += commentsElem;
+
+      result += `<form class="form-add comment__form-add">
+                    <div class="form-add__header">
+                      <div class="form-add__header-logo">un</div>
+                      <textarea
+                        class="form-add__placeholder"
+                        name="tweet_text"
+                        maxlength="280"
+                        placeholder="Some text..."
+                      ></textarea>
+                    </div>
+                    <div class="form-add__footer">
+                      <p class="form-add__text">
+                        <span class="form-add__сharacters-left">280</span>
+                        сharacters left
+                      </p>
+                      <button class="button button_primary form-add__button" type="submit" disabled>
+                        Comment
+                      </button>
+                    </div>
+                  </form>
+                </section>`;
+
+      element.innerHTML = result;
+    }
+  }
+}
+
+class ModalView {
+  static display() {
+    const modal = document.createElement('div');
+    modal.classList.add('modal');
+    modal.innerHTML = `<div class="modal__container">
+                          <h3 class="modal__title">Are you sure?</h3>
+                          <div class="modal__buttons">
+                              <button class="button button_secondary modal__button" type="button">No</button>
+                              <button class="button button_primary modal__button" type="button">Yes</button>
+                          </div>
+                        </div>`;
+    document.body.append(modal);
+    return true;
+  }
+
+  static close() {
+    const modal = document.querySelector('.modal');
+    if (modal) {
+      modal.remove();
+      return true;
+    }
+    return false;
+  }
+}
+
+class Utils {
+  static seachHashtag(str) {
+    const regularHastag = /#[0-9A-Za-zА-Яа-яё]+/g;
+    const replacer = (str) => `<span class="tweet__text_hashag">${str}</span>`;
+    return str.replace(regularHastag, replacer);
+  }
+
+  static getDate(date) {
+    const time = [new Date(date).getFullYear(), new Date(date).getMonth() + 1, new Date(date).getDate()];
+    if (time[0] < 10) {
+      time[0] = `0${time[0]}`;
+    }
+    if (time[1] < 10) {
+      time[1] = `0${time[1]}`;
+    }
+    if (time[2] < 10) {
+      time[2] = `0${time[2]}`;
+    }
+    return time.join('-');
+  }
+
+  static getTime(date) {
+    const time = [new Date(date).getHours(), new Date(date).getMinutes(), new Date(date).getSeconds()];
+    if (time[0] < 10) {
+      time[0] = `0${time[0]}`;
+    }
+    if (time[1] < 10) {
+      time[1] = `0${time[1]}`;
+    }
+    if (time[2] < 10) {
+      time[2] = `0${time[2]}`;
+    }
+    return time.join(':');
+  }
+}
+
+function setAutors() {
+  const arrTweet = Array.from(myTweet.tweets.values());
+  const arrAuthors = new Set(arrTweet.map((tweet) => tweet.author));
+  authorsView.display(arrAuthors);
+  return true;
+}
+
+function setCurrentUser(user) {
+  if (typeof user === 'string' && user.trim()) {
+    TweetCollection.user = user;
+    headerView.display(user);
+    getFeed();
+    return true;
+  }
+  return false;
+}
+
+function addTweet(text) {
+  if (typeof text === 'string' && text.trim()) {
+    myTweet.add(text);
+    tweetFeedView.display(myTweet.getPage());
+    setAutors();
+    return true;
+  }
+  return false;
+}
+
+function editTweet(id, text) {
+  if (typeof id === 'string' && id.trim() && typeof text === 'string' && text.trim()) {
+    myTweet.edit(id, text);
+    tweetFeedView.display(myTweet.getPage());
+    return true;
+  }
+  return false;
+}
+
+function removeTweet(id) {
+  if (typeof id === 'string' && id.trim()) {
+    myTweet.remove(id);
+    tweetFeedView.display(myTweet.getPage());
+    setAutors();
+    return true;
+  }
+  return false;
+}
+
+function getFeed(
+  skip = 0,
+  top = 10,
+  filterConfig = {
+    author: '',
+    text: '',
+    dateFrom: new Date(0),
+    dateTo: new Date(),
+    hashtags: [],
+  },
+) {
+  if (Number.isInteger(skip) && Number.isInteger(top)) {
+    tweetFeedView.display(myTweet.getPage(skip, top, filterConfig));
+    filterView.display(filterConfig);
+    return true;
+  }
+  return false;
+}
+
+function showTweet(id) {
+  if (typeof id === 'string' && id.trim()) {
+    tweetView.display(myTweet.get(id));
+    return true;
+  }
+  return false;
+}
+
+const myTweet = new TweetCollection(tweets);
+const headerView = new HeaderView('authorization');
+const authorsView = new AuthorsView('names');
+const tweetFeedView = new TweetFeedView('tweets');
+const filterView = new FilterView('filterForm');
+const tweetView = new TweetView('main');
+
+setCurrentUser('Admin');
+setAutors();
+getFeed();
