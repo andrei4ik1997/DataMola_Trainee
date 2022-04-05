@@ -581,6 +581,7 @@ input::-webkit-calendar-picker-indicator {
 .registration__form {
   align-items: center;
   gap: 1.8rem;
+  width: 100%;
 }
 
 .form__error-message {
