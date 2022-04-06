@@ -12,7 +12,7 @@
     <script defer src="./index.js"></script>
     <title>Main</title>
   </head>
-  <body>
+  <body id="body">
     <input class="burger__input" id="burger" type="checkbox" aria-hidden="true" />
     <header class="header">
       <div class="header__container">
@@ -27,7 +27,12 @@
       <div id="authorization" class="header__authorization"></div>
       </div>
     </header>
-    <main id="main" class="main"></main>
+    <main id="main" class="main">
+      <aside id="filter" class="section filter"></aside>
+      <section id ="twitter" class="section twitter main__twitter">
+        <div id="tweets" class="tweets"></div>
+      </section>
+    </main>
     <footer class="footer">
       <p class="footer__text">
         Twitter by
