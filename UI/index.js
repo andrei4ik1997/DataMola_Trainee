@@ -388,7 +388,7 @@ class Tweet {
         if (!tweet[key].length && !(tweet[key] instanceof Date || tweet[key] instanceof Map || typeof tweet[key] === 'boolean')) {
           throw new Error(`You need fill ${key}`);
         }
-        if (key === 'text' && tweet[key].length >= 280) {
+        if (key === 'text' && tweet[key].length > 281) {
           throw new Error(`Max value for ${key} is 280 characters, but at now ${tweet[key].length} characters`);
         }
       });
@@ -559,7 +559,6 @@ class TweetCollection {
       }
       return filteredTweets().splice(skip, top);
     } catch (error) {
-      console.log(error.message);
       return false;
     }
   }
@@ -643,7 +642,7 @@ class TweetCollection {
 
       const searchedTweet = this.get(id);
       if (searchedTweet) {
-        if (searchedTweet.author === TweetCollection.user) {
+        if (searchedTweet.author.toLowerCase() === TweetCollection.user.toLowerCase()) {
           this.tweets.delete(id);
           return true;
         }
@@ -698,6 +697,28 @@ class TweetCollection {
   }
 }
 
+class UserCollection {
+  constructor() {
+    this.users = [
+      { login: 'admin', password: '12345678' },
+      { login: 'Username2', password: '12345678' },
+      { login: 'Username3', password: '12345678' },
+      { login: 'Username4', password: '12345678' },
+      { login: 'Username5', password: '12345678' },
+      { login: 'Username35', password: '12345678' },
+    ];
+  }
+
+  add(newUser) {
+    console.log(newUser);
+    this.users.push(newUser);
+  }
+
+  getUsers() {
+    return this.users;
+  }
+}
+
 class HeaderView {
   constructor(containerId) {
     this.containerId = containerId;
@@ -705,8 +726,27 @@ class HeaderView {
 
   display(user) {
     const authorization = document.querySelector(`#${this.containerId}`);
-    authorization.innerHTML = ` <span class="header__username">${user}</span>
-                                      <button class="button button_primary header__button" data-action="exit">Exit</button>`;
+    authorization.style.display = 'flex';
+    if (user) {
+      authorization.innerHTML = ` <span class="header__username">${user}</span>
+      <button class="button button_primary header__button" data-action="exit">Exit</button>`;
+    } else {
+      authorization.innerHTML = '<button class="button button_primary header__button" data-action="authorization">Sign In</button>';
+    }
+
+    const login = document.querySelector('[data-action="authorization"]');
+    const exit = document.querySelector('[data-action="exit"]');
+
+    if (login) {
+      login.addEventListener('click', () => {
+        controller.autorizationView.display();
+      });
+    }
+    if (exit) {
+      exit.addEventListener('click', () => {
+        controller.setCurrentUser('');
+      });
+    }
   }
 }
 
@@ -732,11 +772,12 @@ class TweetFeedView {
 
   display(tweetsArr) {
     const element = document.querySelector(`#${this.containerId}`);
+
     let result;
     if (tweetsArr) {
       result = "<ul class='tweets__list'>";
       tweetsArr.forEach((tweet) => {
-        result += `<li class="tweet">
+        result += `<li class="tweet" data-id=${tweet.id}>
         <div class="tweet__header">
           <div class="tweet__container">
             <span class="tweet__username">${tweet.author}</span>
@@ -750,10 +791,10 @@ class TweetFeedView {
             </div>
           </div>
           ${
-            tweet.author === TweetCollection.user
+            tweet.author.toLowerCase() === TweetCollection.user.toLowerCase()
               ? `<div class="tweet__icons-container">
-          <i class="icon icon__edit fa-regular fa-pen-to-square"></i>
-          <i class="icon icon__trash fa-solid fa-trash-can"></i>
+          <i class="icon icon__edit fa-regular fa-pen-to-square" data-action="edit"></i>
+          <i class="icon icon__trash fa-solid fa-trash-can" data-action="remove"></i>
         </div>`
               : ''
           }
@@ -763,15 +804,12 @@ class TweetFeedView {
       });
 
       if (tweetsArr.length % 10 === 0) {
-        result += '<button id="load" class="button button_primary twitter__button">Load more</button>';
+        result += '<button class="button button_primary twitter__button" data-action="loadMore" data-top="10">Load more</button>';
       }
 
       result += '</ul>';
       element.innerHTML = result;
-      const loadMore = element.querySelector('#load');
-      if (loadMore) {
-        loadMore.addEventListener('click', controller.loadMore.bind(controller));
-      }
+      document.querySelector('.tweets__list').addEventListener('click', controller.tweetActions.bind(controller));
     } else {
       element.innerHTML = `<div class="not-found">
                               <i class="icon icon_error fa-solid fa-triangle-exclamation fa-4x"></i>
@@ -864,9 +902,9 @@ class TweetView {
       const { text, createdAt, author, comments } = tweet;
       const commentsArray = Array.from(comments.values());
       let result = `<section class="section main__container">
-                    <a class="link link_icon" href="./index.html">
-                        <i class="icon icon_back fa-solid fa-circle-arrow-left fa-2x"></i>
-                    </a>`;
+                      <a class="link link_icon">
+                          <i class="icon icon_back fa-solid fa-circle-arrow-left fa-2x" data-action="backToMain"></i>
+                      </a>`;
 
       const tweetElem = `<div class="tweet">
                            <div class="tweet__header">
@@ -918,7 +956,7 @@ class TweetView {
                       <div class="form-add__header-logo">un</div>
                       <textarea
                         class="form-add__placeholder"
-                        name="tweet_text"
+                        name="text"
                         maxlength="280"
                         placeholder="Some text..."
                       ></textarea>
@@ -928,7 +966,7 @@ class TweetView {
                         <span class="form-add__сharacters-left">280</span>
                         сharacters left
                       </p>
-                      <button class="button button_primary form-add__button" type="submit" disabled>
+                      <button class="button button_primary form-add__button" type="submit">
                         Comment
                       </button>
                     </div>
@@ -936,6 +974,93 @@ class TweetView {
                 </section>`;
 
       element.innerHTML = result;
+
+      const backToMain = document.querySelector('[data-action="backToMain"]');
+      backToMain.addEventListener('click', (e) => {
+        controller.mainView.display();
+        controller.getFeed();
+      });
+    }
+  }
+}
+
+class MainView {
+  constructor(containerId) {
+    this.containerId = containerId;
+  }
+
+  display() {
+    const element = document.querySelector(`#${this.containerId}`);
+    element.classList.remove('main_colomn');
+
+    const result = `
+    <aside class="section filter">
+        <form id="filterForm" class="form filter__form">
+          <h3 class="form__title">Filter by:</h3>
+          <div class="form__input-container">
+            <label class="form__input-label" for="name">Name</label>
+            <input class="form__input" id="author" name="author" type="text" list="names" placeholder="Name" />
+            <datalist class="form__input-datalist" id="names"> </datalist>
+          </div>
+          <div class="form__input-container">
+            <label class="form__input-label" for="text">Text</label>
+            <input class="form__input" id="text" type="text" name="text" placeholder="Text" />
+          </div>
+          <div class="form__input-container">
+            <label class="form__input-label" for="date_from">Date</label>
+            <input class="form__input" id="date_from" type="date" name="date_from" placeholder="from" />
+            <input class="form__input" id="date_to" type="date" name="date_to" placeholder="to" />
+          </div>
+          <div class="form__input-container">
+            <label class="form__input-label" for="hashtag">Hashtag</label>
+            <div class="form__input-container form__input-container_row">
+              <input class="form__input" id="hashtag" type="text" name="hashtag" placeholder="tag" />
+              <i id="addHashtag" class="icon fa-solid fa-plus"></i>
+            </div>
+            <div id ="form__hashtag" class="hashtag form__hashtag"></div>
+          </div>
+          <div class="form__buttons">
+            <button class="button button_secondary form__button" type="reset">Clear</button>
+            <button class="button button_primary form__button" type="submit">Apply</button>
+          </div>
+        </form>
+      </aside>
+      <section class="section twitter main__twitter">
+      ${
+        TweetCollection.user.length
+          ? `<form class="form-add twitter__form-add" data-action='add'>
+      <div class="form-add__header">
+        <div class="form-add__header-logo">un</div>
+        <textarea class="form-add__placeholder" name="text" maxlength="280" placeholder="Some text..."></textarea>
+      </div>
+      <div class="form-add__footer">
+        <p class="form-add__text">
+          <span class="form-add__сharacters-left">280</span>
+          сharacters left
+        </p>
+        <button class="button button_primary form-add__button" type="submit" >Tweet</button>
+      </div>
+    </form>`
+          : ''
+      }
+        <div id="tweets" class="tweets"></div>
+      </section>`;
+
+    element.innerHTML = result;
+    const filterForm = document.querySelector('#filterForm');
+    const addHashtag = document.querySelector('#addHashtag');
+    const formAdd = document.querySelector('[data-action="add"]');
+
+    addHashtag.addEventListener('click', controller.addHashtag.bind(controller));
+    filterForm.addEventListener('submit', controller.filterSubmit.bind(controller));
+    filterForm.addEventListener('reset', () => controller.getFeed());
+    if (formAdd) {
+      formAdd.addEventListener('submit', controller.addTweet.bind(controller));
+      const charactersLeft = formAdd.querySelector('.form-add__сharacters-left');
+      formAdd.addEventListener('input', (e) => {
+        console.log(e.target.value);
+        charactersLeft.innerText = 280 - e.target.value.length;
+      });
     }
   }
 }
@@ -948,17 +1073,20 @@ class AutorizationView {
   display() {
     const element = document.querySelector(`#${this.containerId}`);
     element.classList.add('main_colomn');
+    const headerAuthorization = document.querySelector('.header__authorization');
+    headerAuthorization.style.display = 'none';
+
     const result = `
     <section class="section authorization">
       <form class="form authorization__form">
         <h2 class="form__title">Authorization</h2>
         <div class="form__input-container">
           <input class="form__input" type="text" name="login" placeholder="Login" required />
-          <small class="form__error-message">Error message</small>
+          <small class="form__error-message form__error-message_login"></small>
         </div>
         <div class="form__input-container">
-          <input class="form__input" type="text" name="password" placeholder="Password" required />
-          <small class="form__error-message">Error message</small>
+          <input class="form__input" type="password" name="password" placeholder="Password" required />
+          <small class="form__error-message form__error-message_password"></small>
         </div>
         <div class="form__buttons">
           <button class="button button_secondary form__button" type="button" data-action="registration">Registration</button>
@@ -966,15 +1094,24 @@ class AutorizationView {
         </div>
      </form>
     </section>
-    <a class="link" href="./index.html">
-      <button class="button button_primary" type="button">Back to main</button>
-    </a>`;
+      <button class="button button_primary" type="button" data-action="backToMain">Back to main</button>
+ `;
 
     element.innerHTML = result;
 
-    const registration = document.querySelector('[data-action="registration"]');
+    const authorizationForm = document.querySelector('.authorization__form');
+    const registration = authorizationForm.querySelector('[data-action="registration"]');
+    const backToMain = document.querySelector('[data-action="backToMain"]');
+
     registration.addEventListener('click', (e) => {
       controller.registrationView.display();
+    });
+    authorizationForm.addEventListener('submit', controller.submitAuthorizationForm.bind(controller));
+
+    backToMain.addEventListener('click', () => {
+      controller.headerView.display();
+      controller.mainView.display();
+      controller.getFeed();
     });
   }
 }
@@ -987,21 +1124,23 @@ class RegistrationView {
   display() {
     const element = document.querySelector(`#${this.containerId}`);
     element.classList.add('main_colomn');
+    const headerAuthorization = document.querySelector('.header__authorization');
+    headerAuthorization.style.display = 'none';
     const result = `
     <section class="section registration">
         <form class="form registration__form">
           <h2 class="form__title">Registration</h2>
           <div class="form__input-container">
             <input class="form__input" type="text" name="login" placeholder="Login" required />
-            <small class="form__error-message">Error message</small>
+            <small class="form__error-message form__error-message_login"></small>
           </div>
           <div class="form__input-container">
-            <input class="form__input" type="text" name="password" placeholder="Password" required />
-            <small class="form__error-message">Error message</small>
+            <input class="form__input" type="password" name="password" placeholder="Password" required />
+            <small class="form__error-message form__error-message_password"></small>
           </div>
           <div class="form__input-container">
-            <input class="form__input" type="text" name="password-repeat" placeholder="Password repeat" required />
-            <small class="form__error-message">Error message</small>
+            <input class="form__input" type="password" name="passwordRepeat" placeholder="Password repeat" required />
+            <small class="form__error-message form__error-message_password-repeat"></small>
           </div>
           <div class="form__buttons">
               <button class="button button_secondary form__button" type="button" data-action="authorization">Authorization</button>
@@ -1009,16 +1148,24 @@ class RegistrationView {
           </div>
         </form>
       </section>
-      <a class="link" href="./index.html">
-        <button class="button button_primary" type="button">Back to main</button>
-      </a>`;
+      <button class="button button_primary" type="button" data-action="backToMain">Back to main</button>`;
 
     element.innerHTML = result;
 
-    const authorization = document.querySelector('[data-action="authorization"]');
-    authorization.addEventListener('click', (e) => {
+    const authorizationForm = document.querySelector('.registration__form');
+    const authorization = element.querySelector('[data-action="authorization"]');
+    const backToMain = document.querySelector('[data-action="backToMain"]');
+    authorization.addEventListener('click', () => {
       controller.autorizationView.display();
     });
+
+    backToMain.addEventListener('click', (e) => {
+      controller.headerView.display();
+      controller.mainView.display();
+      controller.getFeed();
+    });
+
+    authorizationForm.addEventListener('submit', controller.submitRegistrationForm.bind(controller));
   }
 }
 
@@ -1086,12 +1233,14 @@ class Utils {
 class TweetsController {
   constructor() {
     this.myTweet = new TweetCollection(tweets);
+    this.users = new UserCollection();
     this.headerView = new HeaderView('authorization');
     this.authorsView = new AuthorsView('names');
     this.filterView = new FilterView('filterForm');
     this.hashtagsView = new HashtagsView('form__hashtag');
     this.tweetFeedView = new TweetFeedView('tweets');
     this.tweetView = new TweetView('main');
+    this.mainView = new MainView('main');
     this.autorizationView = new AutorizationView('main');
     this.registrationView = new RegistrationView('main');
     this.top = 10;
@@ -1105,42 +1254,21 @@ class TweetsController {
   }
 
   setCurrentUser(user) {
-    if (typeof user === 'string' && user.trim()) {
-      TweetCollection.user = user;
-      this.headerView.display(user);
-      this.getFeed();
-      return true;
-    }
-    return false;
+    TweetCollection.user = user;
+    this.headerView.display(user);
+    this.mainView.display();
+    this.getFeed();
+    return true;
   }
 
-  addTweet(text) {
-    if (typeof text === 'string' && text.trim()) {
-      this.myTweet.add(text);
-      this.tweetFeedView.display(this.myTweet.getPage());
-      this.setAutors();
-      return true;
-    }
-    return false;
-  }
-
-  editTweet(id, text) {
-    if (typeof id === 'string' && id.trim() && typeof text === 'string' && text.trim()) {
-      this.myTweet.edit(id, text);
-      this.tweetFeedView.display(this.myTweet.getPage());
-      return true;
-    }
-    return false;
-  }
-
-  removeTweet(id) {
-    if (typeof id === 'string' && id.trim()) {
-      this.myTweet.remove(id);
-      this.tweetFeedView.display(this.myTweet.getPage());
-      this.setAutors();
-      return true;
-    }
-    return false;
+  addTweet(event) {
+    event.preventDefault();
+    const data = Object.fromEntries(new FormData(event.target));
+    event.target.reset();
+    this.myTweet.add(data.text);
+    this.mainView.display();
+    this.tweetFeedView.display(this.myTweet.getPage());
+    this.setAutors();
   }
 
   getFeed(
@@ -1163,12 +1291,73 @@ class TweetsController {
     return false;
   }
 
-  showTweet(id) {
-    if (typeof id === 'string' && id.trim()) {
-      this.tweetView.display(this.myTweet.get(id));
-      return true;
+  tweetActions(event) {
+    const clickedElem = event.path.find((elem) => elem.className === 'tweet');
+    let clickedElemId;
+
+    if (clickedElem) {
+      clickedElemId = clickedElem.dataset.id;
+      if (event.target.dataset.action === 'remove') {
+        this.removeTweet(clickedElemId);
+        return;
+      }
+      if (event.target.dataset.action === 'edit') {
+        const formAdd = document.querySelector('.twitter__form-add');
+        formAdd.remove();
+        const formEdit = document.createElement('form');
+        formEdit.classList.add('form-add');
+        formEdit.classList.add(['twitter__form-add']);
+        formEdit.setAttribute('data-action', 'edit');
+        formEdit.innerHTML = `<div class="form-add__header">
+          <div class="form-add__header-logo">un</div>
+          <textarea class="form-add__placeholder" name="text" maxlength="280" placeholder="Some text..."></textarea>
+        </div>
+        <div class="form-add__footer">
+          <p class="form-add__text">
+            <span class="form-add__сharacters-left">280</span>
+            сharacters left
+          </p>
+          <button class="button button_primary form-add__button" type="submit" >Tweet</button>
+        </div>`;
+        document.querySelector('.main__twitter').prepend(formEdit);
+
+        const formAddPlaceholder = document.querySelector('.form-add__placeholder');
+        const charactersLeft = document.querySelector('.form-add__сharacters-left');
+        formAddPlaceholder.value = this.myTweet.get(clickedElemId).text;
+        charactersLeft.innerText = 280 - formAddPlaceholder.value.length;
+        formAddPlaceholder.addEventListener('input', (e) => {
+          charactersLeft.innerText = 280 - e.target.value.length;
+        });
+        formEdit.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const data = Object.fromEntries(new FormData(formEdit));
+          formEdit.reset();
+          this.editTweet(clickedElemId, data.text);
+        });
+        return;
+      }
+      this.showTweet(clickedElemId);
     }
-    return false;
+
+    if (event.target.dataset.action === 'loadMore') {
+      this.getFeed(0, 10, this.getFiters());
+    }
+  }
+
+  editTweet(id, text) {
+    this.myTweet.edit(id, text);
+    this.mainView.display();
+    this.tweetFeedView.display(this.myTweet.getPage());
+  }
+
+  removeTweet(id) {
+    this.myTweet.remove(id);
+    this.tweetFeedView.display(this.myTweet.getPage());
+    this.setAutors();
+  }
+
+  showTweet(id) {
+    this.tweetView.display(this.myTweet.get(id));
   }
 
   addHashtag() {
@@ -1182,6 +1371,7 @@ class TweetsController {
   }
 
   getFiters() {
+    const filterForm = document.querySelector('#filterForm');
     const hashtags = [...document.querySelectorAll('.hashtag__name')].map((hashtag) => hashtag.innerText);
     const formData = {
       author: filterForm.author.value,
@@ -1206,23 +1396,59 @@ class TweetsController {
     this.getFeed(0, 10, this.getFiters());
   }
 
-  loadMore() {
-    this.getFeed(0, (this.top += 10), this.getFiters());
+  submitAuthorizationForm(event) {
+    event.preventDefault();
+    const data = Object.fromEntries(new FormData(event.target));
+    const users = this.users.getUsers();
+    const errorPassword = event.target.querySelector('.form__error-message_password');
+    const errorLogin = event.target.querySelector('.form__error-message_login');
+
+    const foundUser = users.find((user) => user.login === data.login);
+    if (foundUser) {
+      errorLogin.innerText = '';
+      if (foundUser.password === data.password) {
+        errorPassword.innerText = '';
+        event.target.reset();
+        this.mainView.display();
+        this.setCurrentUser(foundUser.login);
+        this.setAutors();
+      } else {
+        errorPassword.innerText = 'Password incorrect';
+      }
+    } else {
+      errorLogin.innerText = `${data.login} not register`;
+    }
+  }
+
+  submitRegistrationForm(event) {
+    event.preventDefault();
+    const data = Object.fromEntries(new FormData(event.target));
+    const users = this.users.getUsers();
+    const errorLogin = event.target.querySelector('.form__error-message_login');
+    const errorPassword = event.target.querySelector('.form__error-message_password');
+    const errorPasswordRepeat = event.target.querySelector('.form__error-message_password-repeat');
+
+    const foundUser = users.find((user) => user.login.toLowerCase() === data.login.toLowerCase());
+    if (!foundUser) {
+      errorLogin.innerText = '';
+      if (data.password !== data.passwordRepeat) {
+        errorPassword.innerText = 'Passwords do not match';
+        errorPasswordRepeat.innerText = 'Passwords do not match';
+      } else {
+        errorPassword.innerText = '';
+        errorPasswordRepeat.innerText = '';
+        event.target.reset();
+        this.users.add({ login: data.login, password: data.password });
+        this.autorizationView.display();
+      }
+    } else {
+      errorLogin.innerText = `${foundUser.login} already registered`;
+    }
   }
 }
 
 const controller = new TweetsController();
-
+controller.headerView.display();
+controller.mainView.display();
 controller.setAutors();
 controller.getFeed();
-
-const filterForm = document.querySelector('#filterForm');
-const addHashtag = document.querySelector('#addHashtag');
-const authorization = document.querySelector('[data-action="authorization"]');
-
-addHashtag.addEventListener('click', controller.addHashtag.bind(controller));
-filterForm.addEventListener('submit', controller.filterSubmit.bind(controller));
-filterForm.addEventListener('reset', () => controller.getFeed());
-authorization.addEventListener('click', () => {
-  controller.autorizationView.display();
-});

@@ -22,74 +22,21 @@
           <div class="burger__line"></div>
           <div class="burger__line"></div>
         </label>
-        <a class="link" href="./index.html">
-          <div class="header__logo"></div>
-        </a>
+        <div class="header__logo"></div>
       </div>
-      <div id="authorization" class="header__authorization">
-        <button class="button button_primary header__button" data-action="authorization">Sign In</button>
+      <div id="authorization" class="header__authorization"></div>
       </div>
     </header>
-    <main id="main" class="main">
-      <aside class="section filter">
-        <form id="filterForm" class="form filter__form">
-          <h3 class="form__title">Filter by:</h3>
-          <div class="form__input-container">
-            <label class="form__input-label" for="name">Name</label>
-            <input class="form__input" id="author" name="author" type="text" list="names" placeholder="Name" />
-            <datalist class="form__input-datalist" id="names"> </datalist>
-          </div>
-          <div class="form__input-container">
-            <label class="form__input-label" for="text">Text</label>
-            <input class="form__input" id="text" type="text" name="text" placeholder="Text" />
-          </div>
-          <div class="form__input-container">
-            <label class="form__input-label" for="date_from">Date</label>
-            <input class="form__input" id="date_from" type="date" name="date_from" placeholder="from" />
-            <input class="form__input" id="date_to" type="date" name="date_to" placeholder="to" />
-          </div>
-          <div class="form__input-container">
-            <label class="form__input-label" for="hashtag">Hashtag</label>
-            <div class="form__input-container form__input-container_row">
-              <input class="form__input" id="hashtag" type="text" name="hashtag" placeholder="tag" />
-              <i id="addHashtag" class="icon fa-solid fa-plus"></i>
-            </div>
-            <div id ="form__hashtag" class="hashtag form__hashtag"></div>
-          </div>
-          <div class="form__buttons">
-            <button class="button button_secondary form__button" type="reset">Clear</button>
-            <button class="button button_primary form__button" type="submit">Apply</button>
-          </div>
-        </form>
-      </aside>
-      <section class="section twitter main__twitter">
-        <form class="form-add twitter__form-add">
-          <div class="form-add__header">
-            <div class="form-add__header-logo">un</div>
-            <textarea class="form-add__placeholder" name="tweet_text" maxlength="280" placeholder="Some text..."></textarea>
-          </div>
-          <div class="form-add__footer">
-            <p class="form-add__text">
-              <span class="form-add__сharacters-left">280</span>
-              сharacters left
-            </p>
-            <button class="button button_primary form-add__button" type="submit" disabled>Tweet</button>
-          </div>
-        </form>
-        <div id="tweets" class="tweets"></div>
-      </section>
-    </main>
+    <main id="main" class="main"></main>
     <footer class="footer">
       <p class="footer__text">
         Twitter by
-        <a id="author-name" class="footer__text_decoration" href="https://www.linkedin.com/in/andrei-shynkarou-874425223" target="_blank"
-          >Andrei Shynkarou</a
-        >. Email:&nbsp;
+        <a id="author-name" class="footer__text_decoration" href="https://www.linkedin.com/in/andrei-shynkarou-874425223" target="_blank">Andrei Shynkarou</a>. Email:&nbsp;
         <a id="author-email" class="footer__text_decoration" href="mailto:andrey03071997@yandex.ru"> andrey03071997@yandex.ru </a>
       </p>
       <p class="footer__text">
         Last update:&nbsp;
-        <time id="update-date" class="footer__text_decoration" datetime="2022-03-31">31.03.2022</time>
+        <time id="update-date" class="footer__text_decoration" datetime="2022-04-07">07.04.2022</time>
       </p>
     </footer>
   </body>
