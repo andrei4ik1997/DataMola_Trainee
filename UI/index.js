@@ -140,7 +140,7 @@ const tweets = [
   {
     id: '10',
     text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. ',
-    createdAt: new Date('2022-03-4T23:00:00'),
+    createdAt: new Date('2022-03-04T23:00:00'),
     author: 'Username2',
     comments: [
       {
@@ -515,24 +515,32 @@ class TweetCollection {
   constructor(arrTweet) {
     this.tweets = new Map();
     this.arr = arrTweet;
-
-    this.arr.forEach(({ id, text, createdAt, author, comments }) => {
-      const tweet = new Tweet(id, text, createdAt, author, comments);
+    this.restore();
+    this.arr.forEach((item) => {
+      const tweet = new Tweet(item._id || item.id, item.text, item._createdAt || item.createdAt, item._author || item.author, item.comments);
       try {
         if (Tweet.validate(tweet)) {
-          if (this.tweets.has(id)) {
-            throw new Error(`Id ${id} occupate, tweet not added`);
+          if (this.tweets.has(item._id || item.id)) {
+            throw new Error(`Id ${item._id || item.id} occupate, tweet not added`);
           }
-          this.tweets.set(id, tweet);
+          this.tweets.set(item._id || item.id, tweet);
         }
       } catch (error) {
         console.log(error.message);
       }
     });
+    console.log(this.tweets);
   }
 
   save() {
-    localStorage.setItem('tweets', JSON.stringify(Array.from(this.tweets.values())));
+    const tw = JSON.parse(JSON.stringify([...this.tweets.values()]));
+    const comments = [...this.getTweets().values()].map((i) => [...i.comments.values()]);
+    const result = tw.map((item, index) => {
+      item.comments = comments[index];
+      return item;
+    });
+    localStorage.setItem('tweets', JSON.stringify(result));
+    this.restore();
   }
 
   restore() {
@@ -580,6 +588,7 @@ class TweetCollection {
   ) {
     const filteredTweets = () => {
       const { author = '', text = '', dateFrom = new Date(0), dateTo = new Date(), hashtags = [] } = filterConfig;
+
       return Array.from(this.tweets.values())
         .filter((tweet) => {
           if (author.trim().length) {
@@ -595,7 +604,8 @@ class TweetCollection {
         })
         .filter((tweet) => {
           const createdAt = new Date(tweet.createdAt).getTime();
-          return createdAt >= new Date(dateFrom).getTime() && createdAt <= new Date(dateTo).getTime();
+          const dateTo2 = new Date(dateTo).getTime();
+          return createdAt >= new Date(dateFrom).getTime() && createdAt <= dateTo2;
         })
         .filter((tweet) => {
           if (!hashtags.length) {
@@ -607,8 +617,12 @@ class TweetCollection {
           }
           return tweet;
         })
-        .sort((a, b) => b.createdAt - a.createdAt);
+        .sort((a, b) => {
+          console.log();
+          return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+        });
     };
+    console.log(filteredTweets());
     try {
       if (!filteredTweets().length) {
         throw new Error('Not found');
@@ -764,8 +778,8 @@ class TweetCollection {
 }
 
 class UserCollection {
-  constructor(users) {
-    this.users = users;
+  constructor(data) {
+    this.users = data;
     this.restore();
   }
 
@@ -795,6 +809,8 @@ class HeaderView {
   display(user) {
     const authorization = document.querySelector(`#${this.containerId}`);
     authorization.style.display = 'flex';
+    const burger = document.querySelector('.burger');
+    burger.classList.remove('hide');
     if (user) {
       authorization.innerHTML = ` <span class="header__username">${user}</span>
       <button class="button button_primary header__button" data-action="exit">Exit</button>`;
@@ -947,7 +963,6 @@ class TweetView {
       const { id, text, createdAt, author, comments } = tweet;
 
       const commentsArray = Array.from(comments.values()).sort((a, b) => b.createdAt - a.createdAt);
-      console.log(commentsArray);
       let result = `<section class="section main__container" data-id=${id}>
                       <a class="link link_icon">
                           <i class="icon icon_back fa-solid fa-circle-arrow-left fa-2x" data-action="backToMain"></i>
@@ -1068,7 +1083,8 @@ class TwitterView {
     }
     `;
     if (tweetsArr) {
-      tweetsList = "<div id='tweets' class='tweets'><ul class='tweets__list'>";
+      tweetsList = `<div id='tweets' class='tweets'>
+                      <ul id="tweets__list" class='tweets__list'>`;
       tweetsArr.forEach((tweet) => {
         tweetsList += `<li class="tweet" data-id=${tweet.id}>
         <div class="tweet__header">
@@ -1096,13 +1112,13 @@ class TwitterView {
     </li>`;
       });
 
-      if (tweetsArr.length % 10 === 0) {
-        tweetsList += '<button class="button button_primary twitter__button" data-action="loadMore" data-top="10">Load more</button>';
-      }
-      tweetsList += '</ul></div>';
+      tweetsList += `</ul>${tweetsArr.length % 10 === 0 ? '<button class="button button_primary twitter__button" data-action="loadMore" data-top="10">Load more</button>' : ''}</div>`;
       sectionTwitter.innerHTML = addForm + tweetsList;
 
       document.querySelector('.tweets__list').addEventListener('click', controller.tweetActions.bind(controller));
+      if (document.querySelector('[data-action="loadMore"]')) {
+        document.querySelector('[data-action="loadMore"]').addEventListener('click', controller.loadMore.bind(controller));
+      }
     } else {
       sectionTwitter.innerHTML = `<div class="not-found">
                               <i class="icon icon_error fa-solid fa-triangle-exclamation fa-4x"></i>
@@ -1122,6 +1138,48 @@ class TwitterView {
   }
 }
 
+class UpdateTweetsView {
+  constructor(containerId) {
+    this.containerId = containerId;
+  }
+
+  display(tweetsArr) {
+    const element = document.querySelector(`#${this.containerId}`);
+    let result = '';
+    tweetsArr.forEach((tweet) => {
+      result += `<li class="tweet" data-id=${tweet.id}>
+      <div class="tweet__header">
+        <div class="tweet__container">
+          <span class="tweet__username">${tweet.author}</span>
+          <div class="tweet__date-container">
+            <time class="tweet__date" datetime=${Utils.getDate(tweet.createdAt)}>${Utils.getDate(tweet.createdAt)}</time>
+            <time class="tweet__time" datetime=${Utils.getDate(tweet.createdAt)}T${Utils.getTime(tweet.createdAt)}">${Utils.getTime(tweet.createdAt)}</time>
+          </div>
+          <div class="tweet__comment">
+            <i class="icon icon__comment fa-regular fa-comment-dots"></i>
+            <span class="tweet__comment-amount">${tweet.comments.size}</span>
+          </div>
+        </div>
+        ${
+          tweet.author.toLowerCase() === TweetCollection.user.toLowerCase()
+            ? `<div class="tweet__icons-container">
+        <i class="icon icon__edit fa-regular fa-pen-to-square" data-action="edit"></i>
+        <i class="icon icon__trash fa-solid fa-trash-can" data-action="remove"></i>
+      </div>`
+            : ''
+        }
+      </div>
+      <p class="tweet__text">${Utils.seachHashtag(tweet.text)}</p>
+  </li>`;
+    });
+    element.innerHTML = result;
+    /*  element.addEventListener('click', controller.tweetActions.bind(controller)); */
+    if (!(tweetsArr.length % 10 === 0)) {
+      document.querySelector('[data-action="loadMore"]').remove();
+    }
+  }
+}
+
 class AutorizationView {
   constructor(containerId) {
     this.containerId = containerId;
@@ -1130,6 +1188,8 @@ class AutorizationView {
   display() {
     const element = document.querySelector(`#${this.containerId}`);
     element.classList.add('main_colomn');
+    const burger = document.querySelector('.burger');
+    burger.classList.add('hide');
     const headerAuthorization = document.querySelector('.header__authorization');
     headerAuthorization.style.display = 'none';
 
@@ -1161,7 +1221,11 @@ class AutorizationView {
     const backToMain = document.querySelector('[data-action="backToMain"]');
 
     registration.addEventListener('click', () => controller.registrationView.display());
-    backToMain.addEventListener('click', () => controller.mainPage());
+    backToMain.addEventListener('click', () => {
+      controller.headerView.display();
+      controller.filterView.display();
+      controller.twitterView.display(controller.myTweet.getPage());
+    });
     authorizationForm.addEventListener('submit', controller.authorization.bind(controller));
   }
 }
@@ -1174,6 +1238,8 @@ class RegistrationView {
   display() {
     const element = document.querySelector(`#${this.containerId}`);
     element.classList.add('main_colomn');
+    const burger = document.querySelector('.burger');
+    burger.classList.add('hide');
     const headerAuthorization = document.querySelector('.header__authorization');
     headerAuthorization.style.display = 'none';
     const result = `
@@ -1207,7 +1273,11 @@ class RegistrationView {
     const backToMain = document.querySelector('[data-action="backToMain"]');
 
     authorization.addEventListener('click', () => controller.autorizationView.display());
-    backToMain.addEventListener('click', () => controller.mainPage());
+    backToMain.addEventListener('click', () => {
+      controller.headerView.display();
+      controller.filterView.display();
+      controller.twitterView.display(controller.myTweet.getPage());
+    });
     authorizationForm.addEventListener('submit', controller.registration.bind(controller));
   }
 }
@@ -1242,10 +1312,17 @@ class TweetsController {
     this.filterView = new FilterView('main');
     this.hashtagsView = new HashtagsView('form__hashtag');
     this.tweetView = new TweetView('main');
+    this.updateTweetsView = new UpdateTweetsView('tweets__list');
     this.twitterView = new TwitterView('main');
     this.autorizationView = new AutorizationView('main');
     this.registrationView = new RegistrationView('main');
     this.modalView = new ModalView('body');
+  }
+
+  loadMore(event) {
+    const { dataset } = event.target;
+    dataset.top = +dataset.top + 10;
+    this.updateTweetsView.display(this.myTweet.getPage(0, dataset.top, this.getFiters()));
   }
 
   addComment(event) {
@@ -1255,7 +1332,6 @@ class TweetsController {
     event.target.reset();
     this.myTweet.addComment(parentElem.dataset.id, data.text);
     this.tweetView.display(this.myTweet.get(parentElem.dataset.id));
-    console.log(event.target);
   }
 
   modalControler(event) {
@@ -1359,10 +1435,6 @@ class TweetsController {
       }
       this.showTweet(clickedElemId);
     }
-
-    if (event.target.dataset.action === 'loadMore') {
-      this.getFeed(0, 10, this.getFiters());
-    }
   }
 
   editTweet(id, text) {
@@ -1423,11 +1495,10 @@ class TweetsController {
   authorization(event) {
     event.preventDefault();
     const data = Object.fromEntries(new FormData(event.target));
-    const users = this.users.getUsers();
     const errorPassword = event.target.querySelector('.form__error-message_password');
     const errorLogin = event.target.querySelector('.form__error-message_login');
 
-    const foundUser = users.find((user) => user.login === data.login);
+    const foundUser = this.users.getUsers().find((user) => user.login === data.login);
     if (foundUser) {
       errorLogin.innerText = '';
       if (foundUser.password === data.password) {
@@ -1445,12 +1516,11 @@ class TweetsController {
   registration(event) {
     event.preventDefault();
     const data = Object.fromEntries(new FormData(event.target));
-    const users = this.users.getUsers();
     const errorLogin = event.target.querySelector('.form__error-message_login');
     const errorPassword = event.target.querySelector('.form__error-message_password');
     const errorPasswordRepeat = event.target.querySelector('.form__error-message_password-repeat');
 
-    const foundUser = users.find((user) => user.login.toLowerCase() === data.login.toLowerCase());
+    const foundUser = this.users.getUsers().find((user) => user.login.toLowerCase() === data.login.toLowerCase());
 
     if (!foundUser) {
       errorLogin.innerText = '';
@@ -1467,12 +1537,6 @@ class TweetsController {
     } else {
       errorLogin.innerText = `${foundUser.login} already registered`;
     }
-  }
-
-  mainPage(params) {
-    this.headerView.display();
-    this.filterView.display();
-    this.twitterView.display(this.myTweet.getPage());
   }
 }
 
