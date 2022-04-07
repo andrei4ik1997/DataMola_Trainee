@@ -8,7 +8,7 @@ module.exports = {
     ecmaVersion: 'latest',
   },
   rules: {
-    'max-classes-per-file': ['error', { ignoreExpressions: true, max: 10 }],
+    'max-classes-per-file': ['error', { ignoreExpressions: true, max: 50 }],
     'no-use-before-define': ['error', { classes: false }],
     'no-underscore-dangle': 'off',
     'object-curly-newline': 'off',
