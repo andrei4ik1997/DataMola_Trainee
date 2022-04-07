@@ -529,7 +529,6 @@ class TweetCollection {
         console.log(error.message);
       }
     });
-    console.log(this.tweets);
   }
 
   save() {
@@ -617,12 +616,8 @@ class TweetCollection {
           }
           return tweet;
         })
-        .sort((a, b) => {
-          console.log();
-          return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-        });
+        .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     };
-    console.log(filteredTweets());
     try {
       if (!filteredTweets().length) {
         throw new Error('Not found');
@@ -1065,8 +1060,8 @@ class TwitterView {
     element.append(sectionTwitter);
     let tweetsList;
     const addForm = `${
-      TweetCollection.user.length
-        ? `<form class="form-add twitter__form-add" data-action='add'>
+      TweetCollection.user.length ?
+        `<form class="form-add twitter__form-add" data-action='add'>
       <div class="form-add__header">
         <div class="form-add__header-logo">${TweetCollection.user[0].toUpperCase()}</div>
         <textarea class="form-add__placeholder" name="text" maxlength="280" placeholder="Some text..."></textarea>
@@ -1078,8 +1073,8 @@ class TwitterView {
         </p>
         <button class="button button_primary form-add__button" type="submit" >Tweet</button>
       </div>
-    </form>`
-        : ''
+    </form>` :
+        ''
     }
     `;
     if (tweetsArr) {
@@ -1100,13 +1095,13 @@ class TwitterView {
             </div>
           </div>
           ${
-            tweet.author.toLowerCase() === TweetCollection.user.toLowerCase()
-              ? `<div class="tweet__icons-container">
+  tweet.author.toLowerCase() === TweetCollection.user.toLowerCase() ?
+    `<div class="tweet__icons-container">
           <i class="icon icon__edit fa-regular fa-pen-to-square" data-action="edit"></i>
           <i class="icon icon__trash fa-solid fa-trash-can" data-action="remove"></i>
-        </div>`
-              : ''
-          }
+        </div>` :
+    ''
+}
         </div>
         <p class="tweet__text">${Utils.seachHashtag(tweet.text)}</p>
     </li>`;
@@ -1161,13 +1156,13 @@ class UpdateTweetsView {
           </div>
         </div>
         ${
-          tweet.author.toLowerCase() === TweetCollection.user.toLowerCase()
-            ? `<div class="tweet__icons-container">
+  tweet.author.toLowerCase() === TweetCollection.user.toLowerCase() ?
+    `<div class="tweet__icons-container">
         <i class="icon icon__edit fa-regular fa-pen-to-square" data-action="edit"></i>
         <i class="icon icon__trash fa-solid fa-trash-can" data-action="remove"></i>
-      </div>`
-            : ''
-        }
+      </div>` :
+    ''
+}
       </div>
       <p class="tweet__text">${Utils.seachHashtag(tweet.text)}</p>
   </li>`;
@@ -1337,7 +1332,6 @@ class TweetsController {
   modalControler(event) {
     const parentElem = event.path.find((elem) => elem.className === 'modal');
     if (event.target.dataset.action === 'no') {
-      console.log(parentElem);
       parentElem.remove();
     }
 
