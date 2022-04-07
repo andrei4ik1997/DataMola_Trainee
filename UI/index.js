@@ -941,6 +941,8 @@ class TweetView {
 
   display(tweet) {
     const element = document.querySelector(`#${this.containerId}`);
+    const burger = document.querySelector('.burger');
+    burger.classList.add('hide');
 
     if (!tweet) {
       const result = `<section class="section error">
@@ -1039,6 +1041,7 @@ class TweetView {
         });
       }
       backToMain.addEventListener('click', (e) => {
+        burger.classList.remove('hide');
         controller.filterView.display();
         controller.twitterView.display(controller.myTweet.getPage());
       });
