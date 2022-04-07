@@ -744,10 +744,6 @@ class TweetCollection {
     }
   }
 
-  getTweets() {
-    return this.tweets;
-  }
-
   static get tweets() {
     return this.tweets;
   }
