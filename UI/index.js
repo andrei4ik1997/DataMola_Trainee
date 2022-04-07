@@ -533,7 +533,7 @@ class TweetCollection {
 
   save() {
     const tw = JSON.parse(JSON.stringify([...this.tweets.values()]));
-    const comments = [...this.getTweets().values()].map((i) => [...i.comments.values()]);
+    const comments = [...this.tweets.values()].map((i) => [...i.comments.values()]);
     const result = tw.map((item, index) => {
       item.comments = comments[index];
       return item;
@@ -1060,8 +1060,8 @@ class TwitterView {
     element.append(sectionTwitter);
     let tweetsList;
     const addForm = `${
-      TweetCollection.user.length ?
-        `<form class="form-add twitter__form-add" data-action='add'>
+      TweetCollection.user.length
+        ? `<form class="form-add twitter__form-add" data-action='add'>
       <div class="form-add__header">
         <div class="form-add__header-logo">${TweetCollection.user[0].toUpperCase()}</div>
         <textarea class="form-add__placeholder" name="text" maxlength="280" placeholder="Some text..."></textarea>
@@ -1073,8 +1073,8 @@ class TwitterView {
         </p>
         <button class="button button_primary form-add__button" type="submit" >Tweet</button>
       </div>
-    </form>` :
-        ''
+    </form>`
+        : ''
     }
     `;
     if (tweetsArr) {
@@ -1095,13 +1095,13 @@ class TwitterView {
             </div>
           </div>
           ${
-  tweet.author.toLowerCase() === TweetCollection.user.toLowerCase() ?
-    `<div class="tweet__icons-container">
+            tweet.author.toLowerCase() === TweetCollection.user.toLowerCase()
+              ? `<div class="tweet__icons-container">
           <i class="icon icon__edit fa-regular fa-pen-to-square" data-action="edit"></i>
           <i class="icon icon__trash fa-solid fa-trash-can" data-action="remove"></i>
-        </div>` :
-    ''
-}
+        </div>`
+              : ''
+          }
         </div>
         <p class="tweet__text">${Utils.seachHashtag(tweet.text)}</p>
     </li>`;
@@ -1156,13 +1156,13 @@ class UpdateTweetsView {
           </div>
         </div>
         ${
-  tweet.author.toLowerCase() === TweetCollection.user.toLowerCase() ?
-    `<div class="tweet__icons-container">
+          tweet.author.toLowerCase() === TweetCollection.user.toLowerCase()
+            ? `<div class="tweet__icons-container">
         <i class="icon icon__edit fa-regular fa-pen-to-square" data-action="edit"></i>
         <i class="icon icon__trash fa-solid fa-trash-can" data-action="remove"></i>
-      </div>` :
-    ''
-}
+      </div>`
+            : ''
+        }
       </div>
       <p class="tweet__text">${Utils.seachHashtag(tweet.text)}</p>
   </li>`;
