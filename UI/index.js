@@ -736,6 +736,7 @@ class TweetCollection {
       if (searchedTweet) {
         if (Comment.validate(comment)) {
           searchedTweet.comments.set(generateId, comment);
+          this.save();
           return true;
         }
       }
