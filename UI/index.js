@@ -689,8 +689,8 @@ class TweetCollection {
         const { createdAt, author, comments } = tweet;
         const editedTweet = new Tweet(id, text, createdAt, author, comments);
         if (Tweet.validate(editedTweet)) {
-          const index = tweets.findIndex((item) => item.id === id);
-          tweets[index] = editedTweet;
+          const index = this.tweets.findIndex((item) => item.id === id);
+          this.tweets[index] = editedTweet;
           this.save();
           return true;
         }
@@ -1151,13 +1151,13 @@ class TwitterView {
           </div>
         </div>
         ${
-  tweet.author.toLowerCase() === TweetCollection.user.toLowerCase() ?
-    `<div class="tweet__icons-container">
+          tweet.author.toLowerCase() === TweetCollection.user.toLowerCase()
+            ? `<div class="tweet__icons-container">
         <i class="icon icon__edit fa-regular fa-pen-to-square" data-action="edit"></i>
         <i class="icon icon__trash fa-solid fa-trash-can" data-action="remove"></i>
-      </div>` :
-    ''
-}
+      </div>`
+            : ''
+        }
       </div>
       <p class="tweet__text">${Utils.seachHashtag(tweet.text)}</p>
   </li>`;
@@ -1196,13 +1196,13 @@ class UpdateTweetsView {
           </div>
         </div>
         ${
-  tweet.author.toLowerCase() === TweetCollection.user.toLowerCase() ?
-    `<div class="tweet__icons-container">
+          tweet.author.toLowerCase() === TweetCollection.user.toLowerCase()
+            ? `<div class="tweet__icons-container">
         <i class="icon icon__edit fa-regular fa-pen-to-square" data-action="edit"></i>
         <i class="icon icon__trash fa-solid fa-trash-can" data-action="remove"></i>
-      </div>` :
-    ''
-}
+      </div>`
+            : ''
+        }
       </div>
       <p class="tweet__text">${Utils.seachHashtag(tweet.text)}</p>
   </li>`;
