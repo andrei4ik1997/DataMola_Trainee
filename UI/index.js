@@ -380,6 +380,7 @@ class Utils {
     return time.join(':');
   }
 }
+
 class Tweet {
   constructor(id = '', text = '', createdAt = new Date(), author = '', comments = new Map()) {
     this._id = id;
@@ -533,7 +534,7 @@ class TweetCollection {
 
   save() {
     const tw = JSON.parse(JSON.stringify([...this.tweets.values()]));
-    const comments = [...this.tweets.values()].map((i) => [...i.comments.values()]);
+    const comments = JSON.parse(JSON.stringify([...this.tweets.values()].map((i) => [...i.comments.values()])));
     const result = tw.map((item, index) => {
       item.comments = comments[index];
       return item;
@@ -580,13 +581,13 @@ class TweetCollection {
     filterConfig = {
       author: '',
       text: '',
-      dateFrom: new Date(0),
-      dateTo: new Date(),
+      dateFrom: new Date(0).setHours(0, 0, 1),
+      dateTo: new Date().setHours(23, 59, 59),
       hashtags: [],
     },
   ) {
     const filteredTweets = () => {
-      const { author = '', text = '', dateFrom = new Date(0), dateTo = new Date(), hashtags = [] } = filterConfig;
+      const { author = '', text = '', dateFrom = new Date(0).setHours(0, 0, 1), dateTo = new Date().setHours(23, 59, 59), hashtags = [] } = filterConfig;
 
       return Array.from(this.tweets.values())
         .filter((tweet) => {
@@ -603,8 +604,9 @@ class TweetCollection {
         })
         .filter((tweet) => {
           const createdAt = new Date(tweet.createdAt).getTime();
-          const dateTo2 = new Date(dateTo).getTime();
-          return createdAt >= new Date(dateFrom).getTime() && createdAt <= dateTo2;
+          const dateFromValue = new Date(dateFrom).setHours(0, 0, 1);
+          const dateToValue = new Date(dateTo).setHours(23, 59, 59);
+          return createdAt >= dateFromValue && createdAt <= dateToValue;
         })
         .filter((tweet) => {
           if (!hashtags.length) {
@@ -856,6 +858,7 @@ class FilterView {
   ) {
     const element = document.querySelector(`#${this.containerId}`);
     const { author, text, dateFrom, dateTo } = filter;
+
     const result = `<aside id="filter" class="section filter">
                       <form id="filterForm" class="form filter__form">
                       <h3 class="form__title">Filter by:</h3>
@@ -1543,6 +1546,7 @@ const addDataToLocalStoradge = () => {
 };
 
 addDataToLocalStoradge();
+
 const controller = new TweetsController();
 
 document.addEventListener('DOMContentLoaded', () => {
