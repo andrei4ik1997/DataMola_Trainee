@@ -799,7 +799,7 @@ class HeaderView {
     this.containerId = containerId;
   }
 
-  display(user) {
+  display(user = TweetCollection.user) {
     const authorization = document.querySelector(`#${this.containerId}`);
     authorization.style.display = 'flex';
     const burger = document.querySelector('.burger');
@@ -1354,6 +1354,7 @@ class TweetsController {
     this.headerView.display(user);
     this.filterView.display();
     this.twitterView.display(this.myTweet.getPage());
+    localStorage.setItem('currUser', JSON.stringify(TweetCollection.user));
   }
 
   addTweet(event) {
@@ -1543,6 +1544,9 @@ const addDataToLocalStoradge = () => {
   if (!localStorage.getItem('tweets')) {
     localStorage.setItem('tweets', JSON.stringify(tweets));
   }
+  if (!localStorage.getItem('currUser')) {
+    localStorage.setItem('currUser', JSON.stringify(TweetCollection.user));
+  }
 };
 
 addDataToLocalStoradge();
@@ -1550,6 +1554,7 @@ addDataToLocalStoradge();
 const controller = new TweetsController();
 
 document.addEventListener('DOMContentLoaded', () => {
+  TweetCollection.user = JSON.parse(localStorage.getItem('currUser'));
   controller.headerView.display();
   controller.filterView.display();
   controller.twitterView.display(controller.myTweet.getPage());
