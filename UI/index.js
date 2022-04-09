@@ -1,6 +1,6 @@
+/* eslint-disable no-shadow */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-use-before-define */
-/* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 
 const tweets = [
@@ -385,15 +385,12 @@ class Utils {
 class Tweet {
   static maxTweetLength = 280;
 
-  constructor(id = '', text = '', createdAt = new Date(), author = '', comments = new Map()) {
+  constructor(id = '', text = '', createdAt = new Date(), author = '', comments = []) {
     this._id = id;
     this.text = text;
     this._createdAt = createdAt;
     this._author = author;
-    this.comments = new Map();
-    comments.forEach((comment) => {
-      this.comments.set(comment.id, new Comment(comment.id, comment.text, comment.createdAt, comment.author));
-    });
+    this.comments = comments.map((comment) => new Comment(comment.id, comment.text, comment.createdAt, comment.author));
   }
 
   get id() {
@@ -436,7 +433,7 @@ class Tweet {
       });
 
       Object.keys(tweet).forEach((key) => {
-        if (!tweet[key].length && !(tweet[key] instanceof Date || tweet[key] instanceof Map || typeof tweet[key] === 'boolean')) {
+        if (!tweet[key].length && !(tweet[key] instanceof Date || tweet[key] instanceof Array || typeof tweet[key] === 'boolean')) {
           throw new Error(`You need fill ${key}`);
         }
         if (key === 'text' && tweet[key].length > Tweet.maxTweetLength + 1) {
@@ -518,18 +515,14 @@ class Comment {
 class TweetCollection {
   static _user = '';
 
-  constructor(arrTweet) {
-    this.tweets = new Map();
-    this.arr = arrTweet;
-    this.restore();
+  constructor() {
+    this.tweets = [];
+    this.arr = this.restore();
     this.arr.forEach((item) => {
-      const tweet = new Tweet(item._id || item.id, item.text, item._createdAt || item.createdAt, item._author || item.author, item.comments);
+      const tweet = new Tweet(item.id, item.text, item.createdAt, item.author, item.comments);
       try {
         if (Tweet.validate(tweet)) {
-          if (this.tweets.has(item._id || item.id)) {
-            throw new Error(`Id ${item._id || item.id} occupate, tweet not added`);
-          }
-          this.tweets.set(item._id || item.id, tweet);
+          this.tweets.push(tweet);
         }
       } catch (error) {
         console.log(error.message);
@@ -538,20 +531,23 @@ class TweetCollection {
   }
 
   save() {
-    const tw = JSON.parse(JSON.stringify([...this.tweets.values()]));
-    const comments = [...this.tweets.values()].map((i) => {
-      return [...i.comments.values()];
-    });
-    const result = tw.map((item, index) => {
-      item.comments = comments[index];
-      return item;
-    });
-
-    localStorage.setItem('tweets', JSON.stringify(result));
+    localStorage.setItem('tweets', JSON.stringify(this.tweets));
   }
 
   restore() {
-    this.arr = JSON.parse(localStorage.getItem('tweets'));
+    const restoreTweets = JSON.parse(localStorage.getItem('tweets'));
+    return restoreTweets.map((item) => ({
+      id: item._id || item.id,
+      text: item.text,
+      createdAt: item._createdAt || item.createdAt,
+      author: item._author || item.author,
+      comments: item.comments.map((comment) => ({
+        id: comment._id || comment.id,
+        text: comment.text,
+        createdAt: comment._createdAt || comment.createdAt,
+        author: comment._author || comment.author,
+      })),
+    }));
   }
 
   addAll(arrTweet) {
@@ -567,7 +563,7 @@ class TweetCollection {
             notValidatedTweets.push(elem);
             throw new Error(`Id ${id} occupate`);
           }
-          this.tweets.set(id, tweet);
+          this.tweets.push(tweet);
           this.save();
         }
       } catch (error) {
@@ -578,7 +574,7 @@ class TweetCollection {
   }
 
   clear() {
-    this.tweets.clear();
+    this.tweets.length = 0;
     this.save();
   }
 
@@ -596,7 +592,7 @@ class TweetCollection {
     const filteredTweets = () => {
       const { author = '', text = '', dateFrom = new Date(0).setHours(0, 0, 1), dateTo = new Date().setHours(23, 59, 59), hashtags = [] } = filterConfig;
 
-      return Array.from(this.tweets.values())
+      return this.tweets
         .filter((tweet) => {
           if (author.trim().length) {
             return tweet.author.toLowerCase() === author.toLowerCase();
@@ -649,7 +645,7 @@ class TweetCollection {
       } else if (typeof id !== 'string') {
         throw new Error(`Invalid type, you insert ${typeof id}, but I wait string`);
       }
-      const searchedTweet = this.tweets.get(id);
+      const searchedTweet = this.tweets.find((tweet) => tweet.id === id);
 
       if (searchedTweet) {
         return searchedTweet;
@@ -675,10 +671,7 @@ class TweetCollection {
       const tweet = new Tweet(generateId, text, new Date(new Date().getTime()), TweetCollection.user);
 
       if (Tweet.validate(tweet)) {
-        if (this.tweets.has(generateId)) {
-          throw new Error(`Id ${generateId} occupate, tweet not added`);
-        }
-        this.tweets.set(tweet.id, tweet);
+        this.tweets.push(tweet);
         this.save();
         return true;
       }
@@ -696,7 +689,8 @@ class TweetCollection {
         const { createdAt, author, comments } = tweet;
         const editedTweet = new Tweet(id, text, createdAt, author, comments);
         if (Tweet.validate(editedTweet)) {
-          this.tweets.set(id, editedTweet);
+          const index = tweets.findIndex((item) => item.id === id);
+          tweets[index] = editedTweet;
           this.save();
           return true;
         }
@@ -722,7 +716,7 @@ class TweetCollection {
       const searchedTweet = this.get(id);
       if (searchedTweet) {
         if (searchedTweet.author.toLowerCase() === TweetCollection.user.toLowerCase()) {
-          this.tweets.delete(id);
+          this.tweets = this.tweets.filter((tweet) => tweet.id !== id);
           this.save();
           return true;
         }
@@ -742,7 +736,7 @@ class TweetCollection {
       const searchedTweet = this.get(id);
       if (searchedTweet) {
         if (Comment.validate(comment)) {
-          searchedTweet.comments.set(generateId, comment);
+          searchedTweet.comments.push(comment);
           this.save();
           return true;
         }
@@ -970,7 +964,7 @@ class TweetView {
     result += this.tweet(author, createdAt, comments, text);
 
     const commentsBlock = `<h3 class="main__container-title">Comments</h3>
-                          ${comments.size ? this.comments(comments) : '<p class="no-comments">No comments yet</p>'}`;
+                          ${comments.length ? this.comments(comments) : '<p class="no-comments">No comments yet</p>'}`;
 
     result += commentsBlock;
 
@@ -992,7 +986,7 @@ class TweetView {
         charactersLeft.innerText = Tweet.maxTweetLength - e.target.value.length;
       });
     }
-    backToMain.addEventListener('click', (e) => {
+    backToMain.addEventListener('click', () => {
       burger.classList.remove('hide');
       controller.filterView.display();
       controller.twitterView.display(controller.myTweet.getPage());
@@ -1023,7 +1017,7 @@ class TweetView {
                   </div>
                   <div class="tweet__comment">
                     <i class="icon icon__comment fa-regular fa-comment-dots"></i>
-                   <span class="tweet__comment-amount">${comments.size}</span>
+                   <span class="tweet__comment-amount">${comments.length}</span>
                   </div>
                 </div>
               </div>
@@ -1033,7 +1027,7 @@ class TweetView {
 
   comments(comments) {
     let result = '';
-    const sortedComments = Array.from(comments.values()).sort((a, b) => b.createdAt - a.createdAt);
+    const sortedComments = comments.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     sortedComments.forEach((comment) => {
       result += `<li class="comment">
                         <div class="comment__header">
@@ -1153,17 +1147,17 @@ class TwitterView {
           </div>
           <div class="tweet__comment">
             <i class="icon icon__comment fa-regular fa-comment-dots"></i>
-            <span class="tweet__comment-amount">${tweet.comments.size}</span>
+            <span class="tweet__comment-amount">${tweet.comments.length}</span>
           </div>
         </div>
         ${
-          tweet.author.toLowerCase() === TweetCollection.user.toLowerCase()
-            ? `<div class="tweet__icons-container">
+  tweet.author.toLowerCase() === TweetCollection.user.toLowerCase() ?
+    `<div class="tweet__icons-container">
         <i class="icon icon__edit fa-regular fa-pen-to-square" data-action="edit"></i>
         <i class="icon icon__trash fa-solid fa-trash-can" data-action="remove"></i>
-      </div>`
-            : ''
-        }
+      </div>` :
+    ''
+}
       </div>
       <p class="tweet__text">${Utils.seachHashtag(tweet.text)}</p>
   </li>`;
@@ -1198,17 +1192,17 @@ class UpdateTweetsView {
           </div>
           <div class="tweet__comment">
             <i class="icon icon__comment fa-regular fa-comment-dots"></i>
-            <span class="tweet__comment-amount">${tweet.comments.size}</span>
+            <span class="tweet__comment-amount">${tweet.comments.length}</span>
           </div>
         </div>
         ${
-          tweet.author.toLowerCase() === TweetCollection.user.toLowerCase()
-            ? `<div class="tweet__icons-container">
+  tweet.author.toLowerCase() === TweetCollection.user.toLowerCase() ?
+    `<div class="tweet__icons-container">
         <i class="icon icon__edit fa-regular fa-pen-to-square" data-action="edit"></i>
         <i class="icon icon__trash fa-solid fa-trash-can" data-action="remove"></i>
-      </div>`
-            : ''
-        }
+      </div>` :
+    ''
+}
       </div>
       <p class="tweet__text">${Utils.seachHashtag(tweet.text)}</p>
   </li>`;
