@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
@@ -538,13 +539,15 @@ class TweetCollection {
 
   save() {
     const tw = JSON.parse(JSON.stringify([...this.tweets.values()]));
-    const comments = JSON.parse(JSON.stringify([...this.tweets.values()].map((i) => [...i.comments.values()])));
+    const comments = [...this.tweets.values()].map((i) => {
+      return [...i.comments.values()];
+    });
     const result = tw.map((item, index) => {
       item.comments = comments[index];
       return item;
     });
+
     localStorage.setItem('tweets', JSON.stringify(result));
-    this.restore();
   }
 
   restore() {
@@ -862,50 +865,53 @@ class FilterView {
     },
   ) {
     const element = document.querySelector(`#${this.containerId}`);
-    const { author, text, dateFrom, dateTo } = filter;
-
-    const result = `<aside id="filter" class="section filter">
-                      <form id="filterForm" class="form filter__form">
-                      <h3 class="form__title">Filter by:</h3>
-                      <div class="form__input-container">
-                       <label class="form__input-label" for="name">Name</label>
-                       <input class="form__input" id="author" ${author ? `value=${author}` : ''} name="author"  type="text" list="names" placeholder="Name" />
-                       <datalist class="form__input-datalist" id="names"> </datalist>
-                      </div>
-                     <div class="form__input-container">
-                       <label class="form__input-label" for="text">Text</label>
-                       <input class="form__input" id="text" ${text ? `value=${text}` : ''} type="text" name="text" placeholder="Text" />
-                     </div>
-                     <div class="form__input-container">
-                       <label class="form__input-label" for="date_from">Date</label>
-                       <input class="form__input" id="date_from" value=${Utils.getDate(dateFrom)} type="date"  name="date_from" placeholder="from" />
-                       <input class="form__input" id="date_to" value=${Utils.getDate(dateTo)} type="date" name="date_to" placeholder="to" />
-                     </div>
-                     <div class="form__input-container">
-                       <label class="form__input-label" for="hashtag">Hashtag</label>
-                       <div class="form__input-container form__input-container_row">
-                         <input class="form__input" id="hashtag" type="text" name="hashtag" placeholder="tag" />
-                         <i id="addHashtag" class="icon fa-solid fa-plus"></i>
-                       </div>
-                       <div id ="form__hashtag" class="hashtag form__hashtag"></div>
-                     </div>
-                     <div class="form__buttons">
-                       <button class="button button_secondary form__button" type="reset">Clear</button>
-                       <button class="button button_primary form__button" type="submit">Apply</button>
-                     </div>
-                   </form>
-                  </aside>`;
-    element.innerHTML = result;
-
-    controller.setAutors();
+    element.innerHTML = this.filterBlock(filter);
     const addHashtag = document.querySelector('#addHashtag');
     const filterForm = document.querySelector('#filterForm');
+
+    controller.setAutors();
+
     addHashtag.addEventListener('click', controller.addHashtag.bind(controller));
     filterForm.addEventListener('submit', controller.filterSubmit.bind(controller));
     filterForm.addEventListener('reset', () => {
       controller.filterView.display();
       controller.twitterView.display(controller.myTweet.getPage());
     });
+  }
+
+  filterBlock(filter) {
+    const { author, text, dateFrom, dateTo } = filter;
+    return `<aside id="filter" class="section filter">
+              <form id="filterForm" class="form filter__form">
+                <h3 class="form__title">Filter by:</h3>
+                <div class="form__input-container">
+                  <label class="form__input-label" for="name">Name</label>
+                  <input class="form__input" id="author" ${author ? `value=${author}` : ''} name="author"   type="text" list="names" placeholder="Name" />
+                  <datalist class="form__input-datalist" id="names"> </datalist>
+                </div>
+                <div class="form__input-container">
+                  <label class="form__input-label" for="text">Text</label>
+                  <input class="form__input" id="text" ${text ? `value=${text}` : ''} type="text" name="text"  placeholder="Text" />
+                </div>
+                <div class="form__input-container">
+                  <label class="form__input-label" for="date_from">Date</label>
+                  <input class="form__input" id="date_from" value=${Utils.getDate(dateFrom)} type="date" name="date_from" placeholder="from" />
+                  <input class="form__input" id="date_to" value=${Utils.getDate(dateTo)} type="date" name="date_to" placeholder="to" />
+                </div>
+                <div class="form__input-container">
+                  <label class="form__input-label" for="hashtag">Hashtag</label>
+                  <div class="form__input-container form__input-container_row">
+                    <input class="form__input" id="hashtag" type="text" name="hashtag" placeholder="tag" />
+                    <i id="addHashtag" class="icon fa-solid fa-plus"></i>
+                  </div>
+                  <div id ="form__hashtag" class="hashtag form__hashtag"></div>
+               </div>
+               <div class="form__buttons">
+                  <button class="button button_secondary form__button" type="reset">Clear</button>
+                  <button class="button button_primary form__button" type="submit">Apply</button>
+               </div>
+            </form>
+          </aside>`;
   }
 }
 
@@ -949,107 +955,121 @@ class TweetView {
     burger.classList.add('hide');
 
     if (!tweet) {
-      const result = `<section class="section error">
-      <div class="error-container">
-        <i class="icon icon_error fa-solid fa-triangle-exclamation fa-4x"></i>
-        <span class="error__text">Page not found</span>
-      </div>
-      <a class="link" href="./index.html">
-      <button class="button button_primary" type="button">Back to main</button>
-    </a>
-    </section>
-    `;
+      const result = this.error();
       element.innerHTML = result;
-    } else {
-      const { id, text, createdAt, author, comments } = tweet;
+      return;
+    }
 
-      const commentsArray = Array.from(comments.values()).sort((a, b) => b.createdAt - a.createdAt);
-      let result = `<section class="section main__container" data-id=${id}>
+    const { id, text, createdAt, author, comments } = tweet;
+
+    let result = `<section class="section main__container" data-id=${id}>
                       <a class="link link_icon">
                           <i class="icon icon_back fa-solid fa-circle-arrow-left fa-2x" data-action="backToMain"></i>
                       </a>`;
 
-      const tweetElem = `<div class="tweet" >
-                           <div class="tweet__header">
-                             <div class="tweet__container">
-                               <span class="tweet__username">${author}</span>
-                               <div class="tweet__date-container">
-                                 <time class="tweet__date" datetime=${Utils.getDate(createdAt)}>${Utils.getDate(createdAt)}</time>
-                                 <time class="tweet__time" datetime=${Utils.getDate(createdAt)}T${Utils.getTime(createdAt)}>${Utils.getTime(createdAt)}</time>
-                               </div>
-                               <div class="tweet__comment">
-                                 <i class="icon icon__comment fa-regular fa-comment-dots"></i>
-                                 <span class="tweet__comment-amount">${comments.size}</span>
-                               </div>
-                             </div>
-                           </div>
-                           <p class="tweet__text">${Utils.seachHashtag(text)}</p>
-                         </div>`;
+    result += this.tweet(author, createdAt, comments, text);
 
-      result += tweetElem;
+    const commentsBlock = `<h3 class="main__container-title">Comments</h3>
+                          ${comments.size ? this.comments(comments) : '<p class="no-comments">No comments yet</p>'}`;
 
-      let commentsElem = `<h3 class="main__container-title">Comments</h3>
-                          ${commentsArray.length ? '<div class="comments"><ul class="comments__list">' : '<p class="no-comments">No comments yet</p>'}`;
+    result += commentsBlock;
 
-      commentsArray.forEach((comment) => {
-        commentsElem += `<li class="comment">
-                          <div class="comment__header">
-                            <div class="comment__container">
-                              <span class="comment__username">${comment.author}</span>
-                              <div class="comment__date-container">
-                                <time class="tweet__date" datetime=${Utils.getDate(comment.createdAt)}>${Utils.getDate(comment.createdAt)}</time>
-                                <time class="tweet__time" datetime=${Utils.getDate(comment.createdAt)}T${Utils.getTime(comment.createdAt)}>${Utils.getTime(comment.createdAt)}</time>
-                              </div>
-                            </div>
-                          </div>
-                          <p class="comment__text">${Utils.seachHashtag(comment.text)}</p>
-                        </li>`;
-      });
+    if (TweetCollection.user.length) {
+      result += this.formAdd();
+    }
 
-      commentsElem += '</ul></div>';
+    result += '</section>';
 
-      result += commentsElem;
+    element.innerHTML = result;
 
-      if (TweetCollection.user.length) {
-        result += `<form class="form-add comment__form-add ">
-        <div class="form-add__header">
-          <div class="form-add__header-logo">${TweetCollection.user[0].toUpperCase()}</div>
-          <textarea
-            class="form-add__placeholder"
-            name="text"
-            maxlength=${Comment.maxCommentLength}
-            placeholder="Some text..."
-          ></textarea>
-        </div>
-        <div class="form-add__footer">
-          <p class="form-add__text">
-            <span class="form-add__сharacters-left">${Comment.maxCommentLength}</span>
-            сharacters left
-          </p>
-          <button class="button button_primary form-add__button" type="submit">Comment</button>
-        </div>
-      </form>`;
-      }
+    const backToMain = document.querySelector('[data-action="backToMain"]');
+    const commentAdd = document.querySelector('.comment__form-add');
 
-      result += '</section>';
-
-      element.innerHTML = result;
-
-      const backToMain = document.querySelector('[data-action="backToMain"]');
-      const commentAdd = document.querySelector('.comment__form-add');
-      if (commentAdd) {
-        commentAdd.addEventListener('submit', controller.addComment.bind(controller));
-        const charactersLeft = commentAdd.querySelector('.form-add__сharacters-left');
-        commentAdd.addEventListener('input', (e) => {
-          charactersLeft.innerText = Tweet.maxTweetLength - e.target.value.length;
-        });
-      }
-      backToMain.addEventListener('click', (e) => {
-        burger.classList.remove('hide');
-        controller.filterView.display();
-        controller.twitterView.display(controller.myTweet.getPage());
+    if (commentAdd) {
+      commentAdd.addEventListener('submit', controller.addComment.bind(controller));
+      const charactersLeft = commentAdd.querySelector('.form-add__сharacters-left');
+      commentAdd.addEventListener('input', (e) => {
+        charactersLeft.innerText = Tweet.maxTweetLength - e.target.value.length;
       });
     }
+    backToMain.addEventListener('click', (e) => {
+      burger.classList.remove('hide');
+      controller.filterView.display();
+      controller.twitterView.display(controller.myTweet.getPage());
+    });
+  }
+
+  error() {
+    return `<section class="section error">
+    <div class="error-container">
+      <i class="icon icon_error fa-solid fa-triangle-exclamation fa-4x"></i>
+      <span class="error__text">Page not found</span>
+    </div>
+    <a class="link" href="./index.html">
+    <button class="button button_primary" type="button">Back to main</button>
+  </a>
+  </section>
+  `;
+  }
+
+  tweet(author, createdAt, comments, text) {
+    return `<div class="tweet">
+              <div class="tweet__header">
+                <div class="tweet__container">
+                  <span class="tweet__username">${author}</span>
+                  <div class="tweet__date-container">
+                    <time class="tweet__date" datetime=${Utils.getDate(createdAt)}>${Utils.getDate(createdAt)}</time>
+                    <time class="tweet__time" datetime=${Utils.getDate(createdAt)}T${Utils.getTime(createdAt)}>${Utils.getTime(createdAt)}</time>
+                  </div>
+                  <div class="tweet__comment">
+                    <i class="icon icon__comment fa-regular fa-comment-dots"></i>
+                   <span class="tweet__comment-amount">${comments.size}</span>
+                  </div>
+                </div>
+              </div>
+            <p class="tweet__text">${Utils.seachHashtag(text)}</p>
+            </div>`;
+  }
+
+  comments(comments) {
+    let result = '';
+    const sortedComments = Array.from(comments.values()).sort((a, b) => b.createdAt - a.createdAt);
+    sortedComments.forEach((comment) => {
+      result += `<li class="comment">
+                        <div class="comment__header">
+                          <div class="comment__container">
+                            <span class="comment__username">${comment.author}</span>
+                            <div class="comment__date-container">
+                              <time class="tweet__date" datetime=${Utils.getDate(comment.createdAt)}>${Utils.getDate(comment.createdAt)}</time>
+                              <time class="tweet__time" datetime=${Utils.getDate(comment.createdAt)}T${Utils.getTime(comment.createdAt)}>${Utils.getTime(comment.createdAt)}</time>
+                            </div>
+                          </div>
+                        </div>
+                        <p class="comment__text">${Utils.seachHashtag(comment.text)}</p>
+                      </li>`;
+    });
+    return `<div class="comments"><ul class="comments__list">${result}</ul></div>`;
+  }
+
+  formAdd() {
+    return `<form class="form-add comment__form-add ">
+    <div class="form-add__header">
+      <div class="form-add__header-logo">${TweetCollection.user[0].toUpperCase()}</div>
+      <textarea
+        class="form-add__placeholder"
+        name="text"
+        maxlength=${Comment.maxCommentLength}
+        placeholder="Some text..."
+      ></textarea>
+    </div>
+    <div class="form-add__footer">
+      <p class="form-add__text">
+        <span class="form-add__сharacters-left">${Comment.maxCommentLength}</span>
+        сharacters left
+      </p>
+      <button class="button button_primary form-add__button" type="submit">Comment</button>
+    </div>
+  </form>`;
   }
 }
 
@@ -1065,67 +1085,25 @@ class TwitterView {
     sectionTwitter.id = 'twitter';
     sectionTwitter.classList.add('section', 'twitter', 'main__twitter');
     element.append(sectionTwitter);
-    let tweetsList;
-    const addForm = `${
-      TweetCollection.user.length
-        ? `<form class="form-add twitter__form-add" data-action='add'>
-      <div class="form-add__header">
-        <div class="form-add__header-logo">${TweetCollection.user[0].toUpperCase()}</div>
-        <textarea class="form-add__placeholder" name="text" maxlength=${Tweet.maxTweetLength} placeholder="Some text..."></textarea>
-      </div>
-      <div class="form-add__footer">
-        <p class="form-add__text">
-          <span class="form-add__сharacters-left">${Tweet.maxTweetLength}</span>
-          сharacters left
-        </p>
-        <button class="button button_primary form-add__button" type="submit" >Tweet</button>
-      </div>
-    </form>`
-        : ''
-    }
-    `;
-    if (tweetsArr) {
-      tweetsList = `<div id='tweets' class='tweets'>
-                      <ul id="tweets__list" class='tweets__list'>`;
-      tweetsArr.forEach((tweet) => {
-        tweetsList += `<li class="tweet" data-id=${tweet.id}>
-        <div class="tweet__header">
-          <div class="tweet__container">
-            <span class="tweet__username">${tweet.author}</span>
-            <div class="tweet__date-container">
-              <time class="tweet__date" datetime=${Utils.getDate(tweet.createdAt)}>${Utils.getDate(tweet.createdAt)}</time>
-              <time class="tweet__time" datetime=${Utils.getDate(tweet.createdAt)}T${Utils.getTime(tweet.createdAt)}">${Utils.getTime(tweet.createdAt)}</time>
-            </div>
-            <div class="tweet__comment">
-              <i class="icon icon__comment fa-regular fa-comment-dots"></i>
-              <span class="tweet__comment-amount">${tweet.comments.size}</span>
-            </div>
-          </div>
-          ${
-            tweet.author.toLowerCase() === TweetCollection.user.toLowerCase()
-              ? `<div class="tweet__icons-container">
-          <i class="icon icon__edit fa-regular fa-pen-to-square" data-action="edit"></i>
-          <i class="icon icon__trash fa-solid fa-trash-can" data-action="remove"></i>
-        </div>`
-              : ''
-          }
-        </div>
-        <p class="tweet__text">${Utils.seachHashtag(tweet.text)}</p>
-    </li>`;
-      });
+    let result = '';
 
-      tweetsList += `</ul>${tweetsArr.length % 10 === 0 ? '<button class="button button_primary twitter__button" data-action="loadMore" data-top="10">Load more</button>' : ''}</div>`;
-      sectionTwitter.innerHTML = addForm + tweetsList;
+    if (TweetCollection.user.length) {
+      result += this.formAdd();
+    }
+
+    if (tweetsArr.length) {
+      result += `<div id='tweets' class='tweets'><ul id="tweets__list" class='tweets__list'>${this.tweetsBlock(tweetsArr)}</ul>${
+        tweetsArr.length % 10 === 0 ? '<button class="button button_primary twitter__button" data-action="loadMore" data-top="10">Load more</button>' : ''
+      }</div>`;
+
+      sectionTwitter.innerHTML = result;
 
       document.querySelector('.tweets__list').addEventListener('click', controller.tweetActions.bind(controller));
       if (document.querySelector('[data-action="loadMore"]')) {
         document.querySelector('[data-action="loadMore"]').addEventListener('click', controller.loadMore.bind(controller));
       }
     } else {
-      sectionTwitter.innerHTML = `<div class="not-found">
-                              <i class="icon icon_error fa-solid fa-triangle-exclamation fa-4x"></i>
-                              <span class="not-found__text">Not found</span>
-                           </div>`;
+      sectionTwitter.innerHTML = this.notFound();
     }
 
     const formAdd = document.querySelector('[data-action="add"]');
@@ -1138,15 +1116,31 @@ class TwitterView {
       });
     }
   }
-}
 
-class UpdateTweetsView {
-  constructor(containerId) {
-    this.containerId = containerId;
+  notFound() {
+    return `<div class="not-found">
+             <i class="icon icon_error fa-solid fa-triangle-exclamation fa-4x"></i>
+             <span class="not-found__text">Not found</span>
+           </div>`;
   }
 
-  display(tweetsArr) {
-    const element = document.querySelector(`#${this.containerId}`);
+  formAdd() {
+    return `<form class="form-add twitter__form-add" data-action='add'>
+              <div class="form-add__header">
+                <div class="form-add__header-logo">${TweetCollection.user[0].toUpperCase()}</div>
+                <textarea class="form-add__placeholder" name="text" maxlength=${Tweet.maxTweetLength} placeholder="Some text..."></textarea>
+             </div>
+              <div class="form-add__footer">
+                <p class="form-add__text">
+                  <span class="form-add__сharacters-left">${Tweet.maxTweetLength}</span>
+                  сharacters left
+                </p>
+                <button class="button button_primary form-add__button" type="submit" >Tweet</button>
+             </div>
+            </form>`;
+  }
+
+  tweetsBlock(tweetsArr) {
     let result = '';
     tweetsArr.forEach((tweet) => {
       result += `<li class="tweet" data-id=${tweet.id}>
@@ -1174,11 +1168,52 @@ class UpdateTweetsView {
       <p class="tweet__text">${Utils.seachHashtag(tweet.text)}</p>
   </li>`;
     });
-    element.innerHTML = result;
-    /*  element.addEventListener('click', controller.tweetActions.bind(controller)); */
+    return result;
+  }
+}
+
+class UpdateTweetsView {
+  constructor(containerId) {
+    this.containerId = containerId;
+  }
+
+  display(tweetsArr) {
+    const element = document.querySelector(`#${this.containerId}`);
+    element.innerHTML = this.tweetsBlock(tweetsArr);
     if (!(tweetsArr.length % 10 === 0)) {
       document.querySelector('[data-action="loadMore"]').remove();
     }
+  }
+
+  tweetsBlock(tweetsArr) {
+    let result = '';
+    tweetsArr.forEach((tweet) => {
+      result += `<li class="tweet" data-id=${tweet.id}>
+      <div class="tweet__header">
+        <div class="tweet__container">
+          <span class="tweet__username">${tweet.author}</span>
+          <div class="tweet__date-container">
+            <time class="tweet__date" datetime=${Utils.getDate(tweet.createdAt)}>${Utils.getDate(tweet.createdAt)}</time>
+            <time class="tweet__time" datetime=${Utils.getDate(tweet.createdAt)}T${Utils.getTime(tweet.createdAt)}">${Utils.getTime(tweet.createdAt)}</time>
+          </div>
+          <div class="tweet__comment">
+            <i class="icon icon__comment fa-regular fa-comment-dots"></i>
+            <span class="tweet__comment-amount">${tweet.comments.size}</span>
+          </div>
+        </div>
+        ${
+          tweet.author.toLowerCase() === TweetCollection.user.toLowerCase()
+            ? `<div class="tweet__icons-container">
+        <i class="icon icon__edit fa-regular fa-pen-to-square" data-action="edit"></i>
+        <i class="icon icon__trash fa-solid fa-trash-can" data-action="remove"></i>
+      </div>`
+            : ''
+        }
+      </div>
+      <p class="tweet__text">${Utils.seachHashtag(tweet.text)}</p>
+  </li>`;
+    });
+    return result;
   }
 }
 
@@ -1190,12 +1225,29 @@ class AutorizationView {
   display() {
     const element = document.querySelector(`#${this.containerId}`);
     element.classList.add('main_colomn');
+    element.innerHTML = this.authorizationSection();
+
     const burger = document.querySelector('.burger');
     burger.classList.add('hide');
+
     const headerAuthorization = document.querySelector('.header__authorization');
     headerAuthorization.style.display = 'none';
 
-    const result = `
+    const authorizationForm = document.querySelector('.authorization__form');
+    const registration = authorizationForm.querySelector('[data-action="registration"]');
+    const backToMain = document.querySelector('[data-action="backToMain"]');
+
+    registration.addEventListener('click', () => controller.registrationView.display());
+    backToMain.addEventListener('click', () => {
+      controller.headerView.display();
+      controller.filterView.display();
+      controller.twitterView.display(controller.myTweet.getPage());
+    });
+    authorizationForm.addEventListener('submit', controller.authorization.bind(controller));
+  }
+
+  authorizationSection() {
+    return `
     <section class="section authorization">
       <form class="form authorization__form">
         <h2 class="form__title">Authorization</h2>
@@ -1215,20 +1267,6 @@ class AutorizationView {
     </section>
       <button class="button button_primary" type="button" data-action="backToMain">Back to main</button>
  `;
-
-    element.innerHTML = result;
-
-    const authorizationForm = document.querySelector('.authorization__form');
-    const registration = authorizationForm.querySelector('[data-action="registration"]');
-    const backToMain = document.querySelector('[data-action="backToMain"]');
-
-    registration.addEventListener('click', () => controller.registrationView.display());
-    backToMain.addEventListener('click', () => {
-      controller.headerView.display();
-      controller.filterView.display();
-      controller.twitterView.display(controller.myTweet.getPage());
-    });
-    authorizationForm.addEventListener('submit', controller.authorization.bind(controller));
   }
 }
 
@@ -1240,35 +1278,13 @@ class RegistrationView {
   display() {
     const element = document.querySelector(`#${this.containerId}`);
     element.classList.add('main_colomn');
+    element.innerHTML = this.registrationSection();
+
     const burger = document.querySelector('.burger');
     burger.classList.add('hide');
+
     const headerAuthorization = document.querySelector('.header__authorization');
     headerAuthorization.style.display = 'none';
-    const result = `
-    <section class="section registration">
-        <form class="form registration__form">
-          <h2 class="form__title">Registration</h2>
-          <div class="form__input-container">
-            <input class="form__input" type="text" name="login" placeholder="Login" required />
-            <small class="form__error-message form__error-message_login"></small>
-          </div>
-          <div class="form__input-container">
-            <input class="form__input" type="password" name="password" placeholder="Password" required />
-            <small class="form__error-message form__error-message_password"></small>
-          </div>
-          <div class="form__input-container">
-            <input class="form__input" type="password" name="passwordRepeat" placeholder="Password repeat" required />
-            <small class="form__error-message form__error-message_password-repeat"></small>
-          </div>
-          <div class="form__buttons">
-              <button class="button button_secondary form__button" type="button" data-action="authorization">Authorization</button>
-              <button class="button button_primary form__button" type="submit">Register</button>
-          </div>
-        </form>
-      </section>
-      <button class="button button_primary" type="button" data-action="backToMain">Back to main</button>`;
-
-    element.innerHTML = result;
 
     const authorizationForm = document.querySelector('.registration__form');
     const authorization = element.querySelector('[data-action="authorization"]');
@@ -1281,6 +1297,31 @@ class RegistrationView {
       controller.twitterView.display(controller.myTweet.getPage());
     });
     authorizationForm.addEventListener('submit', controller.registration.bind(controller));
+  }
+
+  registrationSection() {
+    return `<section class="section registration">
+              <form class="form registration__form">
+                <h2 class="form__title">Registration</h2>
+                <div class="form__input-container">
+                  <input class="form__input" type="text" name="login" placeholder="Login" required />
+                  <small class="form__error-message form__error-message_login"></small>
+                </div>
+                <div class="form__input-container">
+                  <input class="form__input" type="password" name="password" placeholder="Password" required />
+                  <small class="form__error-message form__error-message_password"></small>
+                </div>
+                <div class="form__input-container">
+                  <input class="form__input" type="password" name="passwordRepeat" placeholder="Password repeat" required />
+                  <small class="form__error-message form__error-message_password-repeat"></small>
+                </div>
+                <div class="form__buttons">
+                    <button class="button button_secondary form__button" type="button"          data-action="authorization">Authorization</button>
+                    <button class="button button_primary form__button" type="submit">Register</button>
+                </div>
+             </form>
+            </section>
+           <button class="button button_primary" type="button" data-action="backToMain">Back to main</button>`;
   }
 }
 
