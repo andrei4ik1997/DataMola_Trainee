@@ -382,6 +382,8 @@ class Utils {
 }
 
 class Tweet {
+  static maxTweetLength = 280;
+
   constructor(id = '', text = '', createdAt = new Date(), author = '', comments = new Map()) {
     this._id = id;
     this.text = text;
@@ -436,8 +438,8 @@ class Tweet {
         if (!tweet[key].length && !(tweet[key] instanceof Date || tweet[key] instanceof Map || typeof tweet[key] === 'boolean')) {
           throw new Error(`You need fill ${key}`);
         }
-        if (key === 'text' && tweet[key].length > 281) {
-          throw new Error(`Max value for ${key} is 280 characters, but at now ${tweet[key].length} characters`);
+        if (key === 'text' && tweet[key].length > Tweet.maxTweetLength + 1) {
+          throw new Error(`Max value for ${key} is ${Tweet.maxTweetLength} characters, but at now ${tweet[key].length} characters`);
         }
       });
       return true;
@@ -449,6 +451,8 @@ class Tweet {
 }
 
 class Comment {
+  static maxCommentLength = 280;
+
   constructor(id = '', text = '', createdAt = new Date(), author = '') {
     this._id = id;
     this.text = text;
@@ -497,8 +501,8 @@ class Comment {
         if (!comment[key].length && !(comment[key] instanceof Date || typeof comment[key] === 'boolean')) {
           throw new Error(`You need fill ${key}`);
         }
-        if (key === 'text' && comment[key].length >= 280) {
-          throw new Error(`Max value for ${key} is 280 characters, but at now ${comment[key].length} characters`);
+        if (key === 'text' && comment[key].length >= Comment.maxCommentLength) {
+          throw new Error(`Max value for ${key} is ${Comment.maxCommentLength} characters, but at now ${comment[key].length} characters`);
         }
       });
 
@@ -1013,13 +1017,13 @@ class TweetView {
           <textarea
             class="form-add__placeholder"
             name="text"
-            maxlength="280"
+            maxlength=${Comment.maxCommentLength}
             placeholder="Some text..."
           ></textarea>
         </div>
         <div class="form-add__footer">
           <p class="form-add__text">
-            <span class="form-add__сharacters-left">280</span>
+            <span class="form-add__сharacters-left">${Comment.maxCommentLength}</span>
             сharacters left
           </p>
           <button class="button button_primary form-add__button" type="submit">Comment</button>
@@ -1037,7 +1041,7 @@ class TweetView {
         commentAdd.addEventListener('submit', controller.addComment.bind(controller));
         const charactersLeft = commentAdd.querySelector('.form-add__сharacters-left');
         commentAdd.addEventListener('input', (e) => {
-          charactersLeft.innerText = 280 - e.target.value.length;
+          charactersLeft.innerText = Tweet.maxTweetLength - e.target.value.length;
         });
       }
       backToMain.addEventListener('click', (e) => {
@@ -1067,11 +1071,11 @@ class TwitterView {
         ? `<form class="form-add twitter__form-add" data-action='add'>
       <div class="form-add__header">
         <div class="form-add__header-logo">${TweetCollection.user[0].toUpperCase()}</div>
-        <textarea class="form-add__placeholder" name="text" maxlength="280" placeholder="Some text..."></textarea>
+        <textarea class="form-add__placeholder" name="text" maxlength=${Tweet.maxTweetLength} placeholder="Some text..."></textarea>
       </div>
       <div class="form-add__footer">
         <p class="form-add__text">
-          <span class="form-add__сharacters-left">280</span>
+          <span class="form-add__сharacters-left">${Tweet.maxTweetLength}</span>
           сharacters left
         </p>
         <button class="button button_primary form-add__button" type="submit" >Tweet</button>
@@ -1130,7 +1134,7 @@ class TwitterView {
       formAdd.addEventListener('submit', controller.addTweet.bind(controller));
       const charactersLeft = formAdd.querySelector('.form-add__сharacters-left');
       formAdd.addEventListener('input', (e) => {
-        charactersLeft.innerText = 280 - e.target.value.length;
+        charactersLeft.innerText = Tweet.maxTweetLength - e.target.value.length;
       });
     }
   }
@@ -1405,11 +1409,11 @@ class TweetsController {
         formEdit.setAttribute('data-action', 'edit');
         formEdit.innerHTML = `<div class="form-add__header">
           <div class="form-add__header-logo">${TweetCollection.user[0].toUpperCase()}</div>
-          <textarea class="form-add__placeholder" name="text" maxlength="280" placeholder="Some text..."></textarea>
+          <textarea class="form-add__placeholder" name="text" maxlength=${Tweet.maxTweetLength} placeholder="Some text..."></textarea>
         </div>
         <div class="form-add__footer">
           <p class="form-add__text">
-            <span class="form-add__сharacters-left">280</span>
+            <span class="form-add__сharacters-left">${Tweet.maxTweetLength}</span>
             сharacters left
           </p>
           <button class="button button_primary form-add__button" type="submit" >Tweet</button>
