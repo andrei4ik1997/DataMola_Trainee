@@ -488,7 +488,9 @@ class Comment {
       Object.keys(etalonComment).forEach((key) => {
         if (Object.prototype.hasOwnProperty.call(comment, key)) {
           if (Object.prototype.toString.call(etalonComment[key]) !== Object.prototype.toString.call(comment[key])) {
-            throw new Error(`You need change ${key} type to ${Object.prototype.toString.call(etalonComment[key])}`);
+            if (key !== '_createdAt') {
+              throw new Error(`You need change ${key} type in comment with id ${comment._id} to ${Object.prototype.toString.call(etalonComment[key])}`);
+            }
           }
         } else {
           throw new Error(`Don't have ${key} property in you object`);
@@ -522,6 +524,10 @@ class TweetCollection {
       const tweet = new Tweet(item.id, item.text, item.createdAt, item.author, item.comments);
       try {
         if (Tweet.validate(tweet)) {
+          const idsArr = this.tweets.map((tweet) => tweet.id);
+          if (idsArr.includes(tweet.id)) {
+            throw new Error(`Id ${tweet.id} occupate, tweet not added`);
+          }
           this.tweets.push(tweet);
         }
       } catch (error) {
@@ -559,7 +565,8 @@ class TweetCollection {
         if (!Tweet.validate(tweet)) {
           notValidatedTweets.push(elem);
         } else {
-          if (this.tweets.has(id)) {
+          const idsArr = this.tweets.map((tweet) => tweet.id);
+          if (idsArr.includes(id)) {
             notValidatedTweets.push(elem);
             throw new Error(`Id ${id} occupate`);
           }
@@ -671,6 +678,10 @@ class TweetCollection {
       const tweet = new Tweet(generateId, text, new Date(new Date().getTime()), TweetCollection.user);
 
       if (Tweet.validate(tweet)) {
+        const idsArr = this.tweets.map((tweet) => tweet.id);
+        if (idsArr.includes(tweet.id)) {
+          throw new Error(`Id ${tweet.id} occupate, tweet not added`);
+        }
         this.tweets.push(tweet);
         this.save();
         return true;
@@ -736,6 +747,10 @@ class TweetCollection {
       const searchedTweet = this.get(id);
       if (searchedTweet) {
         if (Comment.validate(comment)) {
+          const idsArr = searchedTweet.comments.map((comment) => comment.id);
+          if (idsArr.includes(comment.id)) {
+            throw new Error(`Id ${comment.id} occupate, comment not added`);
+          }
           searchedTweet.comments.push(comment);
           this.save();
           return true;
@@ -1149,18 +1164,16 @@ class TwitterView {
             <i class="icon icon__comment fa-regular fa-comment-dots"></i>
             <span class="tweet__comment-amount">${tweet.comments.length}</span>
           </div>
-        </div>
-        ${
-          tweet.author.toLowerCase() === TweetCollection.user.toLowerCase()
-            ? `<div class="tweet__icons-container">
-        <i class="icon icon__edit fa-regular fa-pen-to-square" data-action="edit"></i>
-        <i class="icon icon__trash fa-solid fa-trash-can" data-action="remove"></i>
-      </div>`
-            : ''
-        }
-      </div>
-      <p class="tweet__text">${Utils.seachHashtag(tweet.text)}</p>
-  </li>`;
+        </div>`;
+      if (tweet.author.toLowerCase() === TweetCollection.user.toLowerCase()) {
+        result += `<div class="tweet__icons-container">
+          <i class="icon icon__edit fa-regular fa-pen-to-square" data-action="edit"></i>
+          <i class="icon icon__trash fa-solid fa-trash-can" data-action="remove"></i>
+        </div>`;
+      }
+      result += `</div>
+        <p class="tweet__text">${Utils.seachHashtag(tweet.text)}</p>
+    </li>`;
     });
     return result;
   }
@@ -1194,18 +1207,16 @@ class UpdateTweetsView {
             <i class="icon icon__comment fa-regular fa-comment-dots"></i>
             <span class="tweet__comment-amount">${tweet.comments.length}</span>
           </div>
-        </div>
-        ${
-          tweet.author.toLowerCase() === TweetCollection.user.toLowerCase()
-            ? `<div class="tweet__icons-container">
-        <i class="icon icon__edit fa-regular fa-pen-to-square" data-action="edit"></i>
-        <i class="icon icon__trash fa-solid fa-trash-can" data-action="remove"></i>
-      </div>`
-            : ''
-        }
-      </div>
-      <p class="tweet__text">${Utils.seachHashtag(tweet.text)}</p>
-  </li>`;
+        </div>`;
+      if (tweet.author.toLowerCase() === TweetCollection.user.toLowerCase()) {
+        result += `<div class="tweet__icons-container">
+          <i class="icon icon__edit fa-regular fa-pen-to-square" data-action="edit"></i>
+          <i class="icon icon__trash fa-solid fa-trash-can" data-action="remove"></i>
+        </div>`;
+      }
+      result += `</div>
+        <p class="tweet__text">${Utils.seachHashtag(tweet.text)}</p>
+    </li>`;
     });
     return result;
   }
