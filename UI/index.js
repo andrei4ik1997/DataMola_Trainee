@@ -3,349 +3,6 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-console */
 
-const tweets = [
-  {
-    id: '1',
-    text: 'Hi! #datamola #js',
-    createdAt: new Date('2022-03-07T23:00:00'),
-    author: 'Admin',
-    comments: [
-      {
-        id: '1',
-        text: 'Hi',
-        createdAt: new Date('2022-03-09T23:00:00'),
-        author: 'Username1',
-      },
-      {
-        id: '2',
-        text: 'Hi',
-        createdAt: new Date('2022-03-09T23:00:00'),
-        author: 'Username2',
-      },
-      {
-        id: '3',
-        text: 'Hi',
-        createdAt: new Date('2022-03-09T23:00:00'),
-        author: 'Username3',
-      },
-      {
-        id: '4',
-        text: 'Hi',
-        createdAt: new Date('2022-03-09T23:00:00'),
-        author: 'Username4',
-      },
-      {
-        id: '5',
-        text: 'Hi',
-        createdAt: new Date('2022-03-09T23:00:00'),
-        author: 'Username5',
-      },
-    ],
-  },
-  {
-    id: '2',
-    text: 'How are you? #js',
-    createdAt: new Date('2022-03-02T23:00:00'),
-    author: 'Username2',
-    comments: [
-      {
-        id: '1',
-        text: 'Good',
-        createdAt: new Date('2022-03-09T23:00:00'),
-        author: 'Username23',
-      },
-    ],
-  },
-  {
-    id: '3',
-    text: 'Lorem ipsum dolor sit #js amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non #datamola #js',
-    createdAt: new Date('2022-03-03T23:00:00'),
-    author: 'Username2',
-    comments: [
-      {
-        id: '1',
-        text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae.',
-        createdAt: new Date('2022-03-04T23:00:00'),
-        author: 'User23',
-      },
-    ],
-  },
-  {
-    id: '4',
-    text: '#jsLorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae.',
-    createdAt: new Date('2022-03-01T23:00:00'),
-    author: 'Username2',
-    comments: [],
-  },
-  {
-    id: '5',
-    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. #js Adipisci, hic. Iure #datamola tempora, veniam dolor suscipit non. #js',
-    createdAt: new Date('2022-03-09T23:00:00'),
-    author: 'Username2',
-    comments: [],
-  },
-  {
-    id: '6',
-    text: 'Lorem ipsum dolor sit amet consectetur #datamola adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. ',
-    createdAt: new Date('2022-03-07T23:00:00'),
-    author: 'Username2',
-    comments: [],
-  },
-  {
-    id: '7',
-    text: 'Lorem ipsum dolor sit amet #jsLorem consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae.',
-    createdAt: new Date('2022-03-09T23:00:00'),
-    author: 'Username2',
-    comments: [
-      {
-        id: '1',
-        text: 'Lorem ipsum dolor sit #amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae.',
-        createdAt: new Date('2022-03-09T23:00:00'),
-        author: 'Username12',
-      },
-    ],
-  },
-  {
-    id: '8',
-    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. ',
-    createdAt: new Date('2022-03-09T23:00:00'),
-    author: 'Username2',
-    comments: [
-      {
-        id: '1',
-        text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae.',
-        createdAt: new Date('2022-03-09T23:00:00'),
-        author: 'Username2',
-      },
-      {
-        id: '2',
-        text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae.',
-        createdAt: new Date('2022-03-09T23:00:00'),
-        author: 'Username34',
-      },
-      {
-        id: '3',
-        text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae.',
-        createdAt: new Date('2022-03-09T23:00:00'),
-        author: 'Username21',
-      },
-    ],
-  },
-  {
-    id: '9',
-    text: 'Lorem ipsum dolor sit #datamola amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. ',
-    createdAt: new Date('2022-03-14T23:00:00'),
-    author: 'Username2',
-    comments: [],
-  },
-  {
-    id: '10',
-    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. ',
-    createdAt: new Date('2022-03-04T23:00:00'),
-    author: 'Username2',
-    comments: [
-      {
-        id: '1',
-        text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae.',
-        createdAt: new Date('2022-02-09T23:00:00'),
-        author: 'Username78',
-        comments: [],
-      },
-    ],
-  },
-  {
-    id: '11',
-    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. ',
-    createdAt: new Date('2022-01-11T23:00:00'),
-    author: 'Username4',
-    comments: [],
-  },
-  {
-    id: '12',
-    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. ',
-    createdAt: new Date('2022-03-09T23:00:00'),
-    author: 'Username35',
-    comments: [
-      {
-        id: '1',
-        text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae.',
-        createdAt: new Date('2022-03-09T23:00:00'),
-        author: 'Username2',
-      },
-    ],
-  },
-  {
-    id: '13',
-    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae.',
-    createdAt: new Date('2022-01-24T23:00:00'),
-    author: 'Username4',
-    comments: [
-      {
-        id: '1',
-        text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae.',
-        createdAt: new Date('2022-03-09T23:00:00'),
-        author: 'Username65',
-      },
-    ],
-  },
-  {
-    id: '14',
-    text: 'Lorem ipsum dolor sit amet #datamola #js consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. ',
-    createdAt: new Date('2022-02-19T23:00:00'),
-    author: 'Username5',
-    comments: [
-      {
-        id: '1',
-        text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae.',
-        createdAt: new Date('2022-03-09T23:00:00'),
-        author: 'Username32',
-      },
-    ],
-  },
-  {
-    id: '15',
-    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. ',
-    createdAt: new Date('2022-02-24T23:00:00'),
-    author: 'Username3',
-    comments: [],
-  },
-  {
-    id: '16',
-    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae.',
-    createdAt: new Date('2022-03-01T23:00:00'),
-    author: 'Username2',
-    comments: [],
-  },
-  {
-    id: '17',
-    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. ',
-    createdAt: new Date('2022-01-17T23:00:00'),
-    author: 'Username5',
-    comments: [
-      {
-        id: '1',
-        text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae.',
-        createdAt: new Date('2022-03-09T23:00:00'),
-        author: 'Username5',
-      },
-      {
-        id: '2',
-        text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae.',
-        createdAt: new Date('2022-03-09T23:00:00'),
-        author: 'Username69',
-      },
-    ],
-  },
-  {
-    id: '18',
-    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. ',
-    createdAt: new Date('2021-09-19T23:00:00'),
-    author: 'Username5',
-    comments: [
-      {
-        id: '1',
-        text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae.',
-        createdAt: new Date('2022-03-09T23:00:00'),
-        author: 'Username89',
-      },
-    ],
-  },
-  {
-    id: '19',
-    text: 'Lorem ipsum dolor sit #js amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. ',
-    createdAt: new Date('2021-02-25T23:00:00'),
-    author: 'Username2',
-    comments: [
-      {
-        id: '1',
-        text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae.',
-        createdAt: new Date('2022-03-09T23:00:00'),
-        author: 'Username5',
-      },
-    ],
-  },
-  {
-    id: '20',
-    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. ',
-    createdAt: new Date('2022-02-01T23:00:00'),
-    author: 'Username4',
-    comments: [],
-  },
-  {
-    id: '21',
-    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. ',
-    createdAt: new Date('2022-02-24T23:00:00'),
-    author: 'Username3',
-    comments: [],
-  },
-  {
-    id: '22',
-    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. ',
-    createdAt: new Date('2021-10-27T23:00:00'),
-    author: 'Username4',
-    comments: [
-      {
-        id: '1',
-        text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae.',
-        createdAt: new Date('2022-03-09T23:00:00'),
-        author: 'Username89',
-      },
-    ],
-  },
-  {
-    id: '23',
-    text: 'Lorem ipsum dolor sit #js amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. ',
-    createdAt: new Date('2022-02-17T23:00:00'),
-    author: 'Username5',
-    comments: [
-      {
-        id: '1',
-        text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae.',
-        createdAt: new Date('2022-03-09T23:00:00'),
-        author: 'Username53',
-      },
-    ],
-  },
-  {
-    id: '24',
-    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. ',
-    createdAt: new Date('2021-07-09T23:00:00'),
-    author: 'Username3',
-    comments: [
-      {
-        id: '1',
-        text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae.',
-        createdAt: new Date('2022-03-09T23:00:00'),
-        author: 'Username65',
-      },
-    ],
-  },
-  {
-    id: '25',
-    text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae. ',
-    createdAt: new Date('2019-03-09T23:00:00'),
-    author: 'Username2',
-    comments: [
-      {
-        id: '1',
-        text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci, hic. Iure tempora, veniam dolor suscipit non molestiae.',
-        createdAt: new Date('2022-03-09T23:00:00'),
-        author: 'Username12',
-      },
-    ],
-  },
-];
-
-const users = [
-  { login: 'admin', password: '12345678' },
-  { login: '1', password: '1' },
-  { login: 'Username2', password: '12345678' },
-  { login: 'Username3', password: '12345678' },
-  { login: 'Username4', password: '12345678' },
-  { login: 'Username5', password: '12345678' },
-  { login: 'Username35', password: '12345678' },
-];
-
 class Utils {
   static seachHashtag(str) {
     const regularHastag = /#[0-9A-Za-zА-Яа-яё]+/g;
@@ -519,7 +176,7 @@ class TweetCollection {
 
   constructor() {
     this.tweets = [];
-    this.arr = this.restore();
+    this.arr = [];
     this.arr.forEach((item) => {
       const tweet = new Tweet(item.id, item.text, item.createdAt, item.author, item.comments);
       try {
@@ -787,36 +444,12 @@ class TweetCollection {
   }
 }
 
-class UserCollection {
-  constructor(data) {
-    this.users = data;
-    this.restore();
-  }
-
-  add(newUser) {
-    this.users.push(newUser);
-    this.save();
-  }
-
-  getUsers() {
-    return this.users;
-  }
-
-  save() {
-    localStorage.setItem('users', JSON.stringify(this.getUsers()));
-  }
-
-  restore() {
-    this.users = JSON.parse(localStorage.getItem('users'));
-  }
-}
-
 class HeaderView {
   constructor(containerId) {
     this.containerId = containerId;
   }
 
-  display(user = TweetCollection.user) {
+  display(user = localStorage.getItem('currUser')) {
     const authorization = document.querySelector(`#${this.containerId}`);
     authorization.style.display = 'flex';
     const burger = document.querySelector('.burger');
@@ -838,7 +471,7 @@ class HeaderView {
     }
     if (exit) {
       exit.addEventListener('click', () => {
-        controller.setCurrentUser('');
+        controller.setCurrentUser();
       });
     }
   }
@@ -882,10 +515,7 @@ class FilterView {
 
     addHashtag.addEventListener('click', controller.addHashtag.bind(controller));
     filterForm.addEventListener('submit', controller.filterSubmit.bind(controller));
-    filterForm.addEventListener('reset', () => {
-      controller.filterView.display();
-      controller.twitterView.display(controller.myTweet.getPage());
-    });
+    filterForm.addEventListener('reset', controller.filterSubmit.bind(controller));
   }
 
   filterBlock(filter) {
@@ -970,6 +600,7 @@ class TweetView {
     }
 
     const { id, text, createdAt, author, comments } = tweet;
+    const user = localStorage.getItem('currUser');
 
     let result = `<section class="section main__container" data-id=${id}>
                       <a class="link link_icon">
@@ -983,7 +614,7 @@ class TweetView {
 
     result += commentsBlock;
 
-    if (TweetCollection.user.length) {
+    if (user) {
       result += this.formAdd();
     }
 
@@ -1001,11 +632,7 @@ class TweetView {
         charactersLeft.innerText = Tweet.maxTweetLength - e.target.value.length;
       });
     }
-    backToMain.addEventListener('click', () => {
-      burger.classList.remove('hide');
-      controller.filterView.display();
-      controller.twitterView.display(controller.myTweet.getPage());
-    });
+    backToMain.addEventListener('click', controller.backToMain.bind(controller));
   }
 
   error() {
@@ -1061,9 +688,10 @@ class TweetView {
   }
 
   formAdd() {
+    const user = localStorage.getItem('currUser');
     return `<form class="form-add comment__form-add ">
     <div class="form-add__header">
-      <div class="form-add__header-logo">${TweetCollection.user[0].toUpperCase()}</div>
+      <div class="form-add__header-logo">${user[0].toUpperCase()}</div>
       <textarea
         class="form-add__placeholder"
         name="text"
@@ -1088,6 +716,7 @@ class TwitterView {
   }
 
   display(tweetsArr) {
+    const user = localStorage.getItem('currUser');
     const element = document.querySelector(`#${this.containerId}`);
     element.classList.remove('main_colomn');
     const sectionTwitter = document.createElement('section');
@@ -1096,7 +725,7 @@ class TwitterView {
     element.append(sectionTwitter);
     let result = '';
 
-    if (TweetCollection.user.length) {
+    if (user) {
       result += this.formAdd();
     }
 
@@ -1134,9 +763,10 @@ class TwitterView {
   }
 
   formAdd() {
+    const user = localStorage.getItem('currUser');
     return `<form class="form-add twitter__form-add" data-action='add'>
               <div class="form-add__header">
-                <div class="form-add__header-logo">${TweetCollection.user[0].toUpperCase()}</div>
+                <div class="form-add__header-logo">${user[0].toUpperCase()}</div>
                 <textarea class="form-add__placeholder" name="text" maxlength=${Tweet.maxTweetLength} placeholder="Some text..."></textarea>
              </div>
               <div class="form-add__footer">
@@ -1151,6 +781,7 @@ class TwitterView {
 
   tweetsBlock(tweetsArr) {
     let result = '';
+    const user = localStorage.getItem('currUser');
     tweetsArr.forEach((tweet) => {
       result += `<li class="tweet" data-id=${tweet.id}>
       <div class="tweet__header">
@@ -1165,7 +796,7 @@ class TwitterView {
             <span class="tweet__comment-amount">${tweet.comments.length}</span>
           </div>
         </div>`;
-      if (tweet.author.toLowerCase() === TweetCollection.user.toLowerCase()) {
+      if (tweet.author === user) {
         result += `<div class="tweet__icons-container">
           <i class="icon icon__edit fa-regular fa-pen-to-square" data-action="edit"></i>
           <i class="icon icon__trash fa-solid fa-trash-can" data-action="remove"></i>
@@ -1243,11 +874,7 @@ class AutorizationView {
     const backToMain = document.querySelector('[data-action="backToMain"]');
 
     registration.addEventListener('click', () => controller.registrationView.display());
-    backToMain.addEventListener('click', () => {
-      controller.headerView.display();
-      controller.filterView.display();
-      controller.twitterView.display(controller.myTweet.getPage());
-    });
+    backToMain.addEventListener('click', controller.backToMain.bind(controller));
     authorizationForm.addEventListener('submit', controller.authorization.bind(controller));
   }
 
@@ -1296,11 +923,7 @@ class RegistrationView {
     const backToMain = document.querySelector('[data-action="backToMain"]');
 
     authorization.addEventListener('click', () => controller.autorizationView.display());
-    backToMain.addEventListener('click', () => {
-      controller.headerView.display();
-      controller.filterView.display();
-      controller.twitterView.display(controller.myTweet.getPage());
-    });
+    backToMain.addEventListener('click', controller.backToMain.bind(controller));
     authorizationForm.addEventListener('submit', controller.registration.bind(controller));
   }
 
@@ -1351,10 +974,33 @@ class ModalView {
   }
 }
 
+class SpinnerView {
+  constructor(containerId) {
+    this.containerId = containerId;
+    this.spinner = document.createElement('div');
+    this.spinner.classList.add('spinner-container');
+    this.spinner.innerHTML = '<img src="./assets/spinner.svg" style="height: 300px;">';
+  }
+
+  display() {
+    const container = document.querySelector(`#${this.containerId}`);
+    const tweetsContainer = container.querySelector('.tweets__list');
+
+    if (tweetsContainer) {
+      tweetsContainer.innerHTML = '';
+      tweetsContainer.append(this.spinner);
+    } else {
+      container.append(this.spinner);
+    }
+  }
+
+  hide() {
+    this.spinner.remove();
+  }
+}
+
 class TweetsController {
   constructor() {
-    this.myTweet = new TweetCollection(tweets);
-    this.users = new UserCollection(users);
     this.headerView = new HeaderView('authorization');
     this.authorsView = new AuthorsView('names');
     this.filterView = new FilterView('main');
@@ -1365,21 +1011,17 @@ class TweetsController {
     this.autorizationView = new AutorizationView('main');
     this.registrationView = new RegistrationView('main');
     this.modalView = new ModalView('body');
+    this.spinner = new SpinnerView('main');
   }
 
   loadMore(event) {
     const { dataset } = event.target;
     dataset.top = +dataset.top + 10;
-    this.updateTweetsView.display(this.myTweet.getPage(0, dataset.top, this.getFiters()));
-  }
-
-  addComment(event) {
-    event.preventDefault();
-    const parentElem = event.path.find((elem) => elem.classList.contains('section'));
-    const data = Object.fromEntries(new FormData(event.target));
-    event.target.reset();
-    this.myTweet.addComment(parentElem.dataset.id, data.text);
-    this.tweetView.display(this.myTweet.get(parentElem.dataset.id));
+    this.requestStart();
+    api.getTweets(0, dataset.top, this.getFiters()).then((tweets) => {
+      this.requestFinish();
+      this.updateTweetsView.display(tweets);
+    });
   }
 
   modalControler(event) {
@@ -1395,26 +1037,31 @@ class TweetsController {
   }
 
   setAutors() {
-    const arrTweet = Array.from(this.myTweet.tweets.values());
-    const arrAuthors = new Set(arrTweet.map((tweet) => tweet.author));
-    this.authorsView.display(arrAuthors);
+    api.getTweets(0, Number.MAX_SAFE_INTEGER).then((tweets) => {
+      this.authorsView.display(new Set(tweets.map((tweet) => tweet.author)));
+    });
   }
 
-  setCurrentUser(user) {
-    TweetCollection.user = user;
-    this.headerView.display(user);
-    this.filterView.display();
-    this.twitterView.display(this.myTweet.getPage());
-    localStorage.setItem('currUser', JSON.stringify(TweetCollection.user));
+  setCurrentUser(user = '', token = '') {
+    localStorage.setItem('currUser', user);
+    localStorage.setItem('token', token);
+    this.backToMain();
   }
 
   addTweet(event) {
     event.preventDefault();
     const data = Object.fromEntries(new FormData(event.target));
     event.target.reset();
-    this.myTweet.add(data.text);
-    this.filterView.display();
-    this.twitterView.display(this.myTweet.getPage());
+    this.requestStart();
+    api
+      .postTweet(data.text, localStorage.token)
+      .then(() => this.backToMain())
+      .catch((error) => {
+        if (error.statusCode === 401) {
+          this.requestFinish();
+          this.autorizationView.display();
+        }
+      });
   }
 
   getFeed(
@@ -1439,10 +1086,10 @@ class TweetsController {
 
   tweetActions(event) {
     const clickedElem = event.path.find((elem) => elem.className === 'tweet');
-    let clickedElemId;
+    const user = localStorage.getItem('currUser');
 
     if (clickedElem) {
-      clickedElemId = clickedElem.dataset.id;
+      const clickedElemId = clickedElem.dataset.id;
       if (event.target.dataset.action === 'remove') {
         this.modalView.display(clickedElemId);
         return;
@@ -1454,7 +1101,7 @@ class TweetsController {
         formEdit.classList.add('form-add', 'twitter__form-add');
         formEdit.setAttribute('data-action', 'edit');
         formEdit.innerHTML = `<div class="form-add__header">
-          <div class="form-add__header-logo">${TweetCollection.user[0].toUpperCase()}</div>
+          <div class="form-add__header-logo">${user[0].toUpperCase()}</div>
           <textarea class="form-add__placeholder" name="text" maxlength=${Tweet.maxTweetLength} placeholder="Some text..."></textarea>
         </div>
         <div class="form-add__footer">
@@ -1468,37 +1115,71 @@ class TweetsController {
 
         const formAddPlaceholder = document.querySelector('.form-add__placeholder');
         const charactersLeft = document.querySelector('.form-add__сharacters-left');
-        formAddPlaceholder.value = this.myTweet.get(clickedElemId).text;
+
+        formAddPlaceholder.value = clickedElem.querySelector('.tweet__text').innerText;
         charactersLeft.innerText = formAddPlaceholder.maxLength - formAddPlaceholder.value.length;
         formAddPlaceholder.addEventListener('input', (e) => {
           charactersLeft.innerText = formAddPlaceholder.maxLength - e.target.value.length;
         });
-        formEdit.addEventListener('submit', (e) => {
-          e.preventDefault();
-          const data = Object.fromEntries(new FormData(formEdit));
-          formEdit.reset();
-          this.editTweet(clickedElemId, data.text);
-        });
+        formEdit.addEventListener('submit', (event) => this.editTweet(event, clickedElemId));
         return;
       }
       this.showTweet(clickedElemId);
     }
   }
 
-  editTweet(id, text) {
-    this.myTweet.edit(id, text);
-    this.filterView.display();
-    this.twitterView.display(this.myTweet.getPage());
+  editTweet(event, id) {
+    event.preventDefault();
+    const data = Object.fromEntries(new FormData(event.target));
+    event.target.reset();
+    this.requestStart();
+    api
+      .putTweet(id, data.text, localStorage.token)
+      .then(() => {
+        this.requestFinish();
+        this.backToMain();
+      })
+      .catch((error) => {
+        if (error.statusCode === 401) {
+          this.requestFinish();
+          this.autorizationView.display();
+        }
+      });
   }
 
   removeTweet(id) {
-    this.myTweet.remove(id);
-    this.filterView.display();
-    this.twitterView.display(this.myTweet.getPage());
+    this.requestStart();
+    api
+      .deleteTweet(id, localStorage.token)
+      .then(() => {
+        this.requestFinish();
+        this.backToMain();
+      })
+      .catch((error) => {
+        console.log(error);
+        if (error.statusCode === 401) {
+          this.requestFinish();
+          this.autorizationView.display();
+        }
+      });
   }
 
   showTweet(id) {
-    this.tweetView.display(this.myTweet.get(id));
+    api.getAllTweets().then((response) => {
+      const clickedTweet = response.filter((tweet) => tweet.id === id)[0];
+      console.log(clickedTweet);
+      this.tweetView.display(clickedTweet);
+    });
+  }
+
+  addComment(event) {
+    event.preventDefault();
+    const parentElem = event.path.find((elem) => elem.classList.contains('section'));
+    const data = Object.fromEntries(new FormData(event.target));
+    event.target.reset();
+    api.postComment(parentElem.dataset.id, data.text, localStorage.token).then((response) => {
+      this.showTweet(parentElem.dataset.id);
+    });
   }
 
   addHashtag() {
@@ -1520,24 +1201,37 @@ class TweetsController {
       hashtags,
     };
     if (filterForm.date_from.value) {
-      formData.dateFrom = new Date(filterForm.date_from.value);
+      formData.dateFrom = new Date(filterForm.date_from.value).setHours(0, 0, 1);
     } else {
-      formData.dateFrom = new Date(0);
+      formData.dateFrom = new Date(0).setHours(0, 0, 1);
     }
     if (filterForm.date_to.value) {
-      formData.dateTo = new Date(filterForm.date_to.value);
+      formData.dateTo = new Date(filterForm.date_to.value).setHours(23, 59, 59);
     } else {
-      formData.dateTo = new Date();
+      formData.dateTo = new Date().setHours(23, 59, 59);
     }
+
+    formData.dateFrom = `${Utils.getDate(formData.dateFrom)}T${Utils.getTime(formData.dateFrom)}`;
+    formData.dateTo = `${Utils.getDate(formData.dateTo)}T${Utils.getTime(formData.dateTo)}`;
     return formData;
   }
 
   filterSubmit(event) {
-    event.preventDefault();
+    if (event) {
+      event.preventDefault();
+      if (event.type === 'reset') {
+        this.filterView.display();
+      }
+    }
+
     const formData = this.getFiters();
     this.filterView.display(formData);
     this.hashtagsView.display(formData.hashtags);
-    this.twitterView.display(this.myTweet.getPage(0, 10, formData));
+    this.requestStart();
+    api.getTweets(0, 10, formData).then((res) => {
+      this.requestFinish();
+      controller.twitterView.display(res);
+    });
   }
 
   authorization(event) {
@@ -1546,19 +1240,17 @@ class TweetsController {
     const errorPassword = event.target.querySelector('.form__error-message_password');
     const errorLogin = event.target.querySelector('.form__error-message_login');
 
-    const foundUser = this.users.getUsers().find((user) => user.login === data.login);
-    if (foundUser) {
-      errorLogin.innerText = '';
-      if (foundUser.password === data.password) {
-        errorPassword.innerText = '';
+    api
+      .login(data.login, data.password)
+      .then((response) => {
         event.target.reset();
-        this.setCurrentUser(foundUser.login);
-      } else {
-        errorPassword.innerText = 'Password incorrect';
-      }
-    } else {
-      errorLogin.innerText = `${data.login} not register`;
-    }
+        const token = JSON.parse(JSON.stringify(response.token));
+        this.setCurrentUser(data.login, token);
+      })
+      .catch((error) => {
+        errorLogin.innerText = error.message;
+        errorPassword.innerText = error.message;
+      });
   }
 
   registration(event) {
@@ -1568,45 +1260,208 @@ class TweetsController {
     const errorPassword = event.target.querySelector('.form__error-message_password');
     const errorPasswordRepeat = event.target.querySelector('.form__error-message_password-repeat');
 
-    const foundUser = this.users.getUsers().find((user) => user.login.toLowerCase() === data.login.toLowerCase());
-
-    if (!foundUser) {
-      errorLogin.innerText = '';
-      if (data.password !== data.passwordRepeat) {
-        errorPassword.innerText = 'Passwords do not match';
-        errorPasswordRepeat.innerText = 'Passwords do not match';
-      } else {
-        errorPassword.innerText = '';
-        errorPasswordRepeat.innerText = '';
-        this.users.add({ login: data.login, password: data.password });
-        event.target.reset();
-        this.autorizationView.display();
-      }
+    if (data.password !== data.passwordRepeat) {
+      errorPassword.innerText = 'Passwords do not match';
+      errorPasswordRepeat.innerText = 'Passwords do not match';
     } else {
-      errorLogin.innerText = `${foundUser.login} already registered`;
+      errorPassword.innerText = '';
+      errorPasswordRepeat.innerText = '';
+
+      api
+        .registration(data.login, data.password)
+        .then(() => {
+          errorLogin.innerText = '';
+          event.target.reset();
+          this.autorizationView.display();
+        })
+        .catch(() => {
+          errorLogin.innerText = `${data.login} already registered`;
+        });
     }
+  }
+
+  backToMain() {
+    this.headerView.display();
+    this.filterView.display();
+    document.querySelector('.main').classList.remove('main_colomn');
+    this.requestStart();
+    api.getTweets().then((response) => {
+      this.requestFinish();
+      this.twitterView.display(response);
+    });
+  }
+
+  requestStart() {
+    function setButtonsDisabled() {
+      const buttons = document.querySelectorAll('button');
+      buttons.forEach((button) => {
+        button.setAttribute('disabled', 'disabled');
+        button.classList.add('button_disabled');
+      });
+    }
+    this.spinner.display();
+    setButtonsDisabled();
+  }
+
+  requestFinish() {
+    function setButtonsEnabled() {
+      const buttons = document.querySelectorAll('button');
+      buttons.forEach((button) => {
+        button.removeAttribute('disabled');
+        button.classList.remove('button_disabled');
+      });
+    }
+    this.spinner.hide();
+    setButtonsEnabled();
   }
 }
 
-const addDataToLocalStoradge = () => {
-  if (!localStorage.getItem('users')) {
-    localStorage.setItem('users', JSON.stringify(users));
+class TweetFeedApiService {
+  constructor(url) {
+    this.url = url;
   }
-  if (!localStorage.getItem('tweets')) {
-    localStorage.setItem('tweets', JSON.stringify(tweets));
-  }
-  if (!localStorage.getItem('currUser')) {
-    localStorage.setItem('currUser', JSON.stringify(TweetCollection.user));
-  }
-};
 
-addDataToLocalStoradge();
+  $createUrlParams(from, count, params) {
+    const { author, text, dateFrom, dateTo, hashtags } = params;
+    let result = '';
+    if (author) {
+      result += `&author=${author}`;
+    }
+    if (text) {
+      result += `&text=${text}`;
+    }
+    if (dateFrom) {
+      result += `&dateFrom=${dateFrom}`;
+    }
+    if (dateTo) {
+      result += `&dateTo=${dateTo}`;
+    }
+    if (hashtags && hashtags.length) {
+      result += `&hashtags=${hashtags.join('%2C')}`;
+    }
+    if (from) {
+      result += `&from=${from}`;
+    }
+    if (count) {
+      result += `&count=${count}`;
+    }
+
+    return result.slice(1);
+  }
+
+  login(login, password) {
+    return fetch(`${this.url}/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+      },
+      body: JSON.stringify({ login, password }),
+    }).then((response) => {
+      const json = response.json();
+      if (response.status < 400) {
+        return json;
+      }
+      return json.then(Promise.reject.bind(Promise));
+    });
+  }
+
+  registration(login, password) {
+    return fetch(`${this.url}/registration`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+      },
+      body: JSON.stringify({ login, password }),
+    }).then((response) => {
+      const json = response.json();
+      if (response.status !== 409) {
+        return json;
+      }
+      return json.then(Promise.reject.bind(Promise));
+    });
+  }
+
+  getAllTweets() {
+    return this.getTweets(0, Number.MAX_SAFE_INTEGER);
+  }
+
+  getTweets(from = 0, count = 10, params = {}) {
+    return fetch(`${this.url}/tweet?${this.$createUrlParams(from, count, params)}`).then((response) => response.json());
+  }
+
+  postTweet(text, token) {
+    return fetch(`${this.url}/tweet`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ text }),
+    }).then((response) => {
+      const json = response.json();
+      if (response.status < 400) {
+        return json;
+      }
+      return json.then(Promise.reject.bind(Promise));
+    });
+  }
+
+  putTweet(id, text, token) {
+    return fetch(`${this.url}/tweet/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ text }),
+    }).then((response) => {
+      const json = response.json();
+      if (response.status < 400) {
+        return json;
+      }
+      return json.then(Promise.reject.bind(Promise));
+    });
+  }
+
+  deleteTweet(id, token) {
+    return fetch(`${this.url}/tweet/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        Authorization: `Bearer ${token}`,
+      },
+      body: '',
+    }).then((response) => {
+      if (response.status < 400) {
+        return response;
+      }
+      return response.json().then(Promise.reject.bind(Promise));
+    });
+  }
+
+  postComment(id, text, token) {
+    return fetch(`${this.url}/tweet/${id}/comment`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ text }),
+    }).then((response) => {
+      const json = response.json();
+      if (response.status < 400) {
+        return json;
+      }
+      return json.then(Promise.reject.bind(Promise));
+    });
+  }
+}
 
 const controller = new TweetsController();
+const api = new TweetFeedApiService('https://jslabapi.datamola.com');
 
 document.addEventListener('DOMContentLoaded', () => {
-  TweetCollection.user = JSON.parse(localStorage.getItem('currUser'));
   controller.headerView.display();
   controller.filterView.display();
-  controller.twitterView.display(controller.myTweet.getPage());
+  controller.filterSubmit();
 });
