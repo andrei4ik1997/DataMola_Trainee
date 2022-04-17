@@ -110,6 +110,7 @@ input::-webkit-calendar-picker-indicator {
   display: flex;
   justify-content: center;
   align-items: center;
+  align-self: center;
   max-width: max-content;
   padding: var(--padding__button);
   border: none;
@@ -529,6 +530,7 @@ input::-webkit-calendar-picker-indicator {
   justify-content: center;
   gap: var(--gap__container);
   width: 100%;
+  height: 100%;
   font-weight: bold;
   opacity: 0.5;
   color: var(--color__secondary);
@@ -583,6 +585,7 @@ input::-webkit-calendar-picker-indicator {
 .registration {
   width: 50%;
   height: max-content;
+  min-height: 19rem;
   margin: 0 auto;
 }
 
