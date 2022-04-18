@@ -1266,6 +1266,13 @@ class AutorizationView {
     const authorizationForm = document.querySelector('.authorization__form');
     authorizationForm.innerHTML = '<i class="fas fa-check fa-fw fa-10x fa-beat-fade success"></i>';
   }
+
+  authorizationError(message) {
+    const errorPassword = document.querySelector('.form__error-message_password');
+    const errorLogin = document.querySelector('.form__error-message_login');
+    errorLogin.innerText = message;
+    errorPassword.innerText = message;
+  }
 }
 
 class RegistrationView {
@@ -1321,6 +1328,23 @@ class RegistrationView {
   registrationSuccess() {
     const registrationForm = document.querySelector('.registration__form');
     registrationForm.innerHTML = '<i class="fas fa-check fa-fw fa-10x fa-beat-fade success"></i>';
+  }
+
+  registrationError(message, type) {
+    const errorLogin = document.querySelector('.form__error-message_login');
+    const errorPassword = document.querySelector('.form__error-message_password');
+    const errorPasswordRepeat = document.querySelector('.form__error-message_password-repeat');
+
+    if (type === 'login') {
+      errorPassword.innerText = '';
+      errorPasswordRepeat.innerText = '';
+      errorLogin.innerText = message;
+    }
+    if (type === 'password') {
+      errorLogin.innerText = '';
+      errorPassword.innerText = message;
+      errorPasswordRepeat.innerText = message;
+    }
   }
 }
 
@@ -1476,122 +1500,145 @@ class TweetsController {
     this.$setButtonsEnabled();
   }
 
-  $refreshTweets() {
-    this.apiService
-      .getTweets(0, 10, this.$getFiters())
-      .then((response) => {
-        this.$requestFinish();
-        this.addAutors();
-        this.tweetsArr = JSON.stringify(response);
-        this.twitterView.display(response);
-      })
-      .catch((error) => {
-        this.errorView.display(error.message);
-      });
+  async $refreshTweets() {
+    const tweets = await this.apiService.getTweets(0, 10, this.$getFiters());
+    const tweetsAll = await this.apiService.getAllTweets();
+    this.$requestFinish();
+    this.addAutors();
+    this.tweetsArr = JSON.stringify(tweetsAll);
+    this.twitterView.display(tweets);
   }
 
-  addTweet(event) {
+  async addAutors() {
+    const tweets = await this.apiService.getAllTweets();
+    this.filterView.addAuthors(new Set(tweets.map((tweet) => tweet.author)));
+  }
+
+  async addTweet(event) {
     event.preventDefault();
     const data = Object.fromEntries(new FormData(event.target));
     event.target.reset();
     this.$requestStart();
-    this.apiService
-      .postTweet(data.text)
-      .then(() => this.$refreshTweets())
-      .catch((error) => {
-        if (error.statusCode === 401) {
-          this.$requestFinish();
-          this.autorizationView.display();
-        } else {
-          this.errorView.display(error.message);
-        }
-      });
+    await this.apiService.postTweet(data.text);
+    this.$refreshTweets();
   }
 
-  editTweet(event, id) {
+  async editTweet(event, id) {
     event.preventDefault();
     const data = Object.fromEntries(new FormData(event.target));
     event.target.reset();
     this.$requestStart();
-    this.apiService
-      .putTweet(id, data.text)
-      .then(() => {
-        this.$refreshTweets();
-      })
-      .catch((error) => {
-        if (error.statusCode === 401) {
-          this.$requestFinish();
-          this.autorizationView.display();
-        } else {
-          this.errorView.display(error.message);
-        }
-      });
+    await this.apiService.putTweet(id, data.text);
+    this.$refreshTweets();
   }
 
-  removeTweet(id) {
+  async removeTweet(id) {
     this.$requestStart();
-    this.apiService
-      .deleteTweet(id)
-      .then(() => {
-        this.$refreshTweets();
-      })
-      .catch((error) => {
-        console.log(error);
-        if (error.statusCode === 401) {
-          this.$requestFinish();
-          this.autorizationView.display();
-        } else {
-          this.errorView.display(error.message);
-        }
-      });
+    await this.apiService.deleteTweet(id);
+    this.$refreshTweets();
   }
 
-  showTweet(id) {
+  async showTweet(id) {
     this.$requestStart();
-    this.apiService
-      .getAllTweets()
-      .then((response) => {
-        this.$requestFinish();
-        const clickedTweet = response.filter((tweet) => tweet.id === id)[0];
-        this.tweetView.display(clickedTweet);
-        this.openTweet = JSON.stringify(clickedTweet);
-      })
-      .catch((error) => {
-        this.errorView.display(error.message);
-      });
+    const tweets = await this.apiService.getAllTweets();
+    this.$requestFinish();
+    const clickedTweet = tweets.filter((tweet) => tweet.id === id)[0];
+    this.tweetView.display(clickedTweet);
+    this.openTweet = JSON.stringify(clickedTweet);
   }
 
-  addComment(event) {
+  async addComment(event) {
     event.preventDefault();
     const parentElem = event.path.find((elem) => elem.classList.contains('section'));
     const data = Object.fromEntries(new FormData(event.target));
     event.target.reset();
-    this.apiService
-      .postComment(parentElem.dataset.id, data.text)
-      .then(() => {
-        this.showTweet(parentElem.dataset.id);
-      })
-      .catch((error) => {
-        this.errorView.display(error.message);
-      });
+    await this.apiService.postComment(parentElem.dataset.id, data.text);
+    this.showTweet(parentElem.dataset.id);
   }
 
-  loadMore(event) {
+  async filterSubmit(event) {
+    if (event) {
+      event.preventDefault();
+      if (event.type === 'reset') {
+        this.filterView.display();
+      }
+    }
+    const formData = this.$getFiters();
+    this.filterView.display(formData);
+    this.hashtagsView.display(formData.hashtags);
+    this.$requestStart();
+    const tweets = await this.apiService.getTweets(0, 10, formData);
+    this.$requestFinish();
+    this.twitterView.display(tweets);
+  }
+
+  async authorization(event) {
+    try {
+      event.preventDefault();
+      const data = Object.fromEntries(new FormData(event.target));
+      this.$setButtonsDisabled();
+      const token = await this.apiService.login(data.login, data.password);
+      event.target.reset();
+      this.autorizationView.authorizationSuccess();
+      setTimeout(() => this.setCurrentUser(data.login, token.token), 2000);
+    } catch (error) {
+      this.$setButtonsEnabled();
+      this.autorizationView.authorizationError(error.message);
+    }
+  }
+
+  async registration(event) {
+    event.preventDefault();
+    const data = Object.fromEntries(new FormData(event.target));
+
+    if (data.password !== data.passwordRepeat) {
+      const message = 'Passwords do not match';
+      this.registrationView.registrationError(message, 'password');
+    } else {
+      try {
+        this.$setButtonsDisabled();
+        await this.apiService.registration(data.login, data.password);
+        event.target.reset();
+        this.registrationView.registrationSuccess();
+        setTimeout(() => this.autorizationView.display(), 2000);
+      } catch (error) {
+        this.$setButtonsEnabled();
+        const message = `${data.login} already registered`;
+        this.registrationView.registrationError(message, 'login');
+      }
+    }
+  }
+
+  async loadMore(event) {
     const { dataset, parentNode } = event.target;
     dataset.top = +dataset.top + 10;
     dataset.scroll = parentNode.scrollHeight;
-
     this.$requestStart();
-    this.apiService
-      .getTweets(0, dataset.top, this.$getFiters())
-      .then((response) => {
-        this.$requestFinish();
-        this.updateTweetsView.display(response);
-        parentNode.scrollTop = dataset.scroll;
-      })
-      .catch((error) => {
-        this.errorView.display(error.message);
-      });
+    const tweets = await this.apiService.getTweets(0, dataset.top, this.$getFiters());
+    this.$requestFinish();
+    this.updateTweetsView.display(tweets);
+    parentNode.scrollTop = dataset.scroll;
+  }
+
+  async shortPolling() {
+    const sectionTwitter = document.querySelector('#twitter');
+    const sectionTweet = document.querySelector('.section__tweet');
+    if (sectionTwitter) {
+      const tweetsAll = await this.apiService.getAllTweets();
+      if (this.tweetsArr !== JSON.stringify(tweetsAll)) {
+        this.$requestStart();
+        this.$refreshTweets();
+      }
+    }
+    if (sectionTweet) {
+      const currentTweetId = sectionTweet.dataset.id;
+      const tweets = await this.apiService.getAllTweets();
+      const currentTweet = tweets.filter((tweet) => tweet.id === currentTweetId)[0];
+      currentTweet.comments = currentTweet.comments.reverse();
+      if (this.openTweet !== JSON.stringify(currentTweet)) {
+        this.showTweet(currentTweetId);
+      }
+    }
   }
 
   modalControler(event) {
@@ -1606,41 +1653,10 @@ class TweetsController {
     }
   }
 
-  addAutors() {
-    this.apiService
-      .getAllTweets()
-      .then((tweets) => {
-        this.filterView.addAuthors(new Set(tweets.map((tweet) => tweet.author)));
-      })
-      .catch((error) => {
-        this.errorView.display(error.message);
-      });
-  }
-
   setCurrentUser(user = '', token = '') {
     localStorage.setItem('currUser', user);
     localStorage.setItem('token', token);
     this.openMainPage();
-  }
-
-  getFeed(
-    skip = 0,
-    top = 10,
-    filterConfig = {
-      author: '',
-      text: '',
-      dateFrom: new Date(0),
-      dateTo: new Date(),
-      hashtags: [],
-    },
-  ) {
-    if (Number.isInteger(skip) && Number.isInteger(top)) {
-      this.filterView.display(filterConfig);
-      this.hashtagsView.display(filterConfig.hashtags);
-      this.twitterView.display(this.myTweet.getPage(skip, top, filterConfig));
-      return true;
-    }
-    return false;
   }
 
   tweetActions(event) {
@@ -1688,126 +1704,12 @@ class TweetsController {
     }
   }
 
-  filterSubmit(event) {
-    if (event) {
-      event.preventDefault();
-      if (event.type === 'reset') {
-        this.filterView.display();
-      }
-    }
-    const formData = this.$getFiters();
-    this.filterView.display(formData);
-    this.hashtagsView.display(formData.hashtags);
-    this.$requestStart();
-    this.apiService
-      .getTweets(0, 10, formData)
-      .then((request) => {
-        this.$requestFinish();
-        this.twitterView.display(request);
-      })
-      .catch((error) => {
-        this.errorView.display(error.message);
-      });
-  }
-
-  authorization(event) {
-    event.preventDefault();
-    const data = Object.fromEntries(new FormData(event.target));
-    const errorPassword = event.target.querySelector('.form__error-message_password');
-    const errorLogin = event.target.querySelector('.form__error-message_login');
-    this.$setButtonsDisabled();
-    this.apiService
-      .login(data.login, data.password)
-      .then((response) => {
-        event.target.reset();
-        this.autorizationView.authorizationSuccess();
-        const token = JSON.parse(JSON.stringify(response.token));
-        setTimeout(() => this.setCurrentUser(data.login, token), 2000);
-      })
-      .catch((error) => {
-        this.$setButtonsEnabled();
-        if (error.statusCode === 403) {
-          errorLogin.innerText = error.message;
-          errorPassword.innerText = error.message;
-        } else {
-          this.errorView.display(error.message);
-        }
-      });
-  }
-
-  registration(event) {
-    event.preventDefault();
-    const data = Object.fromEntries(new FormData(event.target));
-    const errorLogin = event.target.querySelector('.form__error-message_login');
-    const errorPassword = event.target.querySelector('.form__error-message_password');
-    const errorPasswordRepeat = event.target.querySelector('.form__error-message_password-repeat');
-
-    if (data.password !== data.passwordRepeat) {
-      errorLogin.innerText = '';
-      errorPassword.innerText = 'Passwords do not match';
-      errorPasswordRepeat.innerText = 'Passwords do not match';
-    } else {
-      errorPassword.innerText = '';
-      errorPasswordRepeat.innerText = '';
-      this.$setButtonsDisabled();
-      this.apiService
-        .registration(data.login, data.password)
-        .then(() => {
-          errorLogin.innerText = '';
-          event.target.reset();
-          this.registrationView.registrationSuccess();
-          setTimeout(() => this.autorizationView.display(), 2000);
-        })
-        .catch((error) => {
-          this.$setButtonsEnabled();
-          if (error.statusCode === 409) {
-            errorLogin.innerText = `${data.login} already registered`;
-          } else {
-            this.errorView.display(error.message);
-          }
-        });
-    }
-  }
-
   openMainPage() {
     this.headerView.display();
     this.filterView.display();
     document.querySelector('.main').classList.remove('main_colomn');
     this.$requestStart();
     this.$refreshTweets();
-  }
-
-  shortPolling() {
-    const sectionTwitter = document.querySelector('#twitter');
-    const sectionTweet = document.querySelector('.section__tweet');
-    if (sectionTwitter) {
-      this.apiService
-        .getTweets()
-        .then((response) => {
-          if (this.tweetsArr !== JSON.stringify(response)) {
-            this.$requestStart();
-            this.$refreshTweets();
-          }
-        })
-        .catch((error) => {
-          this.errorView.display(error.message);
-        });
-    }
-    if (sectionTweet) {
-      const currentTweetId = sectionTweet.dataset.id;
-      this.apiService
-        .getAllTweets()
-        .then((response) => {
-          const currentTweet = response.filter((tweet) => tweet.id === currentTweetId)[0];
-          currentTweet.comments = currentTweet.comments.reverse();
-          if (this.openTweet !== JSON.stringify(currentTweet)) {
-            this.showTweet(currentTweetId);
-          }
-        })
-        .catch((error) => {
-          this.errorView.display(error.message);
-        });
-    }
   }
 }
 
@@ -1849,15 +1751,33 @@ class TweetFeedApiService {
   }
 
   $request(endpoint, options) {
-    return fetch(`${this.url}/${endpoint}`, options).then((response) => {
-      if (response.status >= 200 && response.status <= 299) {
-        if (options.method === 'DELETE') {
-          return response;
+    return fetch(`${this.url}/${endpoint}`, options)
+      .then((response) => {
+        if (response.status >= 200 && response.status <= 299) {
+          if (options.method === 'DELETE') {
+            return response;
+          }
+          return response.json();
         }
-        return response.json();
-      }
-      return response.json().then(Promise.reject.bind(Promise));
-    });
+        return response.json().then(Promise.reject.bind(Promise));
+      })
+      .catch((error) => {
+        switch (error.statusCode) {
+          case 401: {
+            controller.autorizationView.display();
+            break;
+          }
+          case 403: {
+            throw new Error(error.message);
+          }
+          case 409: {
+            throw new Error(error.message);
+          }
+          default:
+            controller.errorView.display(error.message);
+            break;
+        }
+      });
   }
 
   $createUrlParams(from, count, params) {
@@ -1944,17 +1864,6 @@ class TweetFeedApiService {
     return this.$request(endpoint, options);
   }
 
-  postComment(id, text) {
-    const endpoint = `${this.endpoints.tweet}/${id}/${this.endpoints.comment}`;
-    const method = this.requestMethods.post;
-    const data = { text };
-    const options = this.$getOptions(method, data, true);
-
-    return this.$request(endpoint, options);
-  }
-}
-
-addDataToLocalStoradge();
   postComment(id, text) {
     const endpoint = `${this.endpoints.tweet}/${id}/${this.endpoints.comment}`;
     const method = this.requestMethods.post;
