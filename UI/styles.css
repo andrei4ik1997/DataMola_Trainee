@@ -15,6 +15,7 @@
   --color__background_primary: #fff;
   --color__primary: #4299e1;
   --color__secondary: #718096;
+  --color__success: #39ce68;
   --color__error: #dc3848;
   --color__hashtag: #3182ce;
   --color__text: #000000;
@@ -121,11 +122,15 @@ input::-webkit-calendar-picker-indicator {
   cursor: pointer;
 }
 
-.button_primary {
+.color_primary {
+  color: var(--color__primary);
+}
+
+.background-color_primary {
   background-color: var(--color__primary);
 }
 
-.button_secondary {
+.background-color_secondary {
   background-color: var(--color__secondary);
 }
 
@@ -592,6 +597,7 @@ input::-webkit-calendar-picker-indicator {
 .authorization__form,
 .registration__form {
   align-items: center;
+  height: 100%;
   gap: 1.8rem;
   width: 100%;
 }
@@ -612,6 +618,12 @@ input::-webkit-calendar-picker-indicator {
   top: 0;
   left: 3.5rem;
   transform: translate(-50%, -50%);
+}
+
+.success {
+  --fa-animation-duration: 2s;
+  margin: auto;
+  color: var(--color__success);
 }
 
 .error {

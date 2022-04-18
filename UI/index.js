@@ -456,9 +456,9 @@ class HeaderView {
     burger.classList.remove('hide');
     if (user) {
       authorization.innerHTML = ` <span class="header__username">${user}</span>
-      <button class="button button_primary header__button" data-action="exit">Exit</button>`;
+      <button class="button background-color_primary header__button" data-action="exit">Exit</button>`;
     } else {
-      authorization.innerHTML = '<button class="button button_primary header__button" data-action="authorization">Sign In</button>';
+      authorization.innerHTML = '<button class="button background-color_primary header__button" data-action="authorization">Sign In</button>';
     }
 
     const login = document.querySelector('[data-action="authorization"]');
@@ -546,8 +546,8 @@ class FilterView {
                   <div id ="form__hashtag" class="hashtag form__hashtag"></div>
                </div>
                <div class="form__buttons">
-                  <button class="button button_secondary form__button" type="reset">Clear</button>
-                  <button class="button button_primary form__button" type="submit">Apply</button>
+                  <button class="button background-color_secondary form__button" type="reset">Clear</button>
+                  <button class="button background-color_primary form__button" type="submit">Apply</button>
                </div>
             </form>
           </aside>`;
@@ -598,7 +598,7 @@ class TweetView {
 
     let result = `<section class="section main__container" data-id=${id}>
                       <a class="link link_icon">
-                          <i class="icon icon_back fa-solid fa-circle-arrow-left fa-2x" data-action="backToMain"></i>
+                          <i class="icon icon_back fa-solid fa-arrow-circle-left fa-2x" data-action="backToMain"></i>
                       </a>`;
 
     result += this.tweet(author, createdAt, comments, text);
@@ -685,7 +685,7 @@ class TweetView {
         <span class="form-add__сharacters-left">${Comment.maxCommentLength}</span>
         сharacters left
       </p>
-      <button class="button button_primary form-add__button" type="submit">Comment</button>
+      <button class="button background-color_primary form-add__button" type="submit">Comment</button>
     </div>
   </form>`;
   }
@@ -715,7 +715,7 @@ class TwitterView {
 
     if (tweetsArr.length) {
       result += `<div id='tweets' class='tweets'><ul id="tweets__list" class='tweets__list'>${this.tweetsBlock(tweetsArr)}</ul>${
-        tweetsArr.length % 10 === 0 ? '<button class="button button_primary twitter__button" data-action="loadMore" data-top="10">Load more</button>' : ''
+        tweetsArr.length % 10 === 0 ? '<button class="button background-color_primary twitter__button" data-action="loadMore" data-top="10">Load more</button>' : ''
       }</div>`;
 
       sectionTwitter.innerHTML = result;
@@ -758,7 +758,7 @@ class TwitterView {
                   <span class="form-add__сharacters-left">${Tweet.maxTweetLength}</span>
                   сharacters left
                 </p>
-                <button class="button button_primary form-add__button" type="submit" >Tweet</button>
+                <button class="button background-color_primary form-add__button" type="submit" >Tweet</button>
              </div>
             </form>`;
   }
@@ -783,7 +783,7 @@ class TwitterView {
       if (tweet.author === user) {
         result += `<div class="tweet__icons-container">
           <i class="icon icon__edit fa-regular fa-pen-to-square" data-action="edit"></i>
-          <i class="icon icon__trash fa-solid fa-trash-can" data-action="remove"></i>
+          <i class="icon icon__trash fa-solid fa-trash" data-action="remove"></i>
         </div>`;
       }
       result += `</div>
@@ -876,18 +876,18 @@ class AutorizationView {
           <small class="form__error-message form__error-message_password"></small>
         </div>
         <div class="form__buttons">
-          <button class="button button_secondary form__button" type="button" data-action="registration">Registration</button>
-          <button class="button button_primary form__button" type="submit">Login</button>
+          <button class="button background-color_secondary form__button" type="button" data-action="registration">Registration</button>
+          <button class="button background-color_primary form__button" type="submit">Login</button>
         </div>
      </form>
     </section>
-      <button class="button button_primary" type="button" data-action="backToMain">Back to main</button>
+      <button class="button background-color_primary" type="button" data-action="backToMain">Back to main</button>
  `;
   }
 
   authorizationSuccess() {
     const authorizationForm = document.querySelector('.authorization__form');
-    authorizationForm.innerHTML = '<img alt="Success" height= 100%; width= 100% src="./assets/success.gif">';
+    authorizationForm.innerHTML = '<i class="fas fa-check fa-fw fa-10x fa-beat-fade success"></i>';
   }
 }
 
@@ -933,17 +933,17 @@ class RegistrationView {
                   <small class="form__error-message form__error-message_password-repeat"></small>
                 </div>
                 <div class="form__buttons">
-                    <button class="button button_secondary form__button" type="button"          data-action="authorization">Authorization</button>
-                    <button class="button button_primary form__button" type="submit">Register</button>
+                    <button class="button background-color_secondary form__button" type="button"          data-action="authorization">Authorization</button>
+                    <button class="button background-color_primary form__button" type="submit">Register</button>
                 </div>
              </form>
             </section>
-           <button class="button button_primary" type="button" data-action="backToMain">Back to main</button>`;
+           <button class="button background-color_primary" type="button" data-action="backToMain">Back to main</button>`;
   }
 
   registrationSuccess() {
-    const authorizationForm = document.querySelector('.registration__form');
-    authorizationForm.innerHTML = '<img alt="Success" height= 100%; width= 100% src="./assets/success.gif">';
+    const registrationForm = document.querySelector('.registration__form');
+    registrationForm.innerHTML = '<i class="fas fa-check fa-fw fa-10x fa-beat-fade success"></i>';
   }
 }
 
@@ -959,8 +959,8 @@ class ModalView {
     modal.innerHTML = `<div class="modal__container">
                           <h3 class="modal__title">Are you sure?</h3>
                           <div class="modal__buttons">
-                              <button class="button button_secondary modal__button" type="button" data-action="no">No</button>
-                              <button class="button button_primary modal__button" type="button" data-id=${id} data-action="yes">Yes</button>
+                              <button class="button background-color_secondary modal__button" type="button" data-action="no">No</button>
+                              <button class="button background-color_primary modal__button" type="button" data-id=${id} data-action="yes">Yes</button>
                           </div>
                         </div>`;
     element.append(modal);
@@ -973,7 +973,7 @@ class SpinnerView {
     this.containerId = containerId;
     this.spinner = document.createElement('div');
     this.spinner.classList.add('spinner-container');
-    this.spinner.innerHTML = '<img src="./assets/spinner.svg" style="height: 300px;">';
+    this.spinner.innerHTML = '<i class="fa fa-spinner fa-pulse fa-10x fa-fw color_primary"></i>';
   }
 
   display() {
@@ -1012,7 +1012,7 @@ class ErrorView {
                 <i class="icon icon_error fa-solid fa-triangle-exclamation fa-4x"></i>
                 <span class="error__text">${text}</span>
               </div>
-              <button class="button button_primary" type="button" data-action="backToMain">Back to main</button>
+              <button class="button background-color_primary" type="button" data-action="backToMain">Back to main</button>
             </section>`;
   }
 }
@@ -1205,7 +1205,7 @@ class TweetsController {
             <span class="form-add__сharacters-left">${Tweet.maxTweetLength}</span>
             сharacters left
           </p>
-          <button class="button button_primary form-add__button" type="submit" >Tweet</button>
+          <button class="button background-color_primary form-add__button" type="submit" >Tweet</button>
         </div>`;
         document.querySelector('.main__twitter').prepend(formEdit);
 
@@ -1303,9 +1303,9 @@ class TweetsController {
     this.requestStart();
     this.apiService
       .getTweets(0, 10, formData)
-      .then((res) => {
+      .then((request) => {
         this.requestFinish();
-        controller.twitterView.display(res);
+        this.twitterView.display(request);
       })
       .catch((error) => {
         this.errorView.display(error.message);
