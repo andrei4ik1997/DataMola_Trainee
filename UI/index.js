@@ -1628,6 +1628,7 @@ class TweetsController {
       if (this.tweetsArr !== JSON.stringify(tweetsAll)) {
         this.$requestStart();
         this.$refreshTweets();
+        this.$requestFinish();
       }
     }
     if (sectionTweet) {
@@ -1879,6 +1880,7 @@ const controller = new TweetsController();
 document.addEventListener('DOMContentLoaded', () => {
   const updateTime = 10000;
   controller.openMainPage();
+
   setInterval(() => {
     controller.shortPolling();
   }, updateTime);
